@@ -1,0 +1,15 @@
+body {
+    background-image: url('rowing1.jpeg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.white_link {
+    color:white !important;
+}
+
+.dropdown-item:hover {
+    background-color: dodgerblue;
+}

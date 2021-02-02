@@ -9,6 +9,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="artifact" artifact-name="engine:jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/server/libraries/gson-2.8.6.jar" />
         </element>
       </element>
     </root>

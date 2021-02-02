@@ -1,0 +1,14 @@
+.login_button {
+    margin-left:75px;
+    width:150px;
+}
+
+.form_login {
+    width: 400px;
+    padding: 50px;
+    background-color: lightblue;
+    height: 380px;
+    margin-left: 37.5%;
+    margin-right: 37.5%;
+    margin-top:10%;
+}
