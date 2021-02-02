@@ -1,4 +1,5 @@
 window.addEventListener('load', () => {
+    checkIfLoggedIn();
     setupEventHandlers();
 });
 
@@ -25,14 +26,16 @@ async function handleFormSubmit (event) {
             body: JSON.stringify(data)
         });
 
-        if (!response.redirected) {
+        if (response.ok) {
+            window.location.href = await response.text();
+        } else {
             const alertPopup = document.getElementById('alertText');
             alertPopup.textContent = await response.text();
         }
     }
 }
 
-function TextBoxesAreFull(){
+function TextBoxesAreFull() {
     const userEmailInput = document.getElementById('userEmail');
     const emailAlert = document.getElementById('emailHelp');
     const userPasswordInput = document.getElementById('userPassword');
@@ -40,19 +43,28 @@ function TextBoxesAreFull(){
     var textBoxesFull = true;
 
     if (userEmailInput.value === '' || userEmailInput.value === 'email@example.com') {
-        emailAlert.textContent = "Email is empty!";
+        emailAlert.textContent = "Email missing!";
         textBoxesFull = false;
-    }
-    else if(userEmailInput.value !== ''){
+    } else if (userEmailInput.value !== '') {
         emailAlert.textContent = '';
     }
 
-    if(userPasswordInput.value === '') {
-        passwordAlert.textContent = "Password is empty!";
+    if (userPasswordInput.value === '') {
+        passwordAlert.textContent = "Password missing!";
         textBoxesFull = false;
-    }
-    else if(userPasswordInput.value !== ''){
+    } else if(userPasswordInput.value !== '') {
         passwordAlert.textContent = '';
     }
+
     return textBoxesFull;
+}
+
+async function checkIfLoggedIn() {
+    const response = await fetch('login', {
+        method: 'get'
+    });
+
+    if (response.ok) {
+        window.location.href = await response.text();
+    }
 }

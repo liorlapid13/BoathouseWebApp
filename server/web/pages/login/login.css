@@ -12,3 +12,7 @@
     margin-right: 37.5%;
     margin-top:10%;
 }
+
+.alert_popup {
+    display: block;
+}

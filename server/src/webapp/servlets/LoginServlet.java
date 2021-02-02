@@ -6,6 +6,7 @@ import engine.exception.MemberAlreadyLoggedInException;
 import engine.member.Member;
 import webapp.constants.Constants;
 import webapp.utils.ServletUtils;
+import webapp.utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,19 +20,17 @@ import java.util.stream.Collectors;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processRequest(req, resp);
+        processLoggedInCheck(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processRequest(req, resp);
+        processLoginRequest(req, resp);
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processLoginRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (PrintWriter out = response.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
             Gson gson = new Gson();
@@ -47,12 +46,15 @@ public class LoginServlet extends HttpServlet {
                     request.getSession(true).setAttribute(Constants.USERID, loggedInMember.getSerialNumber());
                     String redirectURL = loggedInMember.isManager() ?
                             Constants.MANAGER_PAGE_URL : Constants.MEMBER_PAGE_URL;
-                    response.sendRedirect(redirectURL);
+                    out.print(redirectURL);
+                    response.setStatus(HttpServletResponse.SC_OK);
                 } else {
                     out.print("Incorrect email and/or password");
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 }
             } catch (MemberAlreadyLoggedInException e) {
                 out.print(e.getMessage());
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             }
         }
     }
@@ -67,6 +69,22 @@ public class LoginServlet extends HttpServlet {
 
         public String getPassword() {
             return password;
+        }
+    }
+
+    protected void processLoggedInCheck(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try (PrintWriter out = response.getWriter()) {
+            Engine engine = ServletUtils.getEngine(getServletContext());
+            String userId = SessionUtils.getUserId(request);
+            if (userId != null) {
+                String redirectURL = engine.findMemberByID(userId).isManager() ?
+                        Constants.MANAGER_PAGE_URL : Constants.MEMBER_PAGE_URL;
+                out.print(redirectURL);
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
         }
     }
 }
