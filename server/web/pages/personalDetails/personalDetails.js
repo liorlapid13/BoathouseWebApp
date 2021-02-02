@@ -22,7 +22,7 @@ async function handleFormSubmit (event) {
     }
 
     if (areTextBoxesFilled(inputName, inputEmail, inputPassword, inputPhoneNumber)) {
-        const response = await fetch('editPersonalDetails', {
+        const response = await fetch('../../editPersonalDetails', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -31,7 +31,8 @@ async function handleFormSubmit (event) {
         });
 
         if (response.ok) {
-            window.location.href = await response.text();
+            const alertText = document.getElementById('alertText');
+            alertText.textContent = "Personal details successfully changed";
         } else {
             const alertPopup = document.getElementById('emailAlertText');
             alertPopup.textContent = "Email already taken";
@@ -40,11 +41,11 @@ async function handleFormSubmit (event) {
 }
 
 function areTextBoxesFilled(inputName, inputEmail, inputPassword, inputPhoneNumber) {
-    const missingFieldsAlert = document.getElementById('missingFieldsAlert');
+    const alertText = document.getElementById('alertText');
     let textBoxesFilled = true;
 
     if (inputName === '' || inputPhoneNumber === '' || inputEmail === '' || inputPassword === '') {
-        missingFieldsAlert.textContent = "You must fill in all fields!";
+        alertText.textContent = "You must fill in all fields!";
         textBoxesFilled = false;
     }
 
@@ -52,7 +53,7 @@ function areTextBoxesFilled(inputName, inputEmail, inputPassword, inputPhoneNumb
 }
 
 async function initializeFields() {
-    const response = await fetch('editPersonalDetails', {
+    const response = await fetch('../../editPersonalDetails', {
         method: 'get',
     });
 
