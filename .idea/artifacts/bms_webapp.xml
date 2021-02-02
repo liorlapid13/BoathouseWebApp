@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="bms-webapp">
+    <output-path>$PROJECT_DIR$/out/artifacts/bms_webapp</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="server/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="server" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="artifact" artifact-name="engine:jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
