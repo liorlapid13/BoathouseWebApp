@@ -47,6 +47,7 @@ public class LoginServlet extends HttpServlet {
                     String redirectURL = loggedInMember.isManager() ?
                             Constants.MANAGER_PAGE_URL : Constants.MEMBER_PAGE_URL;
                     out.print(redirectURL);
+                    out.flush();
                     response.setStatus(HttpServletResponse.SC_OK);
                 } else {
                     out.print("Incorrect email and/or password");
@@ -54,6 +55,7 @@ public class LoginServlet extends HttpServlet {
                 }
             } catch (MemberAlreadyLoggedInException e) {
                 out.print(e.getMessage());
+                out.flush();
                 response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             }
         }
@@ -66,7 +68,6 @@ public class LoginServlet extends HttpServlet {
         public String getEmail() {
             return email;
         }
-
         public String getPassword() {
             return password;
         }
@@ -81,6 +82,7 @@ public class LoginServlet extends HttpServlet {
                 String redirectURL = engine.findMemberByID(userId).isManager() ?
                         Constants.MANAGER_PAGE_URL : Constants.MEMBER_PAGE_URL;
                 out.print(redirectURL);
+                out.flush();
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);

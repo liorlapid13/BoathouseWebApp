@@ -10,7 +10,7 @@ function setupEventHandlers() {
 
 async function handleFormSubmit (event) {
     event.preventDefault();
-    if (TextBoxesAreFull()) {
+    if (areTextBoxesFilled()) {
         const userEmail = document.getElementById('userEmail').value;
         const userPassword = document.getElementById('userPassword').value;
         const data = {
@@ -35,28 +35,28 @@ async function handleFormSubmit (event) {
     }
 }
 
-function TextBoxesAreFull() {
+function areTextBoxesFilled() {
     const userEmailInput = document.getElementById('userEmail');
     const emailAlert = document.getElementById('emailHelp');
     const userPasswordInput = document.getElementById('userPassword');
     const passwordAlert = document.getElementById('passwordHelp');
-    var textBoxesFull = true;
+    let textBoxesFilled = true;
 
     if (userEmailInput.value === '' || userEmailInput.value === 'email@example.com') {
         emailAlert.textContent = "Email missing!";
-        textBoxesFull = false;
+        textBoxesFilled = false;
     } else if (userEmailInput.value !== '') {
         emailAlert.textContent = '';
     }
 
     if (userPasswordInput.value === '') {
         passwordAlert.textContent = "Password missing!";
-        textBoxesFull = false;
-    } else if(userPasswordInput.value !== '') {
+        textBoxesFilled = false;
+    } else if (userPasswordInput.value !== '') {
         passwordAlert.textContent = '';
     }
 
-    return textBoxesFull;
+    return textBoxesFilled;
 }
 
 async function checkIfLoggedIn() {
