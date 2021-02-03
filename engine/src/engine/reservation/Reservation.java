@@ -19,8 +19,8 @@ import java.util.*;
 @XmlRootElement
 public class Reservation implements Serializable {
     private String reservationCreator;
-    private String reservator;
     private LocalDateTime creationDate;
+    private String reservator;
     private WeeklyActivity weeklyActivity;
     private LocalDate activityDate;
     private Set<BoatType> boatTypes;

@@ -6,11 +6,11 @@ window.addEventListener('load', () => {
 function setupEventHandlers() {
     const personalDetailsFormEl = document.getElementById('formPersonalDetails');
     personalDetailsFormEl.addEventListener('submit', handleFormSubmit);
-    const passwordButton =document.querySelector('.passwordButton');
-    passwordButton.addEventListener('click',handlePasswordButton);
+    const passwordButton = document.querySelector('.passwordButton');
+    passwordButton.addEventListener('click', handlePasswordButton);
 }
 
-function handlePasswordButton(){
+function handlePasswordButton() {
     const passwordButton = document.querySelector('.passwordButton');
     const inputPassword = document.getElementById('inputPassword');
     if(inputPassword.type === "password") {
@@ -22,6 +22,7 @@ function handlePasswordButton(){
         passwordButton.textContent = 'Show Password'
     }
 }
+
 async function handleFormSubmit (event) {
     event.preventDefault();
     const inputName = document.getElementById('inputName').value;
@@ -62,8 +63,7 @@ function areTextBoxesFilled(inputName, inputEmail, inputPassword, inputPhoneNumb
     if (inputName === '' || inputPhoneNumber === '' || inputEmail === '' || inputPassword === '') {
         alertText.textContent = "You must fill in all fields!";
         textBoxesFilled = false;
-    }
-    else {
+    } else {
         alertText.textContent = '';
     }
 
