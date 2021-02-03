@@ -1,4 +1,8 @@
 const STATUS_OK = 200;
+let optionSelected;
+var removeReservationButtonEl = document.getElementById('buttonRemoveReservation');
+var editReservationButtonEl = document.getElementById('buttonEditReservation');
+
 window.addEventListener('load', () => {
     initializeDaysDropDownMenu();
     setupEventHandlers();
@@ -11,13 +15,16 @@ function setupEventHandlers() {
     pastWeekReservationsButtonEl.addEventListener('click', handlePastReservations);
     const specificDayReservationsButtonEl = document.getElementById('buttonSpecificDayReservations');
     specificDayReservationsButtonEl.addEventListener('click', handleSpecificDayReservations);
-    const removeReservationButtonEl = document.getElementById('buttonRemoveReservation');
+    removeReservationButtonEl = document.getElementById('buttonRemoveReservation');
     removeReservationButtonEl.addEventListener('click', handleRemoveReservationRequest);
-    const editReservationButtonEl = document.getElementById('buttonEditReservation');
+    editReservationButtonEl = document.getElementById('buttonEditReservation');
     editReservationButtonEl.addEventListener('click', handleEditReservationRequest);
 }
 
 async function handlePastReservations(event) {
+    removeReservationButtonEl.disabled = true;
+    editReservationButtonEl.disabled = true;
+    optionSelected = "past";
     const data = {
         requestType: "past",
         day: null
@@ -26,6 +33,9 @@ async function handlePastReservations(event) {
 }
 
 async function handleNextWeekReservations(event) {
+    removeReservationButtonEl.disabled = false;
+    editReservationButtonEl.disabled = false;
+    optionSelected = "next";
     const data = {
         requestType: "next",
         day: null
@@ -34,6 +44,9 @@ async function handleNextWeekReservations(event) {
 }
 
 async function handleSpecificDayReservations(event) {
+    removeReservationButtonEl.disabled = false;
+    editReservationButtonEl.disabled = false;
+    optionSelected = "day";
     const selectedDayOfWeek = document.getElementById('daysDropDownMenu').value;
     const data = {
         requestType: "day",
@@ -105,6 +118,8 @@ async function getSelectedReservations(data) {
         const alertPopup = document.getElementById("alertText");
         alertPopup.style.background ="white";
         alertPopup.textContent = "No reservations to display";
+        removeReservationButtonEl.disabled = true;
+        editReservationButtonEl.disabled = true;
     }
 }
 

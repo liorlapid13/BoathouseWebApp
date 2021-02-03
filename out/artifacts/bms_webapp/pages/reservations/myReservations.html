@@ -31,18 +31,18 @@
                         <li><a class="dropdown-item" href="myReservations.html">View My Reservations</a></li>
                     </ul>
                 </li>
-                <li id="logoutButton" class="nav-item" style="float: right; margin-right:0px;">
+                <li id="logoutButton" class="nav-item" >
                     <a class="nav-link active" aria-current="page" href="../../logout">Logout</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<div style="margin-top: 60px;margin-left: 150px; float: left">
-    <button id="buttonNextWeekReservations" style="margin-left:200px;" type="button" class="btn btn-primary ">Next Week Reservations</button>
-    <button id="buttonPastWeekReservations" style="margin-left:100px" type="button" class="btn btn-primary ">Past Week Reservations</button>
-    <button id="buttonSpecificDayReservations" style="margin-left:100px" type="button" class="btn btn-primary ">Specific Day </button>
-    <select id="daysDropDownMenu" style="width: 250px;float: right;margin-left: 20px" class="form-select" aria-label="Default select example">
+<div class="selectOptions">
+    <button id="buttonNextWeekReservations" type="button" class="btn btn-primary ">Next Week Reservations</button>
+    <button id="buttonPastWeekReservations"  type="button" class="btn btn-primary optionButton ">Past Week Reservations</button>
+    <button id="buttonSpecificDayReservations"  type="button" class="btn btn-primary optionButton ">Specific Day </button>
+    <select id="daysDropDownMenu"  class="form-select daysDropDown" aria-label="Default select example">
         <option value="1"></option>
         <option value="2"></option>
         <option value="3"></option>
@@ -52,7 +52,7 @@
         <option value="7"></option>
     </select>
 </div>
-<div style="overflow: auto; max-height: 500px; background-color: white;margin-top: 130px; width:90%;margin-left:50px;">
+<div class="tableFixHead">
     <table class="table">
         <thead>
         <tr>
@@ -71,10 +71,10 @@
     </table>
 </div>
 
-<strong id ="alertText" style= "padding: 10px; width: 220px;display: block; height: 50px;margin-top: 15px;margin-left:640px;  position:center;"></strong>
-<div style="margin-top: 10px;margin-left: 190px">
-    <button id="buttonEditReservations" disabled = false  style="float: left;margin-left:25%; " type="button" class="btn btn-primary ">Edit Reservation</button>
-    <button id="buttonRemoveReservation" disabled = false style="float: left;margin-left:10%" class="btn btn-primary ">Remove Reservation</button>
+<strong id ="alertText" class="alertPopup"></strong>
+<div class="editRemoveButtons">
+    <button id="buttonEditReservation" disabled = ture   type="button" class="btn btn-primary ">Edit Reservation</button>
+    <button id="buttonRemoveReservation" disabled = true type="button" class="btn btn-primary ">Remove Reservation</button>
 </div>
 
 </body>
