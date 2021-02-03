@@ -8,7 +8,6 @@ import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
 import webapp.utils.SessionUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

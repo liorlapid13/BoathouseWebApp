@@ -3,7 +3,7 @@ window.addEventListener('load', () => {
 });
 
 async function addManagerNavBar() {
-    const response = await fetch('memberType', {
+    const response = await fetch('../../memberType', {
         method: 'get'
     })
     const memberType = await response.text();
@@ -14,8 +14,8 @@ async function addManagerNavBar() {
 }
 
 function addNavBar() {
-    const navUlEl =document.getElementById('mainNav');
-    const logoutButton =document.getElementById("logoutButton");
+    const navUlEl = document.getElementById('mainNav');
+    const logoutButton = document.getElementById("logoutButton");
     navUlEl.insertBefore(createManageActivitiesOption(),logoutButton);
     navUlEl.insertBefore(createManageBoatsOption(),logoutButton);
     navUlEl.insertBefore(createManageMembersOption(),logoutButton);
@@ -87,13 +87,13 @@ function createDropDownMenu(items) {
 }
 
 function createLilink(linkName,id) {
-    const linkEl =document.createElement("a");
+    const linkEl = document.createElement("a");
     linkEl.classList.add("nav-link" ,"dropdown-toggle", "white_link");
-    linkEl.setAttribute("href","#");
+    linkEl.setAttribute("href", "#");
     linkEl.setAttribute("id",id);
-    linkEl.setAttribute("role","button");
-    linkEl.setAttribute("data-bs-toggle","dropdown");
-    linkEl.setAttribute("aria-expanded","false");
+    linkEl.setAttribute("role", "button");
+    linkEl.setAttribute("data-bs-toggle", "dropdown");
+    linkEl.setAttribute("aria-expanded", "false");
     linkEl.textContent = linkName;
 
     return linkEl;
@@ -101,9 +101,9 @@ function createLilink(linkName,id) {
 
 function createDropDownItem(className,link,text) {
     const newLiEl = document.createElement("li");
-    const linkEl =document.createElement("a");
+    const linkEl = document.createElement("a");
     linkEl.classList.add(className);
-    linkEl.setAttribute("href",link);
+    linkEl.setAttribute("href", link);
     linkEl.textContent = text;
     newLiEl.appendChild(linkEl);
 

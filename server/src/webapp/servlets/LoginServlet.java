@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    public static class User {
+    private static class User {
         String email;
         String password;
 
