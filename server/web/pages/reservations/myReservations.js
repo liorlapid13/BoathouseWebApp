@@ -12,27 +12,32 @@ function setupEventHandlers() {
     specificDayReservationsButtonEl.addEventListener('click', handleSpecificDayReservations);
 }
 
-async function handlePastReservations(event) {
+function handlePastReservations(event) {
     const data = {
         requestType: "past",
         day: null
     }
+    getSelectedReservations(data);
 }
 
-async function handleNextWeekReservations(event) {
+function handleNextWeekReservations(event) {
     const data = {
         requestType: "next",
         day: null
     }
+    getSelectedReservations(data);
 }
 
-async function handleSpecificDayReservations(event) {
+function handleSpecificDayReservations(event) {
     const selectedDayOfWeek = document.getElementById('daysDropDownMenu').value;
     const data = {
         requestType: "day",
         day: selectedDayOfWeek
     }
+    getSelectedReservations(data);
+}
 
+async function getSelectedReservations(data) {
     const response = await fetch('../../myReservation', {
         method: 'post',
         headers: new Headers({
