@@ -11,5 +11,5 @@ body {
 }
 
 .dropdown-item:hover {
-    background-color: dodgerblue;
+    background-color: dodgerblue !important;
 }

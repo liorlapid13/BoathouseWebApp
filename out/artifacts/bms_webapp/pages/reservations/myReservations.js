@@ -1,3 +1,4 @@
+const STATUS_OK = 200;
 window.addEventListener('load', () => {
     initializeDaysDropDownMenu();
     setupEventHandlers();
@@ -42,7 +43,36 @@ async function handleSpecificDayReservations(event) {
 }
 
 async function handleRemoveReservationRequest(event) {
+    const tableBodyEl = document.querySelector("#tableBody");
+    const allCheckBoxes = tableBodyEl.getElementsByTagName("input");
+    let boxChecked = false;
+    for (let i = 0; i < allCheckBoxes.length; i++) {
+        if(allCheckBoxes[i].checked === true) {
+            boxChecked = true;
+            break;
+        }
+    }
 
+    if (boxChecked) {
+        // allCheckBoxes[i].checked === true
+        const data = {
+
+        }
+
+        const response = await fetch('../../deleteReservation', {
+            method: 'post',
+            headers: new Headers({
+                'Content-Type': 'application/json;charset=utf-8'
+            }),
+            body: JSON.stringify(data)
+        });
+
+
+
+    } else {
+        // no box checked
+
+    }
 }
 
 async function handleEditReservationRequest(event) {
@@ -50,6 +80,9 @@ async function handleEditReservationRequest(event) {
 }
 
 async function getSelectedReservations(data) {
+    const alertPopup = document.getElementById("alertText");
+    alertPopup.style.background = "";
+    alertPopup.textContent = "";
     const response = await fetch('../../myReservations', {
         method: 'post',
         headers: new Headers({
@@ -62,14 +95,16 @@ async function getSelectedReservations(data) {
         reservationTableBody.removeChild(reservationTableBody.firstChild);
     }
 
-    if (response.ok) {
+    if (response.status === STATUS_OK) {
         const reservationList = await response.json();
 
         for(let i = 0; i < reservationList.length; i++) {
             reservationTableBody.appendChild(buildTableEntry(reservationList[i], i+1));
         }
     } else {
-        window.alert("No reservations to display");
+        const alertPopup = document.getElementById("alertText");
+        alertPopup.style.background ="white";
+        alertPopup.textContent = "No reservations to display";
     }
 }
 

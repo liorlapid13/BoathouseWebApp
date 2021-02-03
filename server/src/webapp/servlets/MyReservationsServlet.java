@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @WebServlet(name = "MyReservationsServlet", urlPatterns = {"/myReservations"})
 public class MyReservationsServlet extends HttpServlet {
-    private List<ReservationDetails> reservationDetailsList = new ArrayList<>();
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -48,6 +48,7 @@ public class MyReservationsServlet extends HttpServlet {
             BufferedReader reader = request.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
             RequestData requestData = gson.fromJson(jsonString, RequestData.class);
+            List<ReservationDetails> reservationDetailsList = new ArrayList<>();
             List<Reservation> reservationList = null;
 
             switch (requestData.getRequestType()) {
@@ -66,7 +67,7 @@ public class MyReservationsServlet extends HttpServlet {
             if (reservationList.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
-                parseReservationDetails(reservationList, engine);
+                parseReservationDetails(reservationList,reservationDetailsList, engine);
                 String jsonResponse = gson.toJson(reservationDetailsList);
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
@@ -75,7 +76,8 @@ public class MyReservationsServlet extends HttpServlet {
         }
     }
 
-    private void parseReservationDetails(List<Reservation> reservationList, Engine engine) {
+    private void parseReservationDetails(List<Reservation> reservationList,
+                                         List<ReservationDetails> reservationDetailsList, Engine engine) {
         for (Reservation reservation : reservationList) {
             String reservator = engine.findMemberByID(reservation.getReservator()).getName();
             String date = reservation.getActivityDate().getDayOfWeek().getDisplayName(
