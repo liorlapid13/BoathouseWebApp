@@ -44,9 +44,7 @@ public class LoginServlet extends HttpServlet {
                 Member loggedInMember = engine.findAndLoginMember(userEmail, userPassword);
                 if (loggedInMember != null) {
                     request.getSession(true).setAttribute(Constants.USERID, loggedInMember.getSerialNumber());
-                    String redirectURL = loggedInMember.isManager() ?
-                            Constants.MANAGER_PAGE_URL : Constants.MEMBER_PAGE_URL;
-                    out.print(redirectURL);
+                    out.print(Constants.HOME_PAGE_URL);
                     out.flush();
                     response.setStatus(HttpServletResponse.SC_OK);
                 } else {
@@ -79,9 +77,7 @@ public class LoginServlet extends HttpServlet {
             Engine engine = ServletUtils.getEngine(getServletContext());
             String userId = SessionUtils.getUserId(request);
             if (userId != null) {
-                String redirectURL = engine.findMemberByID(userId).isManager() ?
-                        Constants.MANAGER_PAGE_URL : Constants.MEMBER_PAGE_URL;
-                out.print(redirectURL);
+                out.print(Constants.HOME_PAGE_URL);
                 out.flush();
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
