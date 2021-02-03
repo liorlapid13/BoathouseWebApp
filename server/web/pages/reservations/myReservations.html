@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>My Reservations</title>
     <link href="../../style.css" rel="stylesheet">
+    <link href="myReservations.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="myReservations.js"></script>
@@ -38,9 +39,9 @@
     </div>
 </nav>
 <div style="margin-top: 60px;margin-left: 150px; float: left">
-    <button id="buttonNextWeekReservations" style="margin-left:200px; " type="button" class="btn btn-primary ">Next Week Reservations</button>
-    <button id="buttonPastWeekReservations" style="margin-left:100px" class="btn btn-primary ">Past Week Reservations</button>
-    <button id="buttonSpecificDayReservations" style="margin-left:100px" class="btn btn-primary ">Specific Day </button>
+    <button id="buttonNextWeekReservations" style="margin-left:200px;" type="button" class="btn btn-primary ">Next Week Reservations</button>
+    <button id="buttonPastWeekReservations" style="margin-left:100px" type="button" class="btn btn-primary ">Past Week Reservations</button>
+    <button id="buttonSpecificDayReservations" style="margin-left:100px" type="button" class="btn btn-primary ">Specific Day </button>
     <select id="daysDropDownMenu" style="width: 250px;float: right;margin-left: 20px" class="form-select" aria-label="Default select example">
         <option value="1"></option>
         <option value="2"></option>
@@ -66,18 +67,12 @@
         </tr>
         </thead>
         <tbody id="tableBody">
-        <tr>
-            <th scope="row"><input class="form-check-input" type="checkbox" value="" id="check2"></th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
         </tbody>
     </table>
 </div>
 <div style="margin-top: 60px;margin-left: 150px">
     <button id="buttonEditReservations" disabled = false  style="float: left;margin-left:25%; " type="button" class="btn btn-primary ">Edit Reservation</button>
-    <button id="buttonRemoveReservations" disabled = false style="float: left;margin-left:10%" class="btn btn-primary ">Remove Reservation</button>
+    <button id="buttonRemoveReservation" disabled = false style="float: left;margin-left:10%" class="btn btn-primary ">Remove Reservation</button>
 </div>
 </body>
 </html>

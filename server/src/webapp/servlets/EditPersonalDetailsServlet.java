@@ -52,8 +52,8 @@ public class EditPersonalDetailsServlet extends HttpServlet {
                     ServerUtils.saveSystemState(getServletContext());
                 }
             } catch (EmailAlreadyExistsException e) {
-                out.print(e.getMessage());
                 response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                out.print(e.getMessage());
             }
         }
     }

@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +68,9 @@ public class MyReservationsServlet extends HttpServlet {
             } else {
                 parseReservationDetails(reservationList, engine);
                 String jsonResponse = gson.toJson(reservationDetailsList);
+                response.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
                 out.flush();
-                response.setStatus(HttpServletResponse.SC_OK);
             }
         }
     }
@@ -78,7 +79,7 @@ public class MyReservationsServlet extends HttpServlet {
         for (Reservation reservation : reservationList) {
             String reservator = engine.findMemberByID(reservation.getReservator()).getName();
             String date = reservation.getActivityDate().getDayOfWeek().getDisplayName(
-                    TextStyle.FULL, Locale.getDefault()) + " " + reservation.getActivityDate() + ")";;
+                    TextStyle.FULL, Locale.getDefault()) + " " + reservation.getActivityDate();;
             String activity = reservation.getActivity().getName() + "\n" +
                     reservation.getActivity().getStartTime() + "-" + reservation.getActivity().getEndTime();
             String boatTypes = parseSelectedBoatTypes(reservation.getBoatTypes());
@@ -86,7 +87,8 @@ public class MyReservationsServlet extends HttpServlet {
                     engine.findMemberListByIDList(reservation.getBoatCrew().getCrewMembers()),
                     engine.findMemberByID(reservation.getBoatCrew().getCoxswain()));
             String status = reservation.isConfirmed() ? "Confirmed" : "Unconfirmed";
-            String creationDate = reservation.getCreationDate().toString();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String creationDate = reservation.getCreationDate().format(formatter);
             ReservationDetails reservationDetails = new ReservationDetails(
                     reservator,
                     date,
@@ -159,7 +161,7 @@ public class MyReservationsServlet extends HttpServlet {
             memberNames.append(member.getName());
             if (i != crewMembers.size() - 1) {
                 memberNames.append(", ");
-                if (i % 2 == 0 && i != 0) {
+                if (i % 2 != 0) {
                     memberNames.append("\n");
                 }
             }

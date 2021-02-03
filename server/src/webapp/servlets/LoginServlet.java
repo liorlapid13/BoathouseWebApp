@@ -44,17 +44,18 @@ public class LoginServlet extends HttpServlet {
                 Member loggedInMember = engine.findAndLoginMember(userEmail, userPassword);
                 if (loggedInMember != null) {
                     request.getSession(true).setAttribute(Constants.USERID, loggedInMember.getSerialNumber());
+                    response.setStatus(HttpServletResponse.SC_OK);
                     out.print(Constants.HOME_PAGE_URL);
                     out.flush();
-                    response.setStatus(HttpServletResponse.SC_OK);
+
                 } else {
-                    out.print("Incorrect email and/or password");
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    out.print("Incorrect email and/or password");
                 }
             } catch (MemberAlreadyLoggedInException e) {
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
                 out.print(e.getMessage());
                 out.flush();
-                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
             }
         }
     }
@@ -77,9 +78,9 @@ public class LoginServlet extends HttpServlet {
             Engine engine = ServletUtils.getEngine(getServletContext());
             String userId = SessionUtils.getUserId(request);
             if (userId != null) {
+                response.setStatus(HttpServletResponse.SC_OK);
                 out.print(Constants.HOME_PAGE_URL);
                 out.flush();
-                response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }

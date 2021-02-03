@@ -10,9 +10,13 @@ function setupEventHandlers() {
     pastWeekReservationsButtonEl.addEventListener('click', handlePastReservations);
     const specificDayReservationsButtonEl = document.getElementById('buttonSpecificDayReservations');
     specificDayReservationsButtonEl.addEventListener('click', handleSpecificDayReservations);
+    const removeReservationButtonEl = document.getElementById('buttonRemoveReservation');
+    removeReservationButtonEl.addEventListener('click', handleRemoveReservationRequest);
+    const editReservationButtonEl = document.getElementById('buttonEditReservation');
+    editReservationButtonEl.addEventListener('click', handleEditReservationRequest);
 }
 
-function handlePastReservations(event) {
+async function handlePastReservations(event) {
     const data = {
         requestType: "past",
         day: null
@@ -20,7 +24,7 @@ function handlePastReservations(event) {
     getSelectedReservations(data);
 }
 
-function handleNextWeekReservations(event) {
+async function handleNextWeekReservations(event) {
     const data = {
         requestType: "next",
         day: null
@@ -28,7 +32,7 @@ function handleNextWeekReservations(event) {
     getSelectedReservations(data);
 }
 
-function handleSpecificDayReservations(event) {
+async function handleSpecificDayReservations(event) {
     const selectedDayOfWeek = document.getElementById('daysDropDownMenu').value;
     const data = {
         requestType: "day",
@@ -37,18 +41,58 @@ function handleSpecificDayReservations(event) {
     getSelectedReservations(data);
 }
 
+async function handleRemoveReservationRequest(event) {
+    const tableBodyEl = document.querySelector("#tableBody");
+    const allCheckBoxes = tableBodyEl.getElementsByTagName("input");
+    let boxChecked = false;
+    for (let i = 0; i < allCheckBoxes.length; i++) {
+        if(allCheckBoxes[i].checked === true) {
+            boxChecked = true;
+            break;
+        }
+    }
+
+    if (boxChecked) {
+        // allCheckBoxes[i].checked === true
+        const data = {
+
+        }
+
+        const response = await fetch('../../deleteReservation', {
+            method: 'post',
+            headers: new Headers({
+                'Content-Type': 'application/json;charset=utf-8'
+            }),
+            body: JSON.stringify(data)
+        });
+
+
+
+    } else {
+        // no box checked
+
+    }
+}
+
+async function handleEditReservationRequest(event) {
+
+}
+
 async function getSelectedReservations(data) {
-    const response = await fetch('../../myReservation', {
+    const response = await fetch('../../myReservations', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'
         }),
         body: JSON.stringify(data)
     });
+    const reservationTableBody = document.getElementById('tableBody');
+    while (reservationTableBody.firstChild) {
+        reservationTableBody.removeChild(reservationTableBody.firstChild);
+    }
 
     if (response.ok) {
         const reservationList = await response.json();
-        const reservationTableBody = document.getElementById('tableBody');
 
         for(let i = 0; i < reservationList.length; i++) {
             reservationTableBody.appendChild(buildTableEntry(reservationList[i], i+1));
@@ -65,12 +109,23 @@ function buildTableEntry(reservation, index) {
     checkBoxEl.classList.add("form-check-input");
     checkBoxEl.setAttribute("type", "checkbox");
     checkBoxEl.setAttribute("id", "check" + index);
+    checkBoxEl.addEventListener("change", checkAllBoxes);
     tableHeaderEl.setAttribute("scope", "row");
     tableHeaderEl.appendChild(checkBoxEl);
     tableEntryEl.appendChild(tableHeaderEl);
     appendTableData(tableEntryEl, reservation);
 
     return tableEntryEl;
+}
+
+function checkAllBoxes() {
+    const tableBodyEl = document.querySelector("#tableBody");
+    const allCheckBoxes = tableBodyEl.getElementsByTagName("input");
+    for (let i = 0; i < allCheckBoxes.length; i++) {
+        if(allCheckBoxes[i].id != this.id && allCheckBoxes[i].checked === true) {
+            allCheckBoxes[i].checked = false;
+        }
+    }
 }
 
 function appendTableData(tableEntryEl, reservation) {
@@ -90,6 +145,13 @@ function appendTableData(tableEntryEl, reservation) {
     statusDataEl.textContent = reservation.status;
     creationDateDataEl.textContent = reservation.creationDate;
 
+    tableEntryEl.appendChild(reservatorDataEl);
+    tableEntryEl.appendChild(dateDataEl);
+    tableEntryEl.appendChild(activityDataEl);
+    tableEntryEl.appendChild(boatTypesDataEl);
+    tableEntryEl.appendChild(boatCrewDataEl);
+    tableEntryEl.appendChild(statusDataEl);
+    tableEntryEl.appendChild(creationDateDataEl);
 }
 
 function initializeDaysDropDownMenu() {
