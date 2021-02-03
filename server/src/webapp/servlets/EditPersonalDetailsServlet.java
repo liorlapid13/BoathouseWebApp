@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import engine.Engine;
 import engine.exception.EmailAlreadyExistsException;
 import engine.member.Member;
+import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
 import webapp.utils.SessionUtils;
 
@@ -49,6 +50,7 @@ public class EditPersonalDetailsServlet extends HttpServlet {
                     engine.updateMemberName(name, userId);
                     engine.updateMemberPhoneNumber(phoneNumber, userId);
                     response.setStatus(HttpServletResponse.SC_OK);
+                    ServerUtils.saveSystemState(getServletContext());
                 }
             } catch (EmailAlreadyExistsException e) {
                 out.print(e.getMessage());

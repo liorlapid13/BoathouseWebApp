@@ -1,0 +1,24 @@
+.alertPopup {
+    float: right;
+    margin-right:80px;
+    margin-top: 25px;
+}
+.submitButton{
+    margin-top: 20px !important;
+}
+.textField{
+    width: 500px ;
+}
+#emailAlertText {
+    float: right;
+}
+#formPersonalDetails{
+    background-color: lightblue;
+    width: 570px;
+    margin-top: 8%;
+    padding-bottom: 20px;
+    padding-left: 30px;
+}
+.passwordButton {
+    margin: 10px 0px;
+}

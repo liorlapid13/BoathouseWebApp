@@ -6,8 +6,22 @@ window.addEventListener('load', () => {
 function setupEventHandlers() {
     const personalDetailsFormEl = document.getElementById('formPersonalDetails');
     personalDetailsFormEl.addEventListener('submit', handleFormSubmit);
+    const passwordButton =document.querySelector('.passwordButton');
+    passwordButton.addEventListener('click',handlePasswordButton);
 }
 
+function handlePasswordButton(){
+    const passwordButton = document.querySelector('.passwordButton');
+    const inputPassword = document.getElementById('inputPassword');
+    if(inputPassword.type === "password") {
+        inputPassword.type = 'text';
+        passwordButton.textContent = 'Hide Password'
+    }
+    else {
+        inputPassword.type = 'password';
+        passwordButton.textContent = 'Show Password'
+    }
+}
 async function handleFormSubmit (event) {
     event.preventDefault();
     const inputName = document.getElementById('inputName').value;
@@ -29,12 +43,13 @@ async function handleFormSubmit (event) {
             }),
             body: JSON.stringify(data)
         });
-
+        const alertPopup = document.getElementById('emailAlertText');
         if (response.ok) {
             const alertText = document.getElementById('alertText');
-            alertText.textContent = "Personal details successfully changed";
+            alertText.textContent = "Personal details successfully changed!";
+            alertPopup.textContent = '';
         } else {
-            const alertPopup = document.getElementById('emailAlertText');
+
             alertPopup.textContent = "Email already taken";
         }
     }
@@ -47,6 +62,9 @@ function areTextBoxesFilled(inputName, inputEmail, inputPassword, inputPhoneNumb
     if (inputName === '' || inputPhoneNumber === '' || inputEmail === '' || inputPassword === '') {
         alertText.textContent = "You must fill in all fields!";
         textBoxesFilled = false;
+    }
+    else {
+        alertText.textContent = '';
     }
 
     return textBoxesFilled;
