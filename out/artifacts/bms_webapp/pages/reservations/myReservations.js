@@ -3,9 +3,13 @@ let currentSelectedOption;
 let currentSelectedDay;
 let removeReservationButtonEl;
 let editReservationButtonEl;
+let modal;
+let modalBody;
+let modalTitle;
 
 window.addEventListener('load', () => {
     initializeDaysDropDownMenu();
+    initializeModal();
     setupEventHandlers();
 });
 
@@ -20,6 +24,16 @@ function setupEventHandlers() {
     removeReservationButtonEl.addEventListener('click', handleRemoveReservationRequest);
     editReservationButtonEl = document.getElementById('buttonEditReservation');
     editReservationButtonEl.addEventListener('click', handleEditReservationRequest);
+    const modalCloseButtonEl = document.getElementById("closeButton");
+    modalCloseButtonEl.addEventListener('click',() =>{
+        hideModal(modal);
+    });
+
+}
+function initializeModal(){
+    modal = document.getElementById("Modal");
+    modalBody = document.querySelector(".modal-body");
+    modalTitle = document.getElementById("ModalLabel");
 }
 
 async function handlePastReservations(event) {
@@ -58,19 +72,12 @@ async function handleSpecificDayReservations(event) {
 
 async function handleRemoveReservationRequest(event) {
     const tableBodyEl = document.querySelector("#tableBody");
-    const allCheckBoxes = tableBodyEl.getElementsByTagName("input");
-    let boxChecked = false;
-    for (let i = 0; i < allCheckBoxes.length; i++) {
-        if (allCheckBoxes[i].checked === true) {
-            boxChecked = true;
-            break;
-        }
-    }
-
-    if (boxChecked) {
+    let checkedCheckBox = findCheckedCheckBox();
+    if (checkedCheckBox !== -1) {
         const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
-        const reservationStatus = (allTableRowEl[i].getElementsByClassName("reservationStatus"))[0];
-        if (reservationStatus === "Confirmed") {
+        const reservationStatus =
+            (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
+        if (reservationStatus.textContent === "Confirmed") {
             if (!window.confirm("This reservation has an assignment, are you sure you want to remove it?")) {
                 return;
             }
@@ -79,7 +86,7 @@ async function handleRemoveReservationRequest(event) {
         const data = {
             requestType: currentSelectedOption,
             day: currentSelectedDay,
-            index: i
+            index: checkedCheckBox
         }
 
         const response = await fetch('../../removeReservation', {
@@ -91,19 +98,46 @@ async function handleRemoveReservationRequest(event) {
         });
 
         if (response.status === STATUS_OK) {
-            // TODO: "Reservation removed successfully
-            allTableRowEl[i].remove();
+            modalTitle.textContent = "" ;
+            modalBody.textContent = "Reservation remove successfuly"
+            showModal(modal);
+            const reservationList = JSON.parse(sessionStorage.getItem('reservationList'));
+            reservationList.splice(checkedCheckBox, 1);
+            allTableRowEl[checkedCheckBox].remove();
             if (!tableBodyEl.firstChild) {
                 noReservationsAlert();
+                sessionStorage.removeItem('reservationList');
+            } else {
+                sessionStorage.setItem('reservationList', JSON.stringify(reservationList));
             }
         }
     } else {
-        // TODO: no box checked - "You must select a reservation to remove"
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select a reservation to remove"
+        showModal(modal);
     }
 }
 
 async function handleEditReservationRequest(event) {
-
+    const tableBodyEl = document.querySelector("#tableBody");
+    let checkedCheckBox = findCheckedCheckBox();
+    if (checkedCheckBox !== -1) {
+        const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
+        const reservationStatus = (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
+        if (reservationStatus.textContent === "Unconfirmed") {
+            const reservationToEdit = JSON.parse(sessionStorage.getItem('reservationList'))[checkedCheckBox];
+            sessionStorage.setItem('reservationToEdit', reservationToEdit);
+            window.location.href = "editReservation.html";
+        } else {
+            modalTitle.textContent = "Pay Attention!" ;
+            modalBody.textContent = "You can only edit unconfirmed reservations"
+            showModal(modal);
+        }
+    } else {
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select a reservation to edit"
+        showModal(modal);
+    }
 }
 
 async function getSelectedReservations(data) {
@@ -124,7 +158,7 @@ async function getSelectedReservations(data) {
 
     if (response.status === STATUS_OK) {
         const reservationList = await response.json();
-
+        sessionStorage.setItem('reservationList', JSON.stringify(reservationList));
         for(let i = 0; i < reservationList.length; i++) {
             reservationTableBody.appendChild(buildTableEntry(reservationList[i], i+1));
         }
@@ -148,7 +182,7 @@ function buildTableEntry(reservation, index) {
     checkBoxEl.classList.add("form-check-input");
     checkBoxEl.setAttribute("type", "checkbox");
     checkBoxEl.setAttribute("id", "check" + index);
-    checkBoxEl.addEventListener("change", checkAllBoxes);
+    checkBoxEl.addEventListener("change", checkAllCheckBoxes);
     tableHeaderEl.setAttribute("scope", "row");
     tableHeaderEl.appendChild(checkBoxEl);
     tableEntryEl.appendChild(tableHeaderEl);
@@ -157,9 +191,24 @@ function buildTableEntry(reservation, index) {
     return tableEntryEl;
 }
 
-function checkAllBoxes() {
+function getAllCheckBoxes() {
     const tableBodyEl = document.querySelector("#tableBody");
-    const allCheckBoxes = tableBodyEl.getElementsByTagName("input");
+    return tableBodyEl.getElementsByTagName("input");
+}
+
+function findCheckedCheckBox() {
+    const allCheckBoxes = getAllCheckBoxes();
+    for (let i = 0; i < allCheckBoxes.length; i++) {
+        if (allCheckBoxes[i].checked === true) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+function checkAllCheckBoxes() {
+    const allCheckBoxes = getAllCheckBoxes();
     for (let i = 0; i < allCheckBoxes.length; i++) {
         if(allCheckBoxes[i].id != this.id && allCheckBoxes[i].checked === true) {
             allCheckBoxes[i].checked = false;

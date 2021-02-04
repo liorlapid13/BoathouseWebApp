@@ -13,14 +13,14 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary" style="background-color: #2e6da4">
     <div class="container-fluid" >
-        <a class="navbar-brand" href="../home/managerPage.html">Home</a>
+        <a class="navbar-brand" href="../home/homePage.html">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul id="mainNav" class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Edit Personal Details</a>
+                    <a class="nav-link active" aria-current="page" href="editPersonalDetails.html">Edit Personal Details</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle white_link" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -28,7 +28,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="../reservations/createNewReservation.html">Create New Reservation</a></li>
-                        <li><a class="dropdown-item" href="../reservations/myReservations.html">View My Reservations</a></li>
+                        <li><a class="dropdown-item" href="../reservations/myReservations.html">My Reservations</a></li>
                     </ul>
                 </li>
                 <li id="logoutButton" class="nav-item" style="float: right; margin-right:0px;">
@@ -38,7 +38,9 @@
         </div>
     </div>
 </nav>
+
 <form id="formPersonalDetails" method="post" action="editPersonalDetails" >
+    <h2>Edit Personal Details</h2>
     <div class="col-12">
         <label for="inputName" class="form-label">Name </label>
         <input type="text" class="form-control textField" id="inputName" >

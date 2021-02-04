@@ -1,0 +1,73 @@
+.table thead th {
+    position: sticky;
+    top:0;
+    background-color: lavender;
+}
+.daysDropDown {
+    width: 250px !important;
+    float: right;
+    margin-left: 20px;
+}
+#buttonCreateReservation{
+    height:85px;
+    margin-left: 30px;
+    margin-top: 60%;
+    bottom: 25px;
+
+}
+#buttonSelectBoatCrew{
+    width: 150px;
+    margin-right: 25px;
+    float: left;
+}
+#stickyTable{
+    width: 100%;
+    overflow: auto;
+    max-height: 400px;
+}
+#buttonSelectBoatCrew{
+    width: 150px;
+    margin-right: 25px;
+}
+#buttonSelectActivity{
+    width: 150px;
+    margin-left: 30px;
+}
+#buttonSelectDay{
+    width: 150px;
+    margin-left: 30px;
+}
+.memberTable{
+    margin-top: 20px;
+    margin-left:60px;
+    float:left;
+}
+.boatTypeTable{
+    margin-top: 10px;
+    float: left;
+}
+.selectActivityOption{
+    margin-top: 10px !important;
+}
+.formCreateReservation{
+    background-color: floralwhite;
+    opacity: 90%;
+    width:52%;
+    margin-left: 50px;
+    margin-top: 10px;
+    padding: 20px;
+    overflow: auto;
+    height: calc(100% - 1.5em);
+    margin: auto;
+}
+.title{
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Ultra', sans-serif;
+    text-shadow: 0 2px white, 0 3px #777;
+}
+option {
+    white-space: pre-wrap;
+}
+
+

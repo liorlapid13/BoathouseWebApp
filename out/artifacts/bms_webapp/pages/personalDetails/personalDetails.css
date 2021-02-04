@@ -1,3 +1,4 @@
+
 .alertPopup {
     float: right;
     margin-right:80px;
@@ -17,13 +18,27 @@
 }
 
 #formPersonalDetails {
-    background-color: lightblue;
+    background-color: lightskyblue;
+    opacity: 92%;
     width: 570px;
-    margin-top: 8%;
+    margin: auto;
+    margin-top: 5%;
+    padding-top: 10px;
     padding-bottom: 20px;
     padding-left: 30px;
 }
-
 .passwordButton {
     margin: 10px 0px;
+}
+h2{
+    margin: 1em 0 0.5em 0;
+    font-weight: 600;
+    font-family: 'Titillium Web', sans-serif;
+    position: relative;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
+    font-size: 22px;
+    line-height: 40px;
+    color: #355681;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(53,86,129, 0.3);
 }

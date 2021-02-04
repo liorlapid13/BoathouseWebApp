@@ -3,9 +3,13 @@ let currentSelectedOption;
 let currentSelectedDay;
 let removeReservationButtonEl;
 let editReservationButtonEl;
+let modal;
+let modalBody;
+let modalTitle;
 
 window.addEventListener('load', () => {
     initializeDaysDropDownMenu();
+    initializeModal();
     setupEventHandlers();
 });
 
@@ -20,6 +24,16 @@ function setupEventHandlers() {
     removeReservationButtonEl.addEventListener('click', handleRemoveReservationRequest);
     editReservationButtonEl = document.getElementById('buttonEditReservation');
     editReservationButtonEl.addEventListener('click', handleEditReservationRequest);
+    const modalCloseButtonEl = document.getElementById("closeButton");
+    modalCloseButtonEl.addEventListener('click',() =>{
+        hideModal(modal);
+    });
+
+}
+function initializeModal(){
+    modal = document.getElementById("Modal");
+    modalBody = document.querySelector(".modal-body");
+    modalTitle = document.getElementById("ModalLabel");
 }
 
 async function handlePastReservations(event) {
@@ -84,7 +98,9 @@ async function handleRemoveReservationRequest(event) {
         });
 
         if (response.status === STATUS_OK) {
-            // TODO: "Reservation removed successfully"
+            modalTitle.textContent = "" ;
+            modalBody.textContent = "Reservation remove successfuly"
+            showModal(modal);
             const reservationList = JSON.parse(sessionStorage.getItem('reservationList'));
             reservationList.splice(checkedCheckBox, 1);
             allTableRowEl[checkedCheckBox].remove();
@@ -96,7 +112,9 @@ async function handleRemoveReservationRequest(event) {
             }
         }
     } else {
-        // TODO: "You must select a reservation to remove"
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select a reservation to remove"
+        showModal(modal);
     }
 }
 
@@ -111,10 +129,14 @@ async function handleEditReservationRequest(event) {
             sessionStorage.setItem('reservationToEdit', reservationToEdit);
             window.location.href = "editReservation.html";
         } else {
-            // TODO: "You can only edit unconfirmed reservations"
+            modalTitle.textContent = "Pay Attention!" ;
+            modalBody.textContent = "You can only edit unconfirmed reservations"
+            showModal(modal);
         }
     } else {
-        // TODO: "You must select a reservation to remove"
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select a reservation to edit"
+        showModal(modal);
     }
 }
 

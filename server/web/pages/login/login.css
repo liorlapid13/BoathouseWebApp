@@ -10,9 +10,39 @@
     height: 380px;
     margin-left: 37.5%;
     margin-right: 37.5%;
-    margin-top:10%;
+    margin-top:5%;
 }
 
 .alert_popup {
     display: block;
+}
+h2{
+    width: 38%;
+    margin: auto;
+    margin-top: 6%;
+    font-weight: normal;
+    position: relative;
+    text-shadow: 0 -1px rgba(0,0,0,0.6);
+    font-size: 28px;
+    line-height: 40px;
+    background: #355681;
+    background: rgba(53,86,129, 0.8);
+    border: 1px solid #fff;
+    padding: 5px 15px;
+    color: white;
+    border-radius: 0 10px 0 10px;
+    box-shadow: inset 0 0 5px rgba(53,86,129, 0.5);
+    font-family: 'Muli', sans-serif;
+    text-align: center;
+}
+h1{
+    margin: 0px 0px 20px 90px;
+    color: #343434;
+    font-weight: normal;
+    font-family: 'Ultra', sans-serif;
+    font-size: 36px;
+    line-height: 42px;
+    text-transform: uppercase;
+    text-shadow: 0 2px white, 0 3px #777;
+
 }

@@ -22,16 +22,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "ActivitiesServlet", urlPatterns = {"/activities"})
+@WebServlet(name = "ActivitiesServlet", urlPatterns = "/activities")
 public class ActivitiesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getAllActivities(req, resp);
+        getAvailableActivities(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getAvailableActivities(req, resp);
+        getAllActivities(req, resp);
     }
 
     protected void getAvailableActivities(HttpServletRequest req, HttpServletResponse resp) throws IOException {
