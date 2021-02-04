@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 
 @WebServlet(name = "MyReservationsServlet", urlPatterns = {"/myReservations"})
 public class MyReservationsServlet extends HttpServlet {
-
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req, resp);
@@ -81,9 +79,10 @@ public class MyReservationsServlet extends HttpServlet {
     private void parseReservationDetails(List<Reservation> reservationList,
                                          List<ReservationDetails> reservationDetailsList, Engine engine) {
         for (Reservation reservation : reservationList) {
+            String id = reservation.getId();
             String reservator = engine.findMemberByID(reservation.getReservator()).getName();
             String date = reservation.getActivityDate().getDayOfWeek().getDisplayName(
-                    TextStyle.FULL, Locale.getDefault()) + " " + reservation.getActivityDate();;
+                    TextStyle.FULL, Locale.getDefault()) + " " + reservation.getActivityDate();
             String activity = reservation.getActivity().getName() + "\n" +
                     reservation.getActivity().getStartTime() + "-" + reservation.getActivity().getEndTime();
             String boatTypes = parseSelectedBoatTypes(reservation.getBoatTypes());
@@ -94,6 +93,7 @@ public class MyReservationsServlet extends HttpServlet {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String creationDate = reservation.getCreationDate().format(formatter);
             ReservationDetails reservationDetails = new ReservationDetails(
+                    id,
                     reservator,
                     date,
                     activity,
@@ -113,6 +113,7 @@ public class MyReservationsServlet extends HttpServlet {
     }
 
     private static class ReservationDetails {
+        String id;
         String reservator;
         String date;
         String activity;
@@ -121,8 +122,9 @@ public class MyReservationsServlet extends HttpServlet {
         String status;
         String creationDate;
 
-        public ReservationDetails(String reservator, String date, String activity, String boatTypes, String boatCrew,
+        public ReservationDetails(String id, String reservator, String date, String activity, String boatTypes, String boatCrew,
                                   String status, String creationDate) {
+            this.id = id;
             this.reservator = reservator;
             this.date = date;
             this.activity = activity;

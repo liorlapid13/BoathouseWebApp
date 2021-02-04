@@ -18,6 +18,9 @@ import java.util.*;
 
 @XmlRootElement
 public class Reservation implements Serializable {
+    private static int counter = 0;
+
+    private String id;
     private String reservationCreator;
     private LocalDateTime creationDate;
     private String reservator;
@@ -33,6 +36,7 @@ public class Reservation implements Serializable {
 
     public Reservation(String reservationCreator, String reservator, WeeklyActivity weeklyActivity,
                        Set<BoatType> boatTypes, LocalDate activityDate, BoatCrew boatCrew) {
+        this.id = String.valueOf(++counter);
         this.reservationCreator = reservationCreator;
         this.creationDate = LocalDateTime.now();
         this.reservator = reservator;
@@ -41,6 +45,15 @@ public class Reservation implements Serializable {
         this.boatTypes = boatTypes;
         this.boatCrew = boatCrew;
         this.isConfirmed = false;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @XmlAttribute
+    public void setId(String id) {
+        this.id = id;
     }
 
     @XmlAttribute

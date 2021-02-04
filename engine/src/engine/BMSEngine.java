@@ -79,11 +79,11 @@ public interface BMSEngine {
     Reservation removeCoxswainFromReservation(Reservation reservation);
     Reservation addCoxswainToReservation(Reservation reservation, String coxswainId);
     Reservation addCrewMemberToReservation(Reservation reservation, String memberId);
+    Reservation findReservationByID(String id);
     List<Reservation> getNextWeekReservations(ReservationViewFilter viewFilter);
     List<Reservation> getSpecificDateReservations(LocalDate date, ReservationViewFilter viewFilter);
     List<Reservation> getFutureUnconfirmedReservations();
     List<Reservation> getCombinableReservations(Reservation originalReservation, int maxCrewSize);
-
 
     //Activity related methods
     void addWeeklyActivityToList(WeeklyActivity newWeeklyActivity);

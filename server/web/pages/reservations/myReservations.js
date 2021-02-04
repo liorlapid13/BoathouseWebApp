@@ -63,7 +63,7 @@ async function handleRemoveReservationRequest(event) {
         const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
         const reservationStatus =
             (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
-        if (reservationStatus === "Confirmed") {
+        if (reservationStatus.textContent === "Confirmed") {
             if (!window.confirm("This reservation has an assignment, are you sure you want to remove it?")) {
                 return;
             }
@@ -85,14 +85,14 @@ async function handleRemoveReservationRequest(event) {
 
         if (response.status === STATUS_OK) {
             // TODO: "Reservation removed successfully"
-            const reservationList = sessionStorage.getItem('reservationList');
+            const reservationList = JSON.parse(sessionStorage.getItem('reservationList'));
             reservationList.splice(checkedCheckBox, 1);
-            allTableRowEl[i].remove();
+            allTableRowEl[checkedCheckBox].remove();
             if (!tableBodyEl.firstChild) {
                 noReservationsAlert();
                 sessionStorage.removeItem('reservationList');
             } else {
-                sessionStorage.setItem('reservationList', reservationList);
+                sessionStorage.setItem('reservationList', JSON.stringify(reservationList));
             }
         }
     } else {
@@ -105,9 +105,9 @@ async function handleEditReservationRequest(event) {
     let checkedCheckBox = findCheckedCheckBox();
     if (checkedCheckBox !== -1) {
         const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
-        const reservationStatus = (allTableRowEl[i].getElementsByClassName("reservationStatus"))[0];
-        if (reservationStatus === "Unconfirmed") {
-            const reservationToEdit = (sessionStorage.getItem('reservationList'))[checkedCheckBox];
+        const reservationStatus = (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
+        if (reservationStatus.textContent === "Unconfirmed") {
+            const reservationToEdit = JSON.parse(sessionStorage.getItem('reservationList'))[checkedCheckBox];
             sessionStorage.setItem('reservationToEdit', reservationToEdit);
             window.location.href = "editReservation.html";
         } else {
@@ -136,7 +136,7 @@ async function getSelectedReservations(data) {
 
     if (response.status === STATUS_OK) {
         const reservationList = await response.json();
-        sessionStorage.setItem('reservationList', reservationList);
+        sessionStorage.setItem('reservationList', JSON.stringify(reservationList));
         for(let i = 0; i < reservationList.length; i++) {
             reservationTableBody.appendChild(buildTableEntry(reservationList[i], i+1));
         }

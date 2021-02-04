@@ -334,31 +334,29 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public void removeReservation(Reservation reservationCopy, boolean override) {
-        Reservation originalReservationReference = getOriginalReservationReference(reservationCopy);
-
-        if (originalReservationReference.isConfirmed()) {
-            Assignment assignment = findAssignment(originalReservationReference);
+    public void removeReservation(Reservation reservation, boolean override) {
+        if (reservation.isConfirmed()) {
+            Assignment assignment = findAssignment(reservation);
 
             if (assignment != null) {
                 removeAssignment(assignment, override);
             }
         }
 
-        BoatCrew crew = originalReservationReference.getBoatCrew();
+        BoatCrew crew = reservation.getBoatCrew();
         Member coxswain = findMemberByID(crew.getCoxswain());
         List<Member> crewMembers = findMemberListByIDList(crew.getCrewMembers());
 
         if (coxswain != null) {
-            coxswain.removeReservation(originalReservationReference);
+            coxswain.removeReservation(reservation);
         }
 
         for (Member member : crewMembers) {
-            member.removeReservation(originalReservationReference);
+            member.removeReservation(reservation);
         }
 
         if (!override) {
-            reservationList.remove(originalReservationReference);
+            reservationList.remove(reservation);
         }
     }
 
@@ -389,8 +387,7 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public Reservation removeCoxswainFromReservation(Reservation reservationCopy) {
-        Reservation reservation = getOriginalReservationReference(reservationCopy);
+    public Reservation removeCoxswainFromReservation(Reservation reservation) {
         Member coxswain = findMemberByID(reservation.removeCoxswain());
 
         if (coxswain != null) {
@@ -401,8 +398,7 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public Reservation addCrewMemberToReservation(Reservation reservationCopy, String memberId) {
-        Reservation reservation = getOriginalReservationReference(reservationCopy);
+    public Reservation addCrewMemberToReservation(Reservation reservation, String memberId) {
         Member member = findMemberByID(memberId);
 
         reservation.addCrewMember(member);
@@ -412,8 +408,7 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public Reservation addCoxswainToReservation(Reservation reservationCopy, String coxswainId) {
-        Reservation reservation = getOriginalReservationReference(reservationCopy);
+    public Reservation addCoxswainToReservation(Reservation reservation, String coxswainId) {
         Member coxswain = findMemberByID(coxswainId);
 
         reservation.addCoxswain(coxswain);
@@ -485,17 +480,13 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public void editReservationActivityDate(Reservation reservationCopy, LocalDate date) {
-        Reservation reservation = getOriginalReservationReference(reservationCopy);
-
+    public void editReservationActivityDate(Reservation reservation, LocalDate date) {
         reservation.setActivityDate(date);
     }
 
     @Override
-    public void editReservationActivity(Reservation reservationCopy, WeeklyActivity activityCopy) {
-        Reservation reservation = getOriginalReservationReference(reservationCopy);
+    public void editReservationActivity(Reservation reservation, WeeklyActivity activityCopy) {
         WeeklyActivity activity = getOriginalActivityReference(activityCopy);
-
         reservation.setWeeklyActivity(activity);
     }
 
@@ -544,8 +535,7 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public Reservation updateReservationCrewMembers(Reservation reservationCopy, List<String> updatedCrewMembers) {
-        Reservation reservation = getOriginalReservationReference(reservationCopy);
+    public Reservation updateReservationCrewMembers(Reservation reservation, List<String> updatedCrewMembers) {
         List<String> currentCrewMembers = reservation.getBoatCrew().getCrewMembers();
         List<String> membersToRemove = new ArrayList<>();
 
@@ -691,18 +681,16 @@ public class Engine implements BMSEngine {
     @Override
     public void addAssignment(Assignment assignment) {
         Boat originalBoatReference = findBoatByID(assignment.getAssignedBoat().getSerialNumber());
-        Reservation originalReservationReference = getOriginalReservationReference(assignment.getAssignedReservation());
+        Reservation assignedReservation = assignment.getAssignedReservation();
 
         assignment.setAssignedBoat(originalBoatReference);
-        assignment.setAssignedReservation(originalReservationReference);
-        originalReservationReference.setConfirmed(true);
+        assignment.setAssignedReservation(assignedReservation);
+        assignedReservation.setConfirmed(true);
         assignmentList.add(assignment);
     }
 
     @Override
-    public List<Boat> getBoatsForReservation(Reservation reservationCopy) {
-        Reservation reservation = getOriginalReservationReference(reservationCopy);
-
+    public List<Boat> getBoatsForReservation(Reservation reservation) {
         return boatList.stream()
                 .filter(boat -> !boat.isDisabled())
                 .filter(boat -> !boat.isPrivate())
@@ -739,10 +727,8 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public Reservation combineReservations(Reservation destinationReservationCopy, Reservation sourceReservationCopy,
+    public Reservation combineReservations(Reservation destinationReservation, Reservation sourceReservation,
                                     boolean assignCoxswain) {
-        Reservation destinationReservation = getOriginalReservationReference(destinationReservationCopy);
-        Reservation sourceReservation = getOriginalReservationReference(sourceReservationCopy);
         int crewMembersToAdd = sourceReservation.getBoatCrew().getCrewMembers().size();
 
         if (assignCoxswain) {
@@ -774,8 +760,7 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public List<Reservation> getCombinableReservations(Reservation originalReservationCopy, int maxCrewSize) {
-        Reservation originalReservation = getOriginalReservationReference(originalReservationCopy);
+    public List<Reservation> getCombinableReservations(Reservation originalReservation, int maxCrewSize) {
         WeeklyActivity activity = originalReservation.getActivity();
         LocalDate activityDate = originalReservation.getActivityDate();
 
@@ -801,8 +786,7 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public void splitReservation(Reservation originalReservationCopy, Reservation newReservation, BoatCrew newBoatCrew) {
-        Reservation originalReservation = getOriginalReservationReference(originalReservationCopy);
+    public void splitReservation(Reservation originalReservation, Reservation newReservation, BoatCrew newBoatCrew) {
         List<Member> newCrewMembers = findMemberListByIDList(newBoatCrew.getCrewMembers());
 
         for (Member crewMember : newCrewMembers) {
@@ -828,8 +812,7 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public void updateReservationBoatTypes(Reservation reservationCopy, Set<BoatType> boatTypes) {
-        Reservation reservation = getOriginalReservationReference(reservationCopy);
+    public void updateReservationBoatTypes(Reservation reservation, Set<BoatType> boatTypes) {
         reservation.setBoatTypes(boatTypes);
     }
 
@@ -947,6 +930,19 @@ public class Engine implements BMSEngine {
     }
 
     @Override
+    public Reservation findReservationByID(String id) {
+        if (id != null) {
+            for (Reservation reservation : reservationList) {
+                if (reservation.getId().equals(id)) {
+                    return reservation;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public Boat findBoatByID(String id) {
         if (id != null) {
             for (Boat boat : boatList) {
@@ -1018,19 +1014,6 @@ public class Engine implements BMSEngine {
         linkMemberReservations();
         linkAssignmentBoats();
         linkAssignmentReservations();
-    }
-
-    private Reservation getOriginalReservationReference(Reservation reservationCopy) {
-        Reservation originalReservation = null;
-
-        for (Reservation reservation : reservationList) {
-            if (reservation.equals(reservationCopy)) {
-                originalReservation = reservation;
-                break;
-            }
-        }
-
-        return originalReservation;
     }
 
     private WeeklyActivity getOriginalActivityReference(WeeklyActivity activityCopy) {
@@ -1148,6 +1131,20 @@ public class Engine implements BMSEngine {
         if (!importErrorsString.toString().isEmpty()) {
             throw new XmlException(importErrorsString.toString());
         }
+    }
+
+    public List<WeeklyActivity> getMemberAvailableActivities(String id, int daysFromToday) {
+        Member member = findMemberByID(id);
+        LocalDate date = LocalDate.now().plusDays(daysFromToday);
+        List<WeeklyActivity> availableActivities = new ArrayList<>();
+
+        for (WeeklyActivity weeklyActivity : weeklyActivities) {
+            if (member.isActivityTimeAndDateAvailable(weeklyActivity, date)) {
+                availableActivities.add(weeklyActivity);
+            }
+        }
+
+        return availableActivities;
     }
 
    /* public void encryptPasswords() throws CryptorException {

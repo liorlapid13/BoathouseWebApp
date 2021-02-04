@@ -42,7 +42,6 @@ public class RemoveReservationServlet extends HttpServlet {
             BufferedReader reader = request.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
             RemovalRequest removalRequest = gson.fromJson(jsonString, RemovalRequest.class);
-
             List<Reservation> reservationList;
             switch (removalRequest.requestType) {
                 case "next":
