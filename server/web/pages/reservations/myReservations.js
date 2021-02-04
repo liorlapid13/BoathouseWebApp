@@ -58,18 +58,11 @@ async function handleSpecificDayReservations(event) {
 
 async function handleRemoveReservationRequest(event) {
     const tableBodyEl = document.querySelector("#tableBody");
-    const allCheckBoxes = tableBodyEl.getElementsByTagName("input");
-    let boxChecked = false;
-    for (let i = 0; i < allCheckBoxes.length; i++) {
-        if (allCheckBoxes[i].checked === true) {
-            boxChecked = true;
-            break;
-        }
-    }
-
-    if (boxChecked) {
+    let checkedCheckBox = findCheckedCheckBox();
+    if (checkedCheckBox !== -1) {
         const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
-        const reservationStatus = (allTableRowEl[i].getElementsByClassName("reservationStatus"))[0];
+        const reservationStatus =
+            (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
         if (reservationStatus === "Confirmed") {
             if (!window.confirm("This reservation has an assignment, are you sure you want to remove it?")) {
                 return;
@@ -79,7 +72,7 @@ async function handleRemoveReservationRequest(event) {
         const data = {
             requestType: currentSelectedOption,
             day: currentSelectedDay,
-            index: i
+            index: checkedCheckBox
         }
 
         const response = await fetch('../../removeReservation', {
@@ -91,19 +84,38 @@ async function handleRemoveReservationRequest(event) {
         });
 
         if (response.status === STATUS_OK) {
-            // TODO: "Reservation removed successfully
+            // TODO: "Reservation removed successfully"
+            const reservationList = sessionStorage.getItem('reservationList');
+            reservationList.splice(checkedCheckBox, 1);
             allTableRowEl[i].remove();
             if (!tableBodyEl.firstChild) {
                 noReservationsAlert();
+                sessionStorage.removeItem('reservationList');
+            } else {
+                sessionStorage.setItem('reservationList', reservationList);
             }
         }
     } else {
-        // TODO: no box checked - "You must select a reservation to remove"
+        // TODO: "You must select a reservation to remove"
     }
 }
 
 async function handleEditReservationRequest(event) {
-
+    const tableBodyEl = document.querySelector("#tableBody");
+    let checkedCheckBox = findCheckedCheckBox();
+    if (checkedCheckBox !== -1) {
+        const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
+        const reservationStatus = (allTableRowEl[i].getElementsByClassName("reservationStatus"))[0];
+        if (reservationStatus === "Unconfirmed") {
+            const reservationToEdit = (sessionStorage.getItem('reservationList'))[checkedCheckBox];
+            sessionStorage.setItem('reservationToEdit', reservationToEdit);
+            window.location.href = "editReservation.html";
+        } else {
+            // TODO: "You can only edit unconfirmed reservations"
+        }
+    } else {
+        // TODO: "You must select a reservation to remove"
+    }
 }
 
 async function getSelectedReservations(data) {
@@ -124,7 +136,7 @@ async function getSelectedReservations(data) {
 
     if (response.status === STATUS_OK) {
         const reservationList = await response.json();
-
+        sessionStorage.setItem('reservationList', reservationList);
         for(let i = 0; i < reservationList.length; i++) {
             reservationTableBody.appendChild(buildTableEntry(reservationList[i], i+1));
         }
@@ -148,7 +160,7 @@ function buildTableEntry(reservation, index) {
     checkBoxEl.classList.add("form-check-input");
     checkBoxEl.setAttribute("type", "checkbox");
     checkBoxEl.setAttribute("id", "check" + index);
-    checkBoxEl.addEventListener("change", checkAllBoxes);
+    checkBoxEl.addEventListener("change", checkAllCheckBoxes);
     tableHeaderEl.setAttribute("scope", "row");
     tableHeaderEl.appendChild(checkBoxEl);
     tableEntryEl.appendChild(tableHeaderEl);
@@ -157,9 +169,24 @@ function buildTableEntry(reservation, index) {
     return tableEntryEl;
 }
 
-function checkAllBoxes() {
+function getAllCheckBoxes() {
     const tableBodyEl = document.querySelector("#tableBody");
-    const allCheckBoxes = tableBodyEl.getElementsByTagName("input");
+    return tableBodyEl.getElementsByTagName("input");
+}
+
+function findCheckedCheckBox() {
+    const allCheckBoxes = getAllCheckBoxes();
+    for (let i = 0; i < allCheckBoxes.length; i++) {
+        if (allCheckBoxes[i].checked === true) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+function checkAllCheckBoxes() {
+    const allCheckBoxes = getAllCheckBoxes();
     for (let i = 0; i < allCheckBoxes.length; i++) {
         if(allCheckBoxes[i].id != this.id && allCheckBoxes[i].checked === true) {
             allCheckBoxes[i].checked = false;
