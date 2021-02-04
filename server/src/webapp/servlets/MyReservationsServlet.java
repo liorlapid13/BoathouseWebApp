@@ -49,9 +49,9 @@ public class MyReservationsServlet extends HttpServlet {
             String jsonString = reader.lines().collect(Collectors.joining());
             RequestData requestData = gson.fromJson(jsonString, RequestData.class);
             List<ReservationDetails> reservationDetailsList = new ArrayList<>();
-            List<Reservation> reservationList = null;
+            List<Reservation> reservationList;
 
-            switch (requestData.getRequestType()) {
+            switch (requestData.requestType) {
                 case "past":
                     reservationList = member.getPastWeekReservationList();
                     break;
@@ -60,8 +60,10 @@ public class MyReservationsServlet extends HttpServlet {
                     break;
                 case "day":
                     reservationList = member.getSpecificDateReservations(
-                            LocalDate.now().plusDays(Integer.parseInt(requestData.getDay())));
+                            LocalDate.now().plusDays(Integer.parseInt(requestData.day)));
                     break;
+                default:
+                    reservationList = new ArrayList<>();
             }
 
             if (reservationList.isEmpty()) {
@@ -108,14 +110,6 @@ public class MyReservationsServlet extends HttpServlet {
     private static class RequestData {
         String requestType;
         String day;
-
-        public String getRequestType() {
-            return requestType;
-        }
-
-        public String getDay() {
-            return day;
-        }
     }
 
     private static class ReservationDetails {

@@ -1,7 +1,8 @@
 const STATUS_OK = 200;
-let optionSelected;
-var removeReservationButtonEl = document.getElementById('buttonRemoveReservation');
-var editReservationButtonEl = document.getElementById('buttonEditReservation');
+let currentSelectedOption;
+let currentSelectedDay;
+let removeReservationButtonEl;
+let editReservationButtonEl;
 
 window.addEventListener('load', () => {
     initializeDaysDropDownMenu();
@@ -24,7 +25,7 @@ function setupEventHandlers() {
 async function handlePastReservations(event) {
     removeReservationButtonEl.disabled = true;
     editReservationButtonEl.disabled = true;
-    optionSelected = "past";
+    currentSelectedOption = "past";
     const data = {
         requestType: "past",
         day: null
@@ -35,7 +36,7 @@ async function handlePastReservations(event) {
 async function handleNextWeekReservations(event) {
     removeReservationButtonEl.disabled = false;
     editReservationButtonEl.disabled = false;
-    optionSelected = "next";
+    currentSelectedOption = "next";
     const data = {
         requestType: "next",
         day: null
@@ -46,11 +47,11 @@ async function handleNextWeekReservations(event) {
 async function handleSpecificDayReservations(event) {
     removeReservationButtonEl.disabled = false;
     editReservationButtonEl.disabled = false;
-    optionSelected = "day";
-    const selectedDayOfWeek = document.getElementById('daysDropDownMenu').value;
+    currentSelectedOption = "day";
+    currentSelectedDay = document.getElementById('daysDropDownMenu').value;
     const data = {
         requestType: "day",
-        day: selectedDayOfWeek
+        day: currentSelectedDay
     }
     getSelectedReservations(data);
 }
@@ -60,19 +61,28 @@ async function handleRemoveReservationRequest(event) {
     const allCheckBoxes = tableBodyEl.getElementsByTagName("input");
     let boxChecked = false;
     for (let i = 0; i < allCheckBoxes.length; i++) {
-        if(allCheckBoxes[i].checked === true) {
+        if (allCheckBoxes[i].checked === true) {
             boxChecked = true;
             break;
         }
     }
 
     if (boxChecked) {
-        // allCheckBoxes[i].checked === true
-        const data = {
-
+        const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
+        const reservationStatus = (allTableRowEl[i].getElementsByClassName("reservationStatus"))[0];
+        if (reservationStatus === "Confirmed") {
+            if (!window.confirm("This reservation has an assignment, are you sure you want to remove it?")) {
+                return;
+            }
         }
 
-        const response = await fetch('../../deleteReservation', {
+        const data = {
+            requestType: currentSelectedOption,
+            day: currentSelectedDay,
+            index: i
+        }
+
+        const response = await fetch('../../removeReservation', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -80,11 +90,15 @@ async function handleRemoveReservationRequest(event) {
             body: JSON.stringify(data)
         });
 
-
-
+        if (response.status === STATUS_OK) {
+            // TODO: "Reservation removed successfully
+            allTableRowEl[i].remove();
+            if (!tableBodyEl.firstChild) {
+                noReservationsAlert();
+            }
+        }
     } else {
-        // no box checked
-
+        // TODO: no box checked - "You must select a reservation to remove"
     }
 }
 
@@ -115,12 +129,16 @@ async function getSelectedReservations(data) {
             reservationTableBody.appendChild(buildTableEntry(reservationList[i], i+1));
         }
     } else {
-        const alertPopup = document.getElementById("alertText");
-        alertPopup.style.background ="white";
-        alertPopup.textContent = "No reservations to display";
-        removeReservationButtonEl.disabled = true;
-        editReservationButtonEl.disabled = true;
+        noReservationsAlert();
     }
+}
+
+function noReservationsAlert() {
+    const alertPopup = document.getElementById("alertText");
+    alertPopup.style.background ="white";
+    alertPopup.textContent = "No reservations to display";
+    removeReservationButtonEl.disabled = true;
+    editReservationButtonEl.disabled = true;
 }
 
 function buildTableEntry(reservation, index) {
@@ -157,6 +175,8 @@ function appendTableData(tableEntryEl, reservation) {
     const boatCrewDataEl = document.createElement("td");
     const statusDataEl = document.createElement("td");
     const creationDateDataEl = document.createElement("td");
+
+    statusDataEl.classList.add("reservationStatus");
 
     reservatorDataEl.textContent = reservation.reservator;
     dateDataEl.textContent = reservation.date;
