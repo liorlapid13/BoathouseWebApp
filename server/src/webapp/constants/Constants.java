@@ -7,4 +7,6 @@ public class Constants {
 
     public static final String LOGIN_PAGE_URL = "index.html";
     public static final String HOME_PAGE_URL = "pages/home/homePage.html";
+
+    public static final String DUMMY_ACTIVITY = "dummyActivity";
 }

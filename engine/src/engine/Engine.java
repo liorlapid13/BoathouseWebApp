@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -1145,6 +1146,31 @@ public class Engine implements BMSEngine {
         }
 
         return availableActivities;
+    }
+
+    public List<Member> findAvailableMembersForReservation(WeeklyActivity activity, int daysFromToday) {
+        LocalDate selectedDay = LocalDate.now().plusDays(daysFromToday);
+
+        return memberList.stream()
+                .filter(member -> member.isActivityTimeAndDateAvailable(activity, selectedDay))
+                .collect(Collectors.toList());
+    }
+
+    public WeeklyActivity findActivity(String name, String time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+        String[] activityTimes = time.split("-", 2);
+        LocalTime startTime = LocalTime.parse(activityTimes[0], formatter);
+        LocalTime endTime = LocalTime.parse(activityTimes[1], formatter);
+
+        for (WeeklyActivity weeklyActivity : weeklyActivities) {
+            if (weeklyActivity.getName().equals(name)
+                    && weeklyActivity.getStartTime().equals(startTime)
+                    && weeklyActivity.getEndTime().equals(endTime)) {
+                return weeklyActivity;
+            }
+        }
+
+        return null;
     }
 
    /* public void encryptPasswords() throws CryptorException {

@@ -48,7 +48,6 @@ public class ActivitiesServlet extends HttpServlet {
 
             if (availableActivities.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-                // TODO: create dummy activity?
             } else {
                 parseActivitiesDetails(availableActivities, activitiesData, Integer.parseInt(requestData.day));
                 String jsonResponse = gson.toJson(activitiesData);
@@ -75,6 +74,7 @@ public class ActivitiesServlet extends HttpServlet {
 
     protected void getAllActivities(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (PrintWriter out = resp.getWriter()) {
+            Engine engine = ServletUtils.getEngine(getServletContext());
 
         }
     }
@@ -83,7 +83,7 @@ public class ActivitiesServlet extends HttpServlet {
         String day;
     }
 
-    private static class ActivityData {
+    public static class ActivityData {
         String name;
         String date;
         String time;
