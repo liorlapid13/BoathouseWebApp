@@ -30,6 +30,7 @@ let finalModalTitle;
 const STATUS_OK = 200;
 
 window.addEventListener('load', () => {
+    initializeModals();
     initializeDaysDropDownMenu();
     setupEventHandlers();
 });
@@ -45,7 +46,7 @@ function setupEventHandlers() {
     selectBoatCrewButtonEl.addEventListener('click', handleBoatCrewSelection);
     selectReservatorButtonEl = document.getElementById('buttonSelectReservator');
     selectReservatorButtonEl.addEventListener('click', handleReservatorSelection);
-    createReservationButtonEl.document.getElementById('buttonCreateReservation');
+    createReservationButtonEl = document.getElementById('buttonCreateReservation');
     createReservationButtonEl.addEventListener('click', handleReservationCreation);
     const modalCloseButtonEl = document.getElementById("closeButton");
     modalCloseButtonEl.addEventListener('click',() => {
@@ -97,6 +98,8 @@ function handleActivitySelection(event) {
     activitiesMenuEl.disabled = true;
     if (activitiesMenuEl.firstChild) {
         selectedActivity = activityList[document.getElementById('activityDropDownMenu').value];
+        selectActivityButtonEl.disabled = true;
+        selectBoatTypesButtonEl.disabled = false;
     } else {
         const startTimeHours = document.getElementById('startTimeHours');
         const startTimeMinutes = document.getElementById('startTimeMinutes');
@@ -125,7 +128,7 @@ async function handleBoatTypesSelection(event) {
     let boxesChecked = 0;
     for (let i = 0; i < allCheckBoxes.length; i++) {
         if (allCheckBoxes[i].checked === true) {
-            selectedBoatTypes.push(allCheckBoxes[i].textContent);
+            selectedBoatTypes.push(allCheckBoxes[i].id);
             boxesChecked++;
         }
     }
@@ -142,10 +145,6 @@ async function handleBoatTypesSelection(event) {
     }
 
     maxMembersInCrew = calculateMaxMembersInCrew(selectedBoatTypes);
-    doesReservationNeedCoxswain = doBoatTypesNeedCoxswain(selectedBoatTypes);
-    if (!doesReservationNeedCoxswain) {
-        disableCoxswainCheckBoxes();
-    }
 
     const data = {
         activity: selectedActivity,
@@ -166,6 +165,11 @@ async function handleBoatTypesSelection(event) {
         memberList = await response.json();
         for (let i = 0; i < memberList.length; i++) {
             memberTableBodyEl.appendChild(buildMemberTableEntry(memberList[i], i));
+        }
+
+        doesReservationNeedCoxswain = doBoatTypesNeedCoxswain(selectedBoatTypes);
+        if (!doesReservationNeedCoxswain) {
+            disableCoxswainCheckBoxes();
         }
     } else {
         finalModalTitle.textContent = "Pay Attention!";
@@ -228,9 +232,10 @@ function handleBoatCrewSelection(event) {
         membersSelected++;
     }
 
+    const reservatorTableBodyEl = document.getElementById('reservatorTableBody');
     for (let i = 0; i < membersSelected; i++) {
         let member = (i === membersSelected - 1 && coxswainSelected) ? selectedCoxswain : selectedBoatCrew[i];
-        buildReservatorTableEntry(member, i);
+        reservatorTableBodyEl.appendChild(buildReservatorTableEntry(member, i));
     }
 }
 
@@ -317,7 +322,7 @@ function buildMemberTableEntry(member,index) {
     checkBoxEl2.classList.add('form-check-input', 'crewCheckBox');
     checkBoxEl2.addEventListener('change', checkCrewCheckBoxes);
     tableDataEl1.appendChild(checkBoxEl2);
-    tableDataEl2.textContent = member.name + " " + member.email;
+    tableDataEl2.textContent = member.name + ", " + member.email;
     tableRowEl.appendChild(tableHeaderEl);
     tableRowEl.appendChild(tableDataEl1);
     tableRowEl.appendChild(tableDataEl2);
@@ -335,7 +340,7 @@ function buildReservatorTableEntry(member, index) {
     checkBoxEl.setAttribute('type', 'radio');
     checkBoxEl.setAttribute('name', 'reservatorRadio')
     tableHeaderEl.appendChild(checkBoxEl);
-    tableDataEl.textContent = member.name + " " + member.email;
+    tableDataEl.textContent = member.name + ", " + member.email;
     tableRowEl.appendChild(tableHeaderEl);
     tableRowEl.appendChild(tableDataEl);
 
@@ -354,7 +359,7 @@ function checkCoxswainCheckBoxes() {
     const coxswainCheckBoxes = document.getElementById("memberTableBody").getElementsByClassName("coxswainCheckBox");
     for (let i = 0; i < coxswainCheckBoxes.length; i++) {
         if (coxswainCheckBoxes[i].id === this.id) {
-            crewCheckBoxes[i].disabled = true;
+            crewCheckBoxes[i].disabled = coxswainCheckBoxes[i].checked === true;
         } else if (coxswainCheckBoxes[i].checked === true) {
             coxswainCheckBoxes[i].checked = false;
             crewCheckBoxes[i].disabled = false;
@@ -383,7 +388,7 @@ function checkCrewCheckBoxes() {
             }
         }
 
-        if (checkedCheckBoxes === maxMembersInCrew) {
+        if (checkedCheckBoxes === maxMembersInCrew + 1) {
             this.checked = false;
             coxswainCheckBoxes[index].disabled = false;
             modalTitle.textContent = "Pay Attention!" ;
@@ -421,6 +426,15 @@ function checkManualTime(startTimeHours, startTimeMinutes, endTimeHours, endTime
     }
 
     return validTime;
+}
+
+function initializeModals() {
+    modal = document.getElementById("Modal");
+    modalBody = document.getElementById("modalBody");
+    modalTitle = document.getElementById("ModalLabel");
+    finalModal = document.getElementById("finalModal");
+    finalModalBody = document.getElementById("finalModalBody");
+    finalModalTitle = document.getElementById("finalModalLabel");
 }
 
 function initializeDaysDropDownMenu() {

@@ -33,7 +33,7 @@
                         <li><a class="dropdown-item" href="myReservations.html">View My Reservations</a></li>
                     </ul>
                 </li>
-                <li id="logoutButton" class="nav-item" style="float: right; margin-right:0px;">
+                <li id="logoutButton" class="nav-item" >
                     <a class="nav-link active" aria-current="page" href="../../logout">Logout</a>
                 </li>
             </ul>
@@ -42,25 +42,214 @@
 </nav>
 <form class="formCreateReservation">
     <h2 class="title">Create New Reservation</h2>
-    <div class="form-group row">
-        <label style="width: 160px"><strong>1. Select a Day:</strong></label>
-        <select id="daysDropDownMenu"  class="form-select daysDropDown" aria-label="Default select example">
-            <option value="1"></option>
-            <option value="2"></option>
-            <option value="3"></option>
-            <option value="4"></option>
-            <option value="5"></option>
-            <option value="6"></option>
-            <option value="7"></option>
-        </select>
-        <button id="buttonSelectDay"  type="button" class="btn btn-primary" >Select Day </button>
+    <div class="flexDiv">
+        <div id="dropDownOptions">
+            <div  class="form-group row">
+                <label style="width: 160px"><strong>1. Select a Day:</strong></label>
+                <select id="daysDropDownMenu"  class="form-select daysDropDown" aria-label="Default select example">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                    <option value="5"></option>
+                    <option value="6"></option>
+                    <option value="7"></option>
+                </select>
+                <button id="buttonSelectDay"  type="button" class="btn btn-primary" >Select Day </button>
+            </div>
+            <div class="form-group row selectActivityOption" >
+                <label style="width: 160px" ><strong>2.  Select Activity:</strong></label>
+                <select id="activityDropDownMenu"  class="form-select daysDropDown" aria-label="Default select example">
+                </select>
+                <button id="buttonSelectActivity"  type="button" class="btn btn-primary" disabled="true" >Select Activity </button>
+            </div>
+        </div>
+
+        <div class="manualActivityTime">
+            <div> Please select time for activity:</div>
+            <div  class="notblock">Start Time:</div>
+            <select  id="startTimeHours"  class="form-select selectHour" aria-label="Default select example">
+                <option value="00">00</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+            </select>
+            <select id="startTimeMinutes"  class="form-select selectMinute"  aria-label="Default select example">
+                <option value="00">00</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+                <option value="32">32</option>
+                <option value="33">33</option>
+                <option value="34">34</option>
+                <option value="35">35</option>
+                <option value="36">36</option>
+                <option value="37">37</option>
+                <option value="38">38</option>
+                <option value="39">39</option>
+                <option value="40">40</option>
+                <option value="41">41</option>
+                <option value="42">42</option>
+                <option value="43">43</option>
+                <option value="44">44</option>
+                <option value="45">45</option>
+                <option value="46">46</option>
+                <option value="47">47</option>
+                <option value="48">48</option>
+                <option value="49">49</option>
+                <option value="50">50</option>
+                <option value="51">51</option>
+                <option value="52">52</option>
+                <option value="53">53</option>
+                <option value="54">54</option>
+                <option value="55">55</option>
+                <option value="56">56</option>
+                <option value="57">57</option>
+                <option value="58">58</option>
+                <option value="59">59</option>
+            </select>
+            <div class="notblock">End Time:</div>
+            <select   id="endTimeHours" class="form-select selectHour selectEndTime" aria-label="Default select example">
+                <option value="00">00</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+
+            </select>
+            <select id="endTimeMinutes" class="form-select selectMinute selectEndTime" aria-label="Default select example">
+                <option value="00">00</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+                <option value="32">32</option>
+                <option value="33">33</option>
+                <option value="34">34</option>
+                <option value="35">35</option>
+                <option value="36">36</option>
+                <option value="37">37</option>
+                <option value="38">38</option>
+                <option value="39">39</option>
+                <option value="40">40</option>
+                <option value="41">41</option>
+                <option value="42">42</option>
+                <option value="43">43</option>
+                <option value="44">44</option>
+                <option value="45">45</option>
+                <option value="46">46</option>
+                <option value="47">47</option>
+                <option value="48">48</option>
+                <option value="49">49</option>
+                <option value="50">50</option>
+                <option value="51">51</option>
+                <option value="52">52</option>
+                <option value="53">53</option>
+                <option value="54">54</option>
+                <option value="55">55</option>
+                <option value="56">56</option>
+                <option value="57">57</option>
+                <option value="58">58</option>
+                <option value="59">59</option>
+            </select>
+        </div>
     </div>
-    <div class="form-group row selectActivityOption" >
-        <label style="width: 160px" ><strong>2.  Select Activity:</strong></label>
-        <select id="activityDropDownMenu"  class="form-select daysDropDown" aria-label="Default select example">
-        </select>
-        <button id="buttonSelectActivity"  type="button" class="btn btn-primary" disabled="true" >Select Activity </button>
-    </div>
+
+
     <div class="boatTypeTable">
         <table class="table">
             <thead>
@@ -71,7 +260,7 @@
             </thead>
             <tbody id="boatTypesTableBody">
             <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="1x"></th>
+                <th scope="row"><input class="form-check-input" type="checkbox" id="1X"></th>
                 <td><strong>1X</strong></td>
             </tr>
             <tr>
@@ -91,11 +280,11 @@
                 <td><strong>2-</strong></td>
             </tr>
             <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="4x+"></th>
+                <th scope="row"><input class="form-check-input" type="checkbox" id="4X+"></th>
                 <td><strong>4X+</strong></td>
             </tr>
             <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="4x"></th>
+                <th scope="row"><input class="form-check-input" type="checkbox" id="4X"></th>
                 <td><strong>4X</strong></td>
             </tr>
             <tr>
@@ -121,7 +310,7 @@
             </tbody>
         </table>
     </div>
-    <div class="memberTable">
+    <div class="memberTable" >
         <table id="stickyTable" class= "table">
             <thead>
             <tr>
@@ -130,10 +319,23 @@
                 <th scope="col">Name</th>
             </tr>
             </thead>
-            <tbody id="memberTableBody">
+            <tbody id="memberTableBody" >
             </tbody>
         </table>
         <button id="buttonSelectBoatCrew" type="button" class="btn btn-primary" disabled="true" >Select Boat Crew </button>
+    </div>
+    <div class="memberTable" >
+        <table class= "table">
+            <thead>
+            <tr>
+                <th scope="col">5.Reservator</th>
+                <th scope="col">Name</th>
+            </tr>
+            </thead>
+            <tbody id="reservatorTableBody" >
+            </tbody>
+        </table>
+        <button id="buttonSelectReservator" type="button" class="btn btn-primary" disabled="true" >Select Reservator </button>
     </div>
 
     <button id="buttonCreateReservation" type="button" class="btn btn-primary" disabled="true" >Create Reservation </button>
@@ -146,7 +348,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">Pay Attention!</h5>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modalBody">
             </div>
             <div class="modal-footer">
                 <button id="closeButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -154,5 +356,20 @@
         </div>
     </div>
 </div>>
+<!-- Final Modal -->
+<div class="modal fade" id="finalModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div style="color:red"; class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="finalModalLabel">Pay Attention!</h5>
+            </div>
+            <div class="modal-body" id="finalModalBody">
+            </div>
+            <div class="modal-footer">
+                <button id="redirectButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return to my reservations</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

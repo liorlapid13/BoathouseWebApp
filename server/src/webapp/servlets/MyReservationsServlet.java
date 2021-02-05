@@ -165,10 +165,7 @@ public class MyReservationsServlet extends HttpServlet {
             }
         }
 
-        if (i % 2 == 0) {
-            memberNames.append("\n");
-        }
-
+        memberNames.append("\n");
         memberNames.append("Coxswain: ");
         memberNames.append(coxswain == null ? "none" : coxswain.getName());
 

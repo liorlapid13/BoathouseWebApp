@@ -5,9 +5,9 @@ import engine.Engine;
 import engine.activity.WeeklyActivity;
 import engine.boat.BoatCrew;
 import engine.boat.BoatType;
-import engine.exception.InvalidBoatTypeCodeException;
 import engine.reservation.Reservation;
 import webapp.constants.Constants;
+import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
 import webapp.utils.SessionUtils;
 
@@ -48,36 +48,33 @@ public class CreateReservationServlet extends HttpServlet {
             ReservationData reservationData = gson.fromJson(jsonString, ReservationData.class);
 
             LocalDate date = LocalDate.now().plusDays(Integer.parseInt(reservationData.day));
+
             WeeklyActivity activity;
             if (reservationData.activity == null) {
                 activity = (WeeklyActivity)getServletContext().getAttribute(Constants.DUMMY_ACTIVITY);
             } else {
                 activity = engine.findActivity(reservationData.activity.name, reservationData.activity.time);
             }
-            Set<BoatType> boatTypes = new HashSet<>();
-            try {
-                for (int i = 0; i < reservationData.boatTypes.length; i++) {
-                    boatTypes.add(BoatType.boatCodeToBoatType(reservationData.boatTypes[i]));
-                }
 
-                List<String> crewMembers = new ArrayList<>();
-                for (int i = 0; i < reservationData.crewMembers.length; i++) {
-                    crewMembers.add(reservationData.crewMembers[i].id);
-                }
-                String coxswain = null;
-                if (reservationData.coxswainSelected.equals("true")) {
-                    coxswain = reservationData.coxswain.id;
-                }
-                BoatCrew crew = new BoatCrew(crewMembers, coxswain);
-                Reservation reservation = new Reservation(userId, reservationData.reservator.id, activity, boatTypes, date, crew);
-                engine.publishNewReservation(reservation, false);
-                resp.setStatus(HttpServletResponse.SC_OK);
-            } catch (InvalidBoatTypeCodeException e) {
-                resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-                out.print(e.getMessage());
-                out.flush();
+            Set<BoatType> boatTypes = new HashSet<>();
+            for (int i = 0; i < reservationData.boatTypes.length; i++) {
+                boatTypes.add(BoatType.boatCodeToBoatType(reservationData.boatTypes[i]));
             }
 
+            List<String> crewMembers = new ArrayList<>();
+            for (int i = 0; i < reservationData.boatCrew.length; i++) {
+                crewMembers.add(reservationData.boatCrew[i].id);
+            }
+            String coxswain = null;
+            if (reservationData.coxswainSelected.equals("true")) {
+                coxswain = reservationData.coxswain.id;
+            }
+            BoatCrew crew = new BoatCrew(crewMembers, coxswain);
+
+            Reservation reservation = new Reservation(userId, reservationData.reservator.id, activity, boatTypes, date, crew);
+            engine.publishNewReservation(reservation, false);
+            ServerUtils.saveSystemState(getServletContext());
+            resp.setStatus(HttpServletResponse.SC_OK);
         }
     }
 
@@ -86,7 +83,7 @@ public class CreateReservationServlet extends HttpServlet {
         ActivitiesServlet.ActivityData activity;
         String[] boatTypes;
         MembersForReservationServlet.MemberData reservator;
-        MembersForReservationServlet.MemberData[] crewMembers;
+        MembersForReservationServlet.MemberData[] boatCrew;
         MembersForReservationServlet.MemberData coxswain;
         String coxswainSelected;
     }

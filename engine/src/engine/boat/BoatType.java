@@ -1,7 +1,5 @@
 package engine.boat;
 
-import engine.exception.InvalidBoatTypeCodeException;
-
 import java.io.Serializable;
 import java.util.Set;
 
@@ -10,7 +8,7 @@ public enum BoatType implements Serializable {
     DOUBLE_SINGLE_PADDLE, QUAD_DOUBLE_PADDLE_WITH_COXSWAIN, QUAD_DOUBLE_PADDLE, QUAD_SINGLE_PADDLE_WITH_COXSWAIN,
     QUAD_SINGLE_PADDLE, OCT_DOUBLE_PADDLE_WITH_COXSWAIN, OCT_SINGLE_PADDLE_WITH_COXSWAIN;
 
-    public static BoatType boatCodeToBoatType(String boatCode) throws InvalidBoatTypeCodeException {
+    public static BoatType boatCodeToBoatType(String boatCode) {
         switch (boatCode) {
             case "1X":
                 return SINGLE;
@@ -35,7 +33,7 @@ public enum BoatType implements Serializable {
             case "8+":
                 return OCT_SINGLE_PADDLE_WITH_COXSWAIN;
             default:
-                throw new InvalidBoatTypeCodeException(boatCode);
+                return null;
         }
     }
     
