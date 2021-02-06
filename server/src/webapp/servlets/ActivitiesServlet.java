@@ -26,26 +26,23 @@ import java.util.stream.Collectors;
 public class ActivitiesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getAvailableActivities(req, resp);
+        getAllActivities(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getAllActivities(req, resp);
+
     }
 
-    protected void getAvailableActivities(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void getAllActivities(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
-            String userId = SessionUtils.getUserId(req);
             Gson gson = new Gson();
             BufferedReader reader = req.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
             RequestData requestData = gson.fromJson(jsonString, RequestData.class);
             List<ActivityData> activitiesData = new ArrayList<>();
-            List<WeeklyActivity> availableActivities =
-                    engine.getMemberAvailableActivities(userId, Integer.parseInt(requestData.day));
-
+            List<WeeklyActivity> availableActivities = engine.getWeeklyActivities();
             if (availableActivities.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
@@ -69,13 +66,6 @@ public class ActivitiesServlet extends HttpServlet {
             ActivityData activityData = new ActivityData(name, date, time, restriction);
 
             activitiesData.add(activityData);
-        }
-    }
-
-    protected void getAllActivities(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try (PrintWriter out = resp.getWriter()) {
-            Engine engine = ServletUtils.getEngine(getServletContext());
-
         }
     }
 

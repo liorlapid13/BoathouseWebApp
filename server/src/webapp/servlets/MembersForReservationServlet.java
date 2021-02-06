@@ -56,7 +56,6 @@ public class MembersForReservationServlet extends HttpServlet {
             }
             List<MemberData> memberDataList = new ArrayList<>();
             List<Member> availMembers = engine.findAvailableMembersForReservation(activity, Integer.parseInt(requestData.day));
-
             if (availMembers.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             } else {

@@ -5,7 +5,7 @@ let selectedBoatCrew = [];
 let selectedCoxswain;
 let coxswainSelected;
 let selectedReservator;
-let manualTime;
+let selectedManualTime;
 
 let activityList;
 let memberList;
@@ -88,15 +88,15 @@ async function handleDaySelection(event) {
         modalBody.textContent = "There are no available activities for this day"
         showModal(modal);
         selectActivityButtonEl.textContent = "Select Time";
-        const manualActivity = document.querySelector('manualActivityTime');
-        manualActivity.style.display = null;
+        const manualActivity = document.getElementById('manualActivity');
+        manualActivity.style.display = "block";
     }
 }
 
 function handleActivitySelection(event) {
     const activitiesMenuEl = document.getElementById("activityDropDownMenu");
     activitiesMenuEl.disabled = true;
-    if (activitiesMenuEl.firstChild) {
+    if (activitiesMenuEl.childNodes.length > 1) {
         selectedActivity = activityList[document.getElementById('activityDropDownMenu').value];
         selectActivityButtonEl.disabled = true;
         selectBoatTypesButtonEl.disabled = false;
@@ -107,7 +107,7 @@ function handleActivitySelection(event) {
         const endTimeMinutes = document.getElementById('endTimeMinutes');
         if (checkManualTime(startTimeHours.value, startTimeMinutes.value, endTimeHours.value, endTimeMinutes.value)) {
             selectedActivity = null;
-            manualTime = startTimeHours.value + ":" + startTimeMinutes.value + "-" +  endTimeHours.value + ":" + endTimeMinutes.value;
+            selectedManualTime = startTimeHours.value + ":" + startTimeMinutes.value + "-" +  endTimeHours.value + ":" + endTimeMinutes.value;
             startTimeHours.disabled = true;
             startTimeMinutes.disabled = true;
             endTimeHours.disabled = true;
@@ -149,7 +149,7 @@ async function handleBoatTypesSelection(event) {
     const data = {
         activity: selectedActivity,
         day: selectedDay,
-        time: manualTime
+        manualTime: selectedManualTime
     }
 
     const response = await fetch('../../membersForReservation', {

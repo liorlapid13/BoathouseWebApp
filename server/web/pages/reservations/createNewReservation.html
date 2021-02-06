@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <div class="manualActivityTime">
+        <div id="manualActivity" class="manualActivityTime">
             <div> Please select time for activity:</div>
             <div  class="notblock">Start Time:</div>
             <select  id="startTimeHours"  class="form-select selectHour" aria-label="Default select example">
@@ -249,96 +249,100 @@
         </div>
     </div>
 
-
-    <div class="boatTypeTable">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">3.</th>
-                <th scope="col">Boat Types</th>
-            </tr>
-            </thead>
-            <tbody id="boatTypesTableBody">
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="1X"></th>
-                <td><strong>1X</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="2X+"></th>
-                <td><strong>2X+</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="2X"></th>
-                <td><strong>2X</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="2+"></th>
-                <td><strong>2+</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="2-"></th>
-                <td><strong>2-</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="4X+"></th>
-                <td><strong>4X+</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="4X"></th>
-                <td><strong>4X</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="4+"></th>
-                <td><strong>4+</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="4-"></th>
-                <td><strong>4-</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="8X+"></th>
-                <td><strong>8X+</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"><input class="form-check-input" type="checkbox" id="8+"></th>
-                <td><strong>8+</strong></td>
-            </tr>
-            <tr>
-                <th scope="row"></th>
-                <td><button id="buttonSelectBoatTypes" type="button" class="btn btn-primary" disabled="true" >Select Boat Types </button></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="flexDiv">
+        <div class="boatTypeTable">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">3.</th>
+                    <th scope="col">Boat Types</th>
+                </tr>
+                </thead>
+                <tbody id="boatTypesTableBody">
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="1X"></th>
+                    <td><strong>1X</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="2X+"></th>
+                    <td><strong>2X+</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="2X"></th>
+                    <td><strong>2X</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="2+"></th>
+                    <td><strong>2+</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="2-"></th>
+                    <td><strong>2-</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="4X+"></th>
+                    <td><strong>4X+</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="4X"></th>
+                    <td><strong>4X</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="4+"></th>
+                    <td><strong>4+</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="4-"></th>
+                    <td><strong>4-</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="8X+"></th>
+                    <td><strong>8X+</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"><input class="form-check-input" type="checkbox" id="8+"></th>
+                    <td><strong>8+</strong></td>
+                </tr>
+                <tr>
+                    <th scope="row"></th>
+                    <td><button id="buttonSelectBoatTypes" type="button" class="btn btn-primary" disabled="true" ><small>Select Boat Types</small> </button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="middleItem">
+            <div class="memberTable"  >
+                <table id="stickyTable" class= "table">
+                    <thead>
+                    <tr>
+                        <th scope="col">4. Coxswain</th>
+                        <th scope="col">Crew Member</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody class="spaceBodyTable" id="memberTableBody" >
+                    </tbody>
+                </table>
+                <button id="buttonSelectBoatCrew" type="button" class="btn btn-primary" disabled="true" >Select Boat Crew </button>
+            </div>
+        </div>
+        <div class="reservatorTable" >
+            <table class= "table">
+                <thead>
+                <tr>
+                    <th scope="col">5.Reservator</th>
+                    <th scope="col">Name</th>
+                </tr>
+                </thead>
+                <tbody id="reservatorTableBody" >
+                </tbody>
+            </table>
+            <button id="buttonSelectReservator" type="button" class="btn btn-primary" disabled="true" >Select Reservator </button>
+        </div>
     </div>
-    <div class="memberTable" >
-        <table id="stickyTable" class= "table">
-            <thead>
-            <tr>
-                <th scope="col">4. Coxswain</th>
-                <th scope="col">Crew Member</th>
-                <th scope="col">Name</th>
-            </tr>
-            </thead>
-            <tbody id="memberTableBody" >
-            </tbody>
-        </table>
-        <button id="buttonSelectBoatCrew" type="button" class="btn btn-primary" disabled="true" >Select Boat Crew </button>
+    <div class="lastItem" >
+        <button id="buttonCreateReservation" type="button" class="btn btn-primary" disabled="true" >Create Reservation </button>
     </div>
-    <div class="memberTable" >
-        <table class= "table">
-            <thead>
-            <tr>
-                <th scope="col">5.Reservator</th>
-                <th scope="col">Name</th>
-            </tr>
-            </thead>
-            <tbody id="reservatorTableBody" >
-            </tbody>
-        </table>
-        <button id="buttonSelectReservator" type="button" class="btn btn-primary" disabled="true" >Select Reservator </button>
-    </div>
-
-    <button id="buttonCreateReservation" type="button" class="btn btn-primary" disabled="true" >Create Reservation </button>
 </form>
 
 <!-- Modal -->
@@ -348,7 +352,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">Pay Attention!</h5>
             </div>
-            <div class="modal-body" id="modalBody">
+            <div id="modalBody"  class="modal-body">
             </div>
             <div class="modal-footer">
                 <button id="closeButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -363,7 +367,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="finalModalLabel">Pay Attention!</h5>
             </div>
-            <div class="modal-body" id="finalModalBody">
+            <div id="finalModalBody" class="modal-body">
             </div>
             <div class="modal-footer">
                 <button id="redirectButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return to my reservations</button>
