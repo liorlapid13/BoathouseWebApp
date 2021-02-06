@@ -1,0 +1,31 @@
+.editReservation{
+    background-color: floralwhite;
+    opacity: 90%;
+    width:1000px;
+    margin-left: 50px;
+    margin-top: 10px;
+    padding: 20px;
+    overflow: auto;
+    height: calc(100% - 1.5em);
+    margin: auto;
+}
+.title{
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Ultra', sans-serif;
+    text-shadow: 0 2px white, 0 3px #777;
+}
+.textField {
+    width: 250px !important;
+}
+.standardButton{
+    float: left;
+    margin-top: 25px;
+    margin-right: 10px;
+    width:90px;
+    height: 45px;
+}
+.daysDropDown {
+    width: 250px !important;
+    margin-left: 20px;
+}

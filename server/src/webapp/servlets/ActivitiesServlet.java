@@ -5,7 +5,6 @@ import engine.Engine;
 import engine.activity.WeeklyActivity;
 import engine.boat.BoatType;
 import webapp.utils.ServletUtils;
-import webapp.utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,11 +41,11 @@ public class ActivitiesServlet extends HttpServlet {
             String jsonString = reader.lines().collect(Collectors.joining());
             RequestData requestData = gson.fromJson(jsonString, RequestData.class);
             List<ActivityData> activitiesData = new ArrayList<>();
-            List<WeeklyActivity> availableActivities = engine.getWeeklyActivities();
-            if (availableActivities.isEmpty()) {
+            List<WeeklyActivity> activities = engine.getWeeklyActivities();
+            if (activities.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
-                parseActivitiesDetails(availableActivities, activitiesData, Integer.parseInt(requestData.day));
+                parseActivitiesData(activities, activitiesData, Integer.parseInt(requestData.day));
                 String jsonResponse = gson.toJson(activitiesData);
                 resp.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
@@ -55,7 +54,7 @@ public class ActivitiesServlet extends HttpServlet {
         }
     }
 
-    private void parseActivitiesDetails(List<WeeklyActivity> activities, List<ActivityData> activitiesData, int days) {
+    private void parseActivitiesData(List<WeeklyActivity> activities, List<ActivityData> activitiesData, int days) {
         for (WeeklyActivity activity : activities) {
             String name = activity.getName();
             LocalDate selectedDate = LocalDate.now().plusDays(days);

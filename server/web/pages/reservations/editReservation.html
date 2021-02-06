@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Reservation</title>
+    <link href="../../style.css" rel="stylesheet">
+    <link href="editReservations.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="../../common/modal.js"></script>
+    <script src="../../addManagerNavBar.js"></script>
+    <script src="editReservation.js"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary" style="background-color: #2e6da4">
+    <div class="container-fluid" >
+        <a class="navbar-brand" href="../home/homePage.html">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul id="mainNav" class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="../personalDetails/editPersonalDetails.html">Edit Personal Details</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle white_link" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        My Reservations
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="createNewReservation.html">Create New Reservation</a></li>
+                        <li><a class="dropdown-item" href="myReservations.html">View My Reservations</a></li>
+                    </ul>
+                </li>
+                <li id="logoutButton" class="nav-item" >
+                    <a class="nav-link active" aria-current="page" href="../../logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="editReservation" style="width:950px">
+    <h2 class="title">Edit Reservation</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <label for="currentDate" class="form-label">1. Current Date </label>
+                <input type="text" class="form-control textField" id="currentDate" >
+            </div>
+            <div class="col-sm" >
+                <button id="buttonConfirmDate" style="margin-left: 40px;white-space: normal"  type="button" class="btn btn-primary standardButton">Continue</button>
+                <button id="buttonEditDate"  type="button" class="btn btn-primary standardButton">Edit </button>
+            </div>
+            <div class="col-sm" >
+                <label for="daysDropDownMenu" style="margin-left: 20px" class="form-label">Select New Date </label>
+                <select id="daysDropDownMenu" disabled =true  class="form-select daysDropDown" aria-label="Default select example">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                    <option value="5"></option>
+                    <option value="6"></option>
+                    <option value="7"></option>
+                </select>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-sm">
+                <label for="currentActivity" class="form-label">2. Current Activity </label>
+                <input type="text" disabled="true" class="form-control textField" id="currentActivity" >
+            </div>
+            <div class="col-sm" >
+                <button id="buttonConfirmActivity" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
+                <button id="buttonEditActivity"  disabled="true" type="button" class="btn btn-primary standardButton">Edit </button>
+            </div>
+            <div class="col-sm" >
+                <label style="margin-left: 20px;" class="form-label">Select New Activity:</label>
+                <select id="activityDropDownMenu" disabled="true"  class="form-select daysDropDown" aria-label="Default select example">
+                </select>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-sm" style="margin-top: 50px">
+                <label for="currentBoatTypes" class="form-label">3. Current Boat Types </label>
+                <input type="text" disabled="true"  class="form-control textField" id="currentBoatTypes" >
+            </div>
+            <div class="col-sm" style="margin-top: 50px" >
+                <button id="buttonConfirmBoatTypes" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
+                <button id="buttonEditBoatTypes"  disabled="true" type="button" class="btn btn-primary standardButton">Edit </button>
+            </div>
+            <div class="col-sm" >
+                <label style="margin-left: 20px;" class="form-label">Select New Boat Types:</label>
+                <table   class="table">
+                    <thead>
+                    </thead>
+                    <tbody  style="display: block;max-height: 150px;overflow-y: scroll;" id="boatTypesTableBody">
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="1X"></th>
+                        <td><strong>1X</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="2X+"></th>
+                        <td><strong>2X+</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="2X"></th>
+                        <td><strong>2X</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="2+"></th>
+                        <td><strong>2+</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="2-"></th>
+                        <td><strong>2-</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="4X+"></th>
+                        <td><strong>4X+</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="4X"></th>
+                        <td><strong>4X</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="4+"></th>
+                        <td><strong>4+</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="4-"></th>
+                        <td><strong>4-</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="8X+"></th>
+                        <td><strong>8X+</strong></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><input disabled="true"  class="form-check-input" type="checkbox" id="8+"></th>
+                        <td><strong>8+</strong></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-sm" style="margin-top: 50px">
+                <label for="currentBoatCrew" class="form-label">4. Current Boat Crew </label>
+                <input type="text" disabled="true"  class="form-control textField" id="currentBoatCrew" >
+            </div>
+            <div class="col-sm" style="margin-top: 50px" >
+                <button id="buttonConfirmBoatCrew" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
+                <button id="buttonEditBoatCrew"  disabled="true" type="button" class="btn btn-primary standardButton">Edit </button>
+            </div>
+            <div class="col-sm" >
+                <label style="margin-left: 20px;" class="form-label">Select New Boat Crew:</label>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Coxswain</th>
+                        <th scope="col">Crew Member</th>
+                        <th scope="col">ID, Name</th>
+                    </tr>
+                    </thead>
+                    <tbody style="display: block;max-height: 150px;overflow-y: scroll;"  id="boatCrewTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-sm" style="margin-top: 50px">
+                    <label for="currentBoatCrew" class="form-label">5. Current Boat Crew </label>
+                    <input type="text" disabled="true"  class="form-control textField" id="currentReservator" >
+                </div>
+                <div class="col-sm" style="margin-top: 50px" >
+                    <button id="buttonConfirmReservator" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
+                    <button id="buttonEditReservator"  disabled="true" type="button" class="btn btn-primary standardButton">Edit </button>
+                </div>
+                <div class="col-sm" >
+                    <label style="margin-left: 20px;" class="form-label">Select Reservator:</label>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Reservator</th>
+                            <th scope="col">Name</th>
+                        </tr>
+                        </thead>
+                        <tbody style="display: block;max-height: 150px;overflow-y: scroll;"  id="reservatorTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row justify-content-end" style="margin-top: 40px">
+                <div class="row justify-content-end">
+                    <div class="col-4">
+                        <button id="buttonConfirmChanges" style="width:100px" disabled="true" type="button" class="btn btn-primary ">Confirm Changes </button>
+                        <button id="buttonAbort"  style="width:100px"  type="button" class="btn btn-primary">Cancel Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>
+</html>

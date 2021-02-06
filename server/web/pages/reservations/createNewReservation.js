@@ -62,7 +62,7 @@ function setupEventHandlers() {
 async function handleDaySelection(event) {
     selectDayButtonEl.disabled = true;
     selectActivityButtonEl.disabled = false;
-    const daysMenuEl =document.getElementById("daysDropDownMenu");
+    const daysMenuEl = document.getElementById("daysDropDownMenu");
     daysMenuEl.disabled = true;
     selectedDay = document.getElementById('daysDropDownMenu').value;
     const data = {
@@ -322,7 +322,7 @@ function buildMemberTableEntry(member,index) {
     checkBoxEl2.classList.add('form-check-input', 'crewCheckBox');
     checkBoxEl2.addEventListener('change', checkCrewCheckBoxes);
     tableDataEl1.appendChild(checkBoxEl2);
-    tableDataEl2.textContent = member.name + ", " + member.email;
+    tableDataEl2.textContent = member.id + ", " + member.name;
     tableRowEl.appendChild(tableHeaderEl);
     tableRowEl.appendChild(tableDataEl1);
     tableRowEl.appendChild(tableDataEl2);
@@ -340,7 +340,7 @@ function buildReservatorTableEntry(member, index) {
     checkBoxEl.setAttribute('type', 'radio');
     checkBoxEl.setAttribute('name', 'reservatorRadio')
     tableHeaderEl.appendChild(checkBoxEl);
-    tableDataEl.textContent = member.name + ", " + member.email;
+    tableDataEl.textContent = member.id + ", " + member.name;
     tableRowEl.appendChild(tableHeaderEl);
     tableRowEl.appendChild(tableDataEl);
 

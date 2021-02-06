@@ -46,7 +46,7 @@ public class MyReservationsServlet extends HttpServlet {
             BufferedReader reader = request.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
             RequestData requestData = gson.fromJson(jsonString, RequestData.class);
-            List<ReservationDetails> reservationDetailsList = new ArrayList<>();
+            List<ReservationData> reservationDataList = new ArrayList<>();
             List<Reservation> reservationList;
 
             switch (requestData.requestType) {
@@ -67,8 +67,8 @@ public class MyReservationsServlet extends HttpServlet {
             if (reservationList.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
-                parseReservationDetails(reservationList,reservationDetailsList, engine);
-                String jsonResponse = gson.toJson(reservationDetailsList);
+                parseReservationDetails(reservationList, reservationDataList, engine);
+                String jsonResponse = gson.toJson(reservationDataList);
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
                 out.flush();
@@ -77,7 +77,7 @@ public class MyReservationsServlet extends HttpServlet {
     }
 
     private void parseReservationDetails(List<Reservation> reservationList,
-                                         List<ReservationDetails> reservationDetailsList, Engine engine) {
+                                         List<ReservationData> reservationDataList, Engine engine) {
         for (Reservation reservation : reservationList) {
             String id = reservation.getId();
             String reservator = engine.findMemberByID(reservation.getReservator()).getName();
@@ -92,7 +92,7 @@ public class MyReservationsServlet extends HttpServlet {
             String status = reservation.isConfirmed() ? "Confirmed" : "Unconfirmed";
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String creationDate = reservation.getCreationDate().format(formatter);
-            ReservationDetails reservationDetails = new ReservationDetails(
+            ReservationData reservationData = new ReservationData(
                     id,
                     reservator,
                     date,
@@ -103,7 +103,7 @@ public class MyReservationsServlet extends HttpServlet {
                     creationDate
             );
 
-            reservationDetailsList.add(reservationDetails);
+            reservationDataList.add(reservationData);
         }
     }
 
@@ -112,7 +112,7 @@ public class MyReservationsServlet extends HttpServlet {
         String day;
     }
 
-    private static class ReservationDetails {
+    private static class ReservationData {
         String id;
         String reservator;
         String date;
@@ -122,8 +122,8 @@ public class MyReservationsServlet extends HttpServlet {
         String status;
         String creationDate;
 
-        public ReservationDetails(String id, String reservator, String date, String activity, String boatTypes, String boatCrew,
-                                  String status, String creationDate) {
+        public ReservationData(String id, String reservator, String date, String activity, String boatTypes, String boatCrew,
+                               String status, String creationDate) {
             this.id = id;
             this.reservator = reservator;
             this.date = date;

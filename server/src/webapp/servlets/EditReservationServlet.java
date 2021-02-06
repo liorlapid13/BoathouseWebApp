@@ -34,34 +34,6 @@ public class EditReservationServlet extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try (PrintWriter out = response.getWriter()) {
-            Engine engine = ServletUtils.getEngine(getServletContext());
-            String userId = SessionUtils.getUserId(request);
-            Member member = engine.findMemberByID(userId);
-            Gson gson = new Gson();
-            BufferedReader reader = request.getReader();
-            String jsonString = reader.lines().collect(Collectors.joining());
-            EditRequest editRequest = gson.fromJson(jsonString, EditRequest.class);
-
-            List<Reservation> reservationList;
-            switch (editRequest.requestType) {
-                case "next":
-                    reservationList = member.getNextWeekReservations();
-                    break;
-                case "day":
-                    reservationList = member.getSpecificDateReservations(
-                            LocalDate.now().plusDays(Integer.parseInt(editRequest.day)));
-                    break;
-                default:
-                    reservationList = new ArrayList<>();
-            }
-        }
-    }
-
-    private static class EditRequest {
-        String requestType;
-        String day;
-        String index;
 
     }
 }
