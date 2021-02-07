@@ -1,38 +1,51 @@
 package webapp.common;
 
+import engine.boat.BoatCrew;
 import engine.boat.BoatType;
 import engine.member.Member;
 import engine.reservation.Reservation;
+import webapp.utils.ServerUtils;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 public class ReservationData {
-    //String id;
+    private MemberData reservationCreator;
+    private String id;
     private String date;
     private ActivityData activity;
     private String[] boatTypes;
     private MemberData reservator;
     private MemberData[] boatCrew;
     private MemberData coxswain;
-    private String coxswainSelected;
+    private boolean coxswainSelected;
     private String status;
     private String creationDate;
 
-    public ReservationData(Reservation reservation, List<Member> crewMembers, Member coxswain) {
-        //String id = reservation.getId();
-        String date = reservation.getActivityDate().getDayOfWeek().getDisplayName(
-                TextStyle.FULL, Locale.getDefault()) + " " + reservation.getActivityDate();
-        String activity = reservation.getActivity().getName() + "\n" +
-                reservation.getActivity().getStartTime() + "-" + reservation.getActivity().getEndTime();
-        String boatTypes = parseBoatTypes(reservation.getBoatTypes());
-        String boatCrew = parseCrewMembers(crewMembers, coxswain);
-        String status = reservation.isConfirmed() ? "Confirmed" : "Unconfirmed";
+    public ReservationData(Reservation reservation, Member reservationCreator, Member reservator,
+                           List<Member> crewMembers, boolean coxswainSelected, Member coxswain) {
+        this.reservationCreator = parseMember(reservationCreator);
+        this.id = reservation.getId();
+        this.date = reservation.getActivityDate().getDayOfWeek().getDisplayName(
+                TextStyle.FULL, Locale.ENGLISH) + " " + reservation.getActivityDate();
+        this.activity = new ActivityData(reservation.getWeeklyActivity());
+        this.boatTypes = parseBoatTypes(reservation.getBoatTypes());
+        this.reservator = parseMember(reservator);
+        this.boatCrew = parseCrewMembers(crewMembers);
+        this.coxswainSelected = coxswainSelected;
+        this.coxswain = coxswainSelected ? parseMember(coxswain) : null;
+        this.status = reservation.isConfirmed() ? "Confirmed" : "Unconfirmed";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String creationDate = reservation.getCreationDate().format(formatter);
+        this.creationDate = reservation.getCreationDate().format(formatter);
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getDate() {
@@ -59,43 +72,66 @@ public class ReservationData {
         return coxswain;
     }
 
-    public String getCoxswainSelected() {
+    public boolean getCoxswainSelected() {
         return coxswainSelected;
     }
 
-    private String parseBoatTypes(Set<BoatType> boatTypes) {
-        StringBuilder boatTypesString = new StringBuilder();
-        int setSize = boatTypes.size();
-
-        for (BoatType boatType : boatTypes) {
-            boatTypesString.append(BoatType.boatTypeToBoatCode(boatType));
-            if (--setSize != 0) {
-                boatTypesString.append(", ");
-            }
-        }
-
-        return boatTypesString.toString();
+    public String getStatus() {
+        return status;
     }
 
-    private String parseCrewMembers(List<Member> crewMembers, Member coxswain) {
-        StringBuilder memberNames = new StringBuilder();
+    public String getCreationDate() {
+        return creationDate;
+    }
 
-        for (int i = 0; i < crewMembers.size(); i++) {
-            Member member = crewMembers.get(i);
+    private String[] parseBoatTypes(Set<BoatType> boatTypes) {
+        int setSize = boatTypes.size();
+        int index = 0;
+        String[] boatTypesArray = new String[setSize];
 
-            memberNames.append(member.getName());
-            if (i != crewMembers.size() - 1) {
-                memberNames.append(", ");
-                if (i % 2 != 0) {
-                    memberNames.append("\n");
-                }
-            }
+        for (BoatType boatType : boatTypes) {
+            boatTypesArray[index] = BoatType.boatTypeToBoatCode(boatType);
+            index++;
         }
 
-        memberNames.append("\n");
-        memberNames.append("Coxswain: ");
-        memberNames.append(coxswainSelected = coxswain == null ? "none" : coxswain.getName());
+        return boatTypesArray;
+    }
 
-        return memberNames.toString();
+    private Set<BoatType> parseBoatTypes(String[] boatTypes) {
+        return null;
+    }
+
+    private MemberData[] parseCrewMembers(List<Member> crewMembers) {
+        MemberData[] members = new MemberData[crewMembers.size()];
+
+        for (int i = 0; i < crewMembers.size(); i++) {
+            members[i] = parseMember(crewMembers.get(i));
+        }
+
+        return members;
+    }
+
+    private List<String> parseCrewMembers(MemberData[] crewMembers) {
+        List<String> members = new ArrayList<>();
+        for (int i = 0; i < crewMembers.length; i++) {
+            members.add(crewMembers[i].getId());
+        }
+
+        return members;
+    }
+
+    private MemberData parseMember(Member member) {
+        return new MemberData(member);
+    }
+
+    public Reservation createReservation() {
+        Set<BoatType> boatTypesSet = parseBoatTypes(boatTypes);
+        LocalDate activityDate = ServerUtils.parseDate(date);
+        List<String> crewMembers = parseCrewMembers(boatCrew);
+        String coxswainId = coxswainSelected ? coxswain.getId() : null;
+        BoatCrew parsedBoatCrew = new BoatCrew(crewMembers, coxswainId);
+
+        return new Reservation(reservationCreator.getId(), reservator.getId(),
+                activity.createWeeklyActivity(), boatTypesSet, activityDate, parsedBoatCrew);
     }
 }

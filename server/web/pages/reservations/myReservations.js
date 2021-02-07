@@ -227,11 +227,11 @@ function appendTableData(tableEntryEl, reservation) {
 
     statusDataEl.classList.add("reservationStatus");
 
-    reservatorDataEl.textContent = reservation.reservator;
+    reservatorDataEl.textContent = reservation.reservator.name;
     dateDataEl.textContent = reservation.date;
-    activityDataEl.textContent = reservation.activity;
-    boatTypesDataEl.textContent = reservation.boatTypes;
-    boatCrewDataEl.textContent = reservation.boatCrew;
+    activityDataEl.textContent = reservation.activity.name + "\n" + reservation.activity.time;
+    boatTypesDataEl.textContent = parseBoatTypes(reservation.boatTypes);
+    boatCrewDataEl.textContent = parseBoatCrew(reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
     statusDataEl.textContent = reservation.status;
     creationDateDataEl.textContent = reservation.creationDate;
 
@@ -242,6 +242,37 @@ function appendTableData(tableEntryEl, reservation) {
     tableEntryEl.appendChild(boatCrewDataEl);
     tableEntryEl.appendChild(statusDataEl);
     tableEntryEl.appendChild(creationDateDataEl);
+}
+
+function parseBoatTypes(boatTypes) {
+    let boatTypesString = "";
+    for (let i = 0; i < boatTypes.length; i++) {
+        boatTypesString.concat(boatTypes[i]);
+        if (i !== boatTypes.length - 1) {
+            boatTypesString.concat(", ");
+        }
+    }
+
+    return boatTypesString;
+}
+
+function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
+    let boatCrewString = "";
+    for (let i = 0; i < boatCrew.length; i++) {
+        boatCrewString.concat(boatCrew[i].name);
+        if (i !== boatCrew.length - 1) {
+            boatCrewString.concat(", ");
+            if (i % 2 !== 0) {
+                boatCrewString.concat("\n");
+            }
+        }
+    }
+
+    boatCrewString.concat("\n");
+    boatCrewString.concat("Coxswain: ");
+    boatCrewString.concat(coxswainSelected === "true" ? coxswain : "none");
+
+    return boatCrewString;
 }
 
 function initializeDaysDropDownMenu() {

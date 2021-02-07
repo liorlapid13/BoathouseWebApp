@@ -9,7 +9,6 @@ import engine.member.Member;
 import engine.member.MemberLevel;
 import engine.reservation.Reservation;
 import engine.reservation.ReservationViewFilter;
-import engine.BMSEngine;
 import engine.exception.EmailAlreadyExistsException;
 import engine.exception.MemberAlreadyLoggedInException;
 import engine.exception.XmlException;
@@ -161,7 +160,7 @@ public class Engine implements BMSEngine {
     public Member updateMemberEmail(String email, String id) throws EmailAlreadyExistsException {
         Member member = findMemberByID(id);
 
-        if (isEmailAvailable(email)) {
+        if (member.getEmail().equals(email) || isEmailAvailable(email)) {
             member.setEmail(email);
         }
 
@@ -701,7 +700,7 @@ public class Engine implements BMSEngine {
 
     private boolean doesBoatMatchReservation(Boat boat, Reservation reservation) {
         return reservation.getBoatTypes().contains(boat.getBoatType()) &&
-                isBoatAvailableForActivity(boat, reservation.getActivity(), reservation.getActivityDate());
+                isBoatAvailableForActivity(boat, reservation.getWeeklyActivity(), reservation.getActivityDate());
     }
 
     @Override
@@ -710,7 +709,7 @@ public class Engine implements BMSEngine {
 
         for (Assignment assignment : assignments) {
             if (assignment.getAssignedBoat().equals(boat) &&
-                    areActivitiesOverlapping(activity, assignment.getAssignedReservation().getActivity())) {
+                    areActivitiesOverlapping(activity, assignment.getAssignedReservation().getWeeklyActivity())) {
                 return false;
             }
         }
@@ -762,12 +761,12 @@ public class Engine implements BMSEngine {
 
     @Override
     public List<Reservation> getCombinableReservations(Reservation originalReservation, int maxCrewSize) {
-        WeeklyActivity activity = originalReservation.getActivity();
+        WeeklyActivity activity = originalReservation.getWeeklyActivity();
         LocalDate activityDate = originalReservation.getActivityDate();
 
         List<Reservation> reservations = this.reservationList.stream()
                 .filter(reservation -> reservation.getActivityDate().equals(activityDate))
-                .filter(reservation -> reservation.getActivity().equals(activity))
+                .filter(reservation -> reservation.getWeeklyActivity().equals(activity))
                 .filter(reservation -> !reservation.isConfirmed())
                 .filter(reservation -> reservation.getBoatCrew().size() <= maxCrewSize)
                 .collect(Collectors.toList());
@@ -977,15 +976,24 @@ public class Engine implements BMSEngine {
         }
     }
 
-    private void linkReservationActivities() {
+    private void linkReservationActivitiesAndCounter() {
+        int maxReservationId = 0, reservationId;
+
         for (Reservation reservation : reservationList) {
+            reservationId = Integer.parseInt(reservation.getId());
+            if (reservationId > maxReservationId) {
+                maxReservationId = reservationId;
+            }
+
             for (WeeklyActivity weeklyActivity : weeklyActivities) {
-                if (reservation.getActivity().equals(weeklyActivity)) {
+                if (reservation.getWeeklyActivity().equals(weeklyActivity)) {
                     reservation.setWeeklyActivity(weeklyActivity);
                     break;
                 }
             }
         }
+
+        Reservation.counter = maxReservationId;
     }
 
     private void linkAssignmentReservations() {
@@ -1011,7 +1019,7 @@ public class Engine implements BMSEngine {
     }
 
     public void linkSystemObjectReferences() {
-        linkReservationActivities();
+        linkReservationActivitiesAndCounter();
         linkMemberReservations();
         linkAssignmentBoats();
         linkAssignmentReservations();

@@ -65,16 +65,9 @@ async function handleDaySelection(event) {
     const daysMenuEl = document.getElementById("daysDropDownMenu");
     daysMenuEl.disabled = true;
     selectedDay = document.getElementById('daysDropDownMenu').value;
-    const data = {
-        day: selectedDay
-    }
 
     const response = await fetch('../../activities', {
-        method: 'post',
-        headers: new Headers({
-            'Content-Type': 'application/json;charset=utf-8'
-        }),
-        body: JSON.stringify(data)
+        method: 'get',
     });
 
     if (response.status === STATUS_OK) {

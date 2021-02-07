@@ -43,14 +43,12 @@ public class EditPersonalDetailsServlet extends HttpServlet {
             String phoneNumber = memberDetails.getPhoneNumber();
 
             try {
-                if (engine.isEmailAvailable(email)) {
-                    engine.updateMemberEmail(email, userId);
-                    engine.updateMemberPassword(password, userId);
-                    engine.updateMemberName(name, userId);
-                    engine.updateMemberPhoneNumber(phoneNumber, userId);
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    ServerUtils.saveSystemState(getServletContext());
-                }
+                engine.updateMemberEmail(email, userId);
+                engine.updateMemberPassword(password, userId);
+                engine.updateMemberName(name, userId);
+                engine.updateMemberPhoneNumber(phoneNumber, userId);
+                response.setStatus(HttpServletResponse.SC_OK);
+                ServerUtils.saveSystemState(getServletContext());
             } catch (EmailAlreadyExistsException e) {
                 response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
                 out.print(e.getMessage());

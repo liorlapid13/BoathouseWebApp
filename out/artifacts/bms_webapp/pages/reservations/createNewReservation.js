@@ -5,7 +5,7 @@ let selectedBoatCrew = [];
 let selectedCoxswain;
 let coxswainSelected;
 let selectedReservator;
-let manualTime;
+let selectedManualTime;
 
 let activityList;
 let memberList;
@@ -62,19 +62,12 @@ function setupEventHandlers() {
 async function handleDaySelection(event) {
     selectDayButtonEl.disabled = true;
     selectActivityButtonEl.disabled = false;
-    const daysMenuEl =document.getElementById("daysDropDownMenu");
+    const daysMenuEl = document.getElementById("daysDropDownMenu");
     daysMenuEl.disabled = true;
     selectedDay = document.getElementById('daysDropDownMenu').value;
-    const data = {
-        day: selectedDay
-    }
 
     const response = await fetch('../../activities', {
-        method: 'post',
-        headers: new Headers({
-            'Content-Type': 'application/json;charset=utf-8'
-        }),
-        body: JSON.stringify(data)
+        method: 'get',
     });
 
     if (response.status === STATUS_OK) {
@@ -88,15 +81,15 @@ async function handleDaySelection(event) {
         modalBody.textContent = "There are no available activities for this day"
         showModal(modal);
         selectActivityButtonEl.textContent = "Select Time";
-        const manualActivity = document.querySelector('manualActivityTime');
-        manualActivity.style.display = null;
+        const manualActivity = document.getElementById('manualActivity');
+        manualActivity.style.display = "block";
     }
 }
 
 function handleActivitySelection(event) {
     const activitiesMenuEl = document.getElementById("activityDropDownMenu");
     activitiesMenuEl.disabled = true;
-    if (activitiesMenuEl.firstChild) {
+    if (activitiesMenuEl.childNodes.length > 1) {
         selectedActivity = activityList[document.getElementById('activityDropDownMenu').value];
         selectActivityButtonEl.disabled = true;
         selectBoatTypesButtonEl.disabled = false;
@@ -107,7 +100,7 @@ function handleActivitySelection(event) {
         const endTimeMinutes = document.getElementById('endTimeMinutes');
         if (checkManualTime(startTimeHours.value, startTimeMinutes.value, endTimeHours.value, endTimeMinutes.value)) {
             selectedActivity = null;
-            manualTime = startTimeHours.value + ":" + startTimeMinutes.value + "-" +  endTimeHours.value + ":" + endTimeMinutes.value;
+            selectedManualTime = startTimeHours.value + ":" + startTimeMinutes.value + "-" +  endTimeHours.value + ":" + endTimeMinutes.value;
             startTimeHours.disabled = true;
             startTimeMinutes.disabled = true;
             endTimeHours.disabled = true;
@@ -149,7 +142,7 @@ async function handleBoatTypesSelection(event) {
     const data = {
         activity: selectedActivity,
         day: selectedDay,
-        time: manualTime
+        manualTime: selectedManualTime
     }
 
     const response = await fetch('../../membersForReservation', {
@@ -322,7 +315,7 @@ function buildMemberTableEntry(member,index) {
     checkBoxEl2.classList.add('form-check-input', 'crewCheckBox');
     checkBoxEl2.addEventListener('change', checkCrewCheckBoxes);
     tableDataEl1.appendChild(checkBoxEl2);
-    tableDataEl2.textContent = member.name + ", " + member.email;
+    tableDataEl2.textContent = member.id + ", " + member.name;
     tableRowEl.appendChild(tableHeaderEl);
     tableRowEl.appendChild(tableDataEl1);
     tableRowEl.appendChild(tableDataEl2);
@@ -340,7 +333,7 @@ function buildReservatorTableEntry(member, index) {
     checkBoxEl.setAttribute('type', 'radio');
     checkBoxEl.setAttribute('name', 'reservatorRadio')
     tableHeaderEl.appendChild(checkBoxEl);
-    tableDataEl.textContent = member.name + ", " + member.email;
+    tableDataEl.textContent = member.id + ", " + member.name;
     tableRowEl.appendChild(tableHeaderEl);
     tableRowEl.appendChild(tableDataEl);
 

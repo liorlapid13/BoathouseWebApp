@@ -145,7 +145,7 @@ public class Member implements Serializable {
         for (Reservation reservation : reservationList) {
             if (reservation.getActivityDate().isAfter(today) ||
                     (reservation.getActivityDate().equals(today) &&
-                            reservation.getActivity().getStartTime().isAfter(timeNow))) {
+                            reservation.getWeeklyActivity().getStartTime().isAfter(timeNow))) {
                 futureReservationList.add(reservation);
             }
         }
@@ -275,7 +275,7 @@ public class Member implements Serializable {
 
         for (Reservation reservation : reservations) {
             if (reservation.getActivityDate().equals(date)) {
-                WeeklyActivity reservationActivity = reservation.getActivity();
+                WeeklyActivity reservationActivity = reservation.getWeeklyActivity();
                 LocalTime activityStartTime = reservationActivity.getStartTime();
                 LocalTime activityEndTime = reservationActivity.getEndTime();
 

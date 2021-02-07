@@ -2,6 +2,7 @@ package webapp.servlets;
 
 import com.google.gson.Gson;
 import engine.Engine;
+import webapp.common.ActivityData;
 import webapp.utils.ServletUtils;
 
 import javax.servlet.ServletException;
@@ -39,7 +40,7 @@ public class ReservationActivityServlet extends HttpServlet {
 
     private static class RequestData {
         String day;
-        ActivitiesServlet.ActivityData activity;
+        ActivityData activity;
         String boatCrew;
     }
 }

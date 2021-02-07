@@ -2,32 +2,33 @@ package webapp.common;
 
 import engine.activity.WeeklyActivity;
 import engine.boat.BoatType;
+import webapp.utils.ServerUtils;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
 public class ActivityData {
     private String name;
-    private String date;
     private String time;
     private String restriction;
-    // TODO: Anymore fields? (for create activity)
 
-    public ActivityData(WeeklyActivity activity, int daysFromToday) {
+    public ActivityData(WeeklyActivity activity) {
         String name = activity.getName();
-        LocalDate activityDate = LocalDate.now().plusDays(daysFromToday);
-        String date = activityDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + activityDate;
         String time = activity.getStartTime() + "-" + activity.getEndTime();
         String restriction = BoatType.boatTypeToBoatCode(activity.getBoatTypeRestriction());
     }
 
-    public String getName() {
-        return name;
+    public ActivityData(String name, String time, String restriction) {
+        this.name = name;
+        this.time = time;
+        this.restriction = restriction;
     }
 
-    public String getDate() {
-        return date;
+    public String getName() {
+        return name;
     }
 
     public String getTime() {
@@ -36,5 +37,13 @@ public class ActivityData {
 
     public String getRestriction() {
         return restriction;
+    }
+
+    public WeeklyActivity createWeeklyActivity() {
+        LocalTime startTime = ServerUtils.parseStartTime(time);
+        LocalTime endTime = ServerUtils.parseEndTime(time);
+        BoatType boatTypeRestriction = BoatType.boatCodeToBoatType(restriction);
+
+        return new WeeklyActivity(name, startTime, endTime, boatTypeRestriction);
     }
 }

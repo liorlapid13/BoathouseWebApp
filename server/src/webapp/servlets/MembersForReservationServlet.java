@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import engine.Engine;
 import engine.activity.WeeklyActivity;
 import engine.member.Member;
+import webapp.common.ActivityData;
 import webapp.constants.Constants;
 import webapp.utils.ServletUtils;
 import webapp.utils.SessionUtils;
@@ -52,7 +53,7 @@ public class MembersForReservationServlet extends HttpServlet {
                 activity = new WeeklyActivity(member.getName() + "'s activity", startTime, endTime, null);
                 getServletContext().setAttribute(Constants.DUMMY_ACTIVITY, activity);
             } else {
-                activity = engine.findActivity(requestData.activity.name, requestData.activity.time);
+                activity = engine.findActivity(requestData.activity.getName(), requestData.activity.getTime());
             }
             List<MemberData> memberDataList = new ArrayList<>();
             List<Member> availMembers = engine.findAvailableMembersForReservation(activity, Integer.parseInt(requestData.day));
@@ -80,11 +81,11 @@ public class MembersForReservationServlet extends HttpServlet {
     }
 
     private static class RequestData {
-        ActivitiesServlet.ActivityData activity;
+        ActivityData activity;
         String day;
         String manualTime;
 
-        public RequestData(ActivitiesServlet.ActivityData activity, String day, String manualTime) {
+        public RequestData(ActivityData activity, String day, String manualTime) {
             this.activity = activity;
             this.day = day;
             this.manualTime = manualTime;

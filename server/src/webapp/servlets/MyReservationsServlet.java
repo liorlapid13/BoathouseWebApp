@@ -5,6 +5,7 @@ import engine.Engine;
 import engine.boat.BoatType;
 import engine.member.Member;
 import engine.reservation.Reservation;
+import webapp.common.ReservationData;
 import webapp.utils.ServletUtils;
 import webapp.utils.SessionUtils;
 
@@ -58,7 +59,7 @@ public class MyReservationsServlet extends HttpServlet {
                     break;
                 case "day":
                     reservationList = member.getSpecificDateReservations(
-                            LocalDate.now().plusDays(Integer.parseInt(requestData.day)));
+                            LocalDate.now().plusDays(Integer.parseInt(requestData.daysFromToday)));
                     break;
                 default:
                     reservationList = new ArrayList<>();
@@ -79,40 +80,22 @@ public class MyReservationsServlet extends HttpServlet {
     private void parseReservationDetails(List<Reservation> reservationList,
                                          List<ReservationData> reservationDataList, Engine engine) {
         for (Reservation reservation : reservationList) {
-            String id = reservation.getId();
-            String reservator = engine.findMemberByID(reservation.getReservator()).getName();
-            String date = reservation.getActivityDate().getDayOfWeek().getDisplayName(
-                    TextStyle.FULL, Locale.getDefault()) + " " + reservation.getActivityDate();
-            String activity = reservation.getActivity().getName() + "\n" +
-                    reservation.getActivity().getStartTime() + "-" + reservation.getActivity().getEndTime();
-            String boatTypes = parseSelectedBoatTypes(reservation.getBoatTypes());
-            String boatCrew = parseCrewMembers(
-                    engine.findMemberListByIDList(reservation.getBoatCrew().getCrewMembers()),
-                    engine.findMemberByID(reservation.getBoatCrew().getCoxswain()));
-            String status = reservation.isConfirmed() ? "Confirmed" : "Unconfirmed";
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String creationDate = reservation.getCreationDate().format(formatter);
-            ReservationData reservationData = new ReservationData(
-                    id,
-                    reservator,
-                    date,
-                    activity,
-                    boatTypes,
-                    boatCrew,
-                    status,
-                    creationDate
-            );
-
-            reservationDataList.add(reservationData);
+            Member reservationCreator = engine.findMemberByID(reservation.getReservationCreator());
+            Member reservator = engine.findMemberByID(reservation.getReservator());
+            List<Member> crewMembers = engine.findMemberListByIDList(reservation.getBoatCrew().getCrewMembers());
+            Member coxswain = engine.findMemberByID(reservation.getBoatCrew().getCoxswain());
+            boolean coxswainSelected = coxswain != null;
+            reservationDataList.add(new ReservationData(reservation, reservationCreator, reservator, crewMembers,
+                    coxswainSelected, coxswain));
         }
     }
 
     private static class RequestData {
         String requestType;
-        String day;
+        String daysFromToday;
     }
 
-    private static class ReservationData {
+    /*private static class ReservationData {
         String id;
         String reservator;
         String date;
@@ -170,5 +153,5 @@ public class MyReservationsServlet extends HttpServlet {
         memberNames.append(coxswain == null ? "none" : coxswain.getName());
 
         return memberNames.toString();
-    }
+    }*/
 }

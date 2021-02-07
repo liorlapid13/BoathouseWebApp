@@ -6,6 +6,7 @@ import engine.activity.WeeklyActivity;
 import engine.boat.BoatCrew;
 import engine.boat.BoatType;
 import engine.reservation.Reservation;
+import webapp.common.ActivityData;
 import webapp.constants.Constants;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
@@ -53,7 +54,7 @@ public class CreateReservationServlet extends HttpServlet {
             if (reservationData.activity == null) {
                 activity = (WeeklyActivity)getServletContext().getAttribute(Constants.DUMMY_ACTIVITY);
             } else {
-                activity = engine.findActivity(reservationData.activity.name, reservationData.activity.time);
+                activity = engine.findActivity(reservationData.activity.getName(), reservationData.activity.getTime());
             }
 
             Set<BoatType> boatTypes = new HashSet<>();
@@ -80,7 +81,7 @@ public class CreateReservationServlet extends HttpServlet {
 
     private static class ReservationData {
         String day;
-        ActivitiesServlet.ActivityData activity;
+        ActivityData activity;
         String[] boatTypes;
         MembersForReservationServlet.MemberData reservator;
         MembersForReservationServlet.MemberData[] boatCrew;

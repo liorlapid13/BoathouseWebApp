@@ -18,7 +18,7 @@ import java.util.*;
 
 @XmlRootElement
 public class Reservation implements Serializable {
-    private static int counter = 0;
+    public static int counter = 0;
 
     private String id;
     private String reservationCreator;
@@ -96,10 +96,6 @@ public class Reservation implements Serializable {
 
     public boolean isConfirmed() {
         return isConfirmed;
-    }
-
-    public WeeklyActivity getActivity() {
-        return weeklyActivity;
     }
 
     public BoatCrew getBoatCrew() {
