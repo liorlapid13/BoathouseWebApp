@@ -1,6 +1,7 @@
 package webapp.servlets;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import engine.Engine;
 import engine.activity.WeeklyActivity;
 import engine.boat.BoatCrew;
@@ -41,26 +42,24 @@ public class CreateReservationServlet extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try (PrintWriter out = resp.getWriter()) {
-            Engine engine = ServletUtils.getEngine(getServletContext());
-            String userId = SessionUtils.getUserId(req);
-            Gson gson = new Gson();
-            BufferedReader reader = req.getReader();
-            String jsonString = reader.lines().collect(Collectors.joining());
-            ReservationData reservationData = gson.fromJson(jsonString, ReservationData.class);
-            WeeklyActivity activity;
-            if (reservationData.getActivity() == null) {
-                activity = (WeeklyActivity)getServletContext().getAttribute(Constants.DUMMY_ACTIVITY);
-            } else {
-                activity = engine.findActivity(reservationData.getActivity().getName(),
-                        reservationData.getActivity().getTime());
-            }
-
-            Reservation reservation = reservationData.createReservation(activity);
-            engine.publishNewReservation(reservation, false);
-            ServerUtils.saveSystemState(getServletContext());
-            resp.setStatus(HttpServletResponse.SC_OK);
+        Engine engine = ServletUtils.getEngine(getServletContext());
+        String userId = SessionUtils.getUserId(req);
+        Gson gson = new Gson();
+        BufferedReader reader = req.getReader();
+        String jsonString = reader.lines().collect(Collectors.joining());
+        ReservationData reservationData = gson.fromJson(jsonString, ReservationData.class);
+        WeeklyActivity activity;
+        if (reservationData.getActivity() == null) {
+            activity = (WeeklyActivity)getServletContext().getAttribute(Constants.DUMMY_ACTIVITY);
+        } else {
+            activity = engine.findActivity(reservationData.getActivity().getName(),
+                    reservationData.getActivity().getTime());
         }
+
+        Reservation reservation = reservationData.createReservation(userId, activity);
+        engine.publishNewReservation(reservation, false);
+        ServerUtils.saveSystemState(getServletContext());
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
     /*private static class ReservationData {

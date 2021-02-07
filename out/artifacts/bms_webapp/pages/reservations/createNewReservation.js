@@ -259,7 +259,7 @@ async function handleReservationCreation(event) {
     const data = {
         reservationCreator: null,
         id: null,
-        date: selectedDate,
+        date: selectedDay,
         activity: selectedActivity,
         boatTypes: selectedBoatTypes,
         reservator: selectedReservator,

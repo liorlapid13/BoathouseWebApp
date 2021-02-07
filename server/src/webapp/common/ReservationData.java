@@ -127,14 +127,14 @@ public class ReservationData {
         return new MemberData(member);
     }
 
-    public Reservation createReservation(WeeklyActivity weeklyActivity) {
+    public Reservation createReservation(String reservationCreator, WeeklyActivity weeklyActivity) {
         Set<BoatType> boatTypesSet = parseBoatTypes(boatTypes);
         LocalDate activityDate = ServerUtils.parseDate(date);
         List<String> crewMembers = parseCrewMembers(boatCrew);
         String coxswainId = coxswainSelected ? coxswain.getId() : null;
         BoatCrew parsedBoatCrew = new BoatCrew(crewMembers, coxswainId);
 
-        return new Reservation(reservationCreator.getId(), reservator.getId(), weeklyActivity, boatTypesSet,
+        return new Reservation(reservationCreator, reservator.getId(), weeklyActivity, boatTypesSet,
                 activityDate, parsedBoatCrew);
     }
 }
