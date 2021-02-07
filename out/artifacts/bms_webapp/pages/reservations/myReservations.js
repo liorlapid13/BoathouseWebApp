@@ -247,9 +247,9 @@ function appendTableData(tableEntryEl, reservation) {
 function parseBoatTypes(boatTypes) {
     let boatTypesString = "";
     for (let i = 0; i < boatTypes.length; i++) {
-        boatTypesString.concat(boatTypes[i]);
+        boatTypesString = boatTypesString.concat(boatTypes[i]);
         if (i !== boatTypes.length - 1) {
-            boatTypesString.concat(", ");
+            boatTypesString = boatTypesString.concat(", ");
         }
     }
 
@@ -259,18 +259,18 @@ function parseBoatTypes(boatTypes) {
 function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";
     for (let i = 0; i < boatCrew.length; i++) {
-        boatCrewString.concat(boatCrew[i].name);
+        boatCrewString = boatCrewString.concat(boatCrew[i].name);
         if (i !== boatCrew.length - 1) {
-            boatCrewString.concat(", ");
+            boatCrewString = boatCrewString.concat(", ");
             if (i % 2 !== 0) {
-                boatCrewString.concat("\n");
+                boatCrewString = boatCrewString.concat("\n");
             }
         }
     }
 
-    boatCrewString.concat("\n");
-    boatCrewString.concat("Coxswain: ");
-    boatCrewString.concat(coxswainSelected === "true" ? coxswain : "none");
+    boatCrewString = boatCrewString.concat("\n");
+    boatCrewString = boatCrewString.concat("Coxswain: ");
+    boatCrewString = boatCrewString.concat(coxswainSelected === "true" ? coxswain : "none");
 
     return boatCrewString;
 }

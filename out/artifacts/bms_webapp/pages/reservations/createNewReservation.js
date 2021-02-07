@@ -66,7 +66,11 @@ async function handleDaySelection(event) {
     daysMenuEl.disabled = true;
     selectedDay = document.getElementById('daysDropDownMenu').value;
 
-    const response = await fetch('../../activities', {
+    const activityDropDownMenuEl = document.getElementById('activityDropDownMenu');
+    const manualActivityEl = document.getElementById('manualActivity');
+    activityList = await fetchAndDisplayActivitiesInDropDownMenu(activityDropDownMenuEl, modal, modalTitle, modalBody,
+        selectActivityButtonEl, manualActivityEl);
+    /*const response = await fetch('../../activities', {
         method: 'get',
     });
 
@@ -81,9 +85,9 @@ async function handleDaySelection(event) {
         modalBody.textContent = "There are no available activities for this day"
         showModal(modal);
         selectActivityButtonEl.textContent = "Select Time";
-        const manualActivity = document.getElementById('manualActivity');
-        manualActivity.style.display = "block";
-    }
+        const manualActivityEl = document.getElementById('manualActivity');
+        manualActivityEl.style.display = "block";
+    }*/
 }
 
 function handleActivitySelection(event) {
@@ -289,13 +293,13 @@ function doBoatTypesNeedCoxswain(selectedBoatTypes) {
     return false;
 }
 
-function createActivityOption(activity, index) {
+/*function createActivityOption(activity, index) {
     const activityOption = document.createElement('option');
     activityOption.value = index;
     activityOption.textContent = activity.name+ ", " +activity.time;
 
     return activityOption;
-}
+}*/
 
 function buildMemberTableEntry(member,index) {
     const tableRowEl = document.createElement('tr');
@@ -424,7 +428,7 @@ function checkManualTime(startTimeHours, startTimeMinutes, endTimeHours, endTime
 function initializeModals() {
     modal = document.getElementById("Modal");
     modalBody = document.getElementById("modalBody");
-    modalTitle = document.getElementById("ModalLabel");
+    modalTitle = document.getElementById("modalLabel");
     finalModal = document.getElementById("finalModal");
     finalModalBody = document.getElementById("finalModalBody");
     finalModalTitle = document.getElementById("finalModalLabel");

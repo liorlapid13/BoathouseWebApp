@@ -81,8 +81,8 @@ async function handleDaySelection(event) {
         modalBody.textContent = "There are no available activities for this day"
         showModal(modal);
         selectActivityButtonEl.textContent = "Select Time";
-        const manualActivity = document.getElementById('manualActivity');
-        manualActivity.style.display = "block";
+        const manualActivityEl = document.getElementById('manualActivity');
+        manualActivityEl.style.display = "block";
     }
 }
 
@@ -255,14 +255,20 @@ function handleReservatorSelection(event) {
 }
 
 async function handleReservationCreation(event) {
+    let date = new Date();
+    date.setDate(date.getDate() + selectedDay);
     const data = {
-        day: selectedDay,
+        reservationCreator: null,
+        id: null,
+        date: date,
         activity: selectedActivity,
         boatTypes: selectedBoatTypes,
         reservator: selectedReservator,
         boatCrew: selectedBoatCrew,
         coxswain: selectedCoxswain,
-        coxswainSelected: coxswainSelected
+        coxswainSelected: coxswainSelected,
+        status: null,
+        creationDate: null
     }
 
     const response = await fetch('../../createReservation', {
@@ -424,7 +430,7 @@ function checkManualTime(startTimeHours, startTimeMinutes, endTimeHours, endTime
 function initializeModals() {
     modal = document.getElementById("Modal");
     modalBody = document.getElementById("modalBody");
-    modalTitle = document.getElementById("ModalLabel");
+    modalTitle = document.getElementById("modalLabel");
     finalModal = document.getElementById("finalModal");
     finalModalBody = document.getElementById("finalModalBody");
     finalModalTitle = document.getElementById("finalModalLabel");

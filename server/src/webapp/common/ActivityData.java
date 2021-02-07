@@ -4,11 +4,7 @@ import engine.activity.WeeklyActivity;
 import engine.boat.BoatType;
 import webapp.utils.ServerUtils;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 public class ActivityData {
     private String name;
@@ -16,9 +12,9 @@ public class ActivityData {
     private String restriction;
 
     public ActivityData(WeeklyActivity activity) {
-        String name = activity.getName();
-        String time = activity.getStartTime() + "-" + activity.getEndTime();
-        String restriction = BoatType.boatTypeToBoatCode(activity.getBoatTypeRestriction());
+        this.name = activity.getName();
+        this.time = activity.getStartTime() + "-" + activity.getEndTime();
+        this.restriction = BoatType.boatTypeToBoatCode(activity.getBoatTypeRestriction());
     }
 
     public ActivityData(String name, String time, String restriction) {

@@ -1,5 +1,6 @@
 package webapp.common;
 
+import engine.activity.WeeklyActivity;
 import engine.boat.BoatCrew;
 import engine.boat.BoatType;
 import engine.member.Member;
@@ -124,14 +125,14 @@ public class ReservationData {
         return new MemberData(member);
     }
 
-    public Reservation createReservation() {
+    public Reservation createReservation(WeeklyActivity weeklyActivity) {
         Set<BoatType> boatTypesSet = parseBoatTypes(boatTypes);
         LocalDate activityDate = ServerUtils.parseDate(date);
         List<String> crewMembers = parseCrewMembers(boatCrew);
         String coxswainId = coxswainSelected ? coxswain.getId() : null;
         BoatCrew parsedBoatCrew = new BoatCrew(crewMembers, coxswainId);
 
-        return new Reservation(reservationCreator.getId(), reservator.getId(),
-                activity.createWeeklyActivity(), boatTypesSet, activityDate, parsedBoatCrew);
+        return new Reservation(reservationCreator.getId(), reservator.getId(), weeklyActivity, boatTypesSet,
+                activityDate, parsedBoatCrew);
     }
 }

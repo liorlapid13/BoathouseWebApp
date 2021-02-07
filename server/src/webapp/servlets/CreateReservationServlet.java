@@ -7,6 +7,7 @@ import engine.boat.BoatCrew;
 import engine.boat.BoatType;
 import engine.reservation.Reservation;
 import webapp.common.ActivityData;
+import webapp.common.ReservationData;
 import webapp.constants.Constants;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
@@ -47,39 +48,22 @@ public class CreateReservationServlet extends HttpServlet {
             BufferedReader reader = req.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
             ReservationData reservationData = gson.fromJson(jsonString, ReservationData.class);
-
-            LocalDate date = LocalDate.now().plusDays(Integer.parseInt(reservationData.day));
-
             WeeklyActivity activity;
-            if (reservationData.activity == null) {
+            if (reservationData.getActivity() == null) {
                 activity = (WeeklyActivity)getServletContext().getAttribute(Constants.DUMMY_ACTIVITY);
             } else {
-                activity = engine.findActivity(reservationData.activity.getName(), reservationData.activity.getTime());
+                activity = engine.findActivity(reservationData.getActivity().getName(),
+                        reservationData.getActivity().getTime());
             }
 
-            Set<BoatType> boatTypes = new HashSet<>();
-            for (int i = 0; i < reservationData.boatTypes.length; i++) {
-                boatTypes.add(BoatType.boatCodeToBoatType(reservationData.boatTypes[i]));
-            }
-
-            List<String> crewMembers = new ArrayList<>();
-            for (int i = 0; i < reservationData.boatCrew.length; i++) {
-                crewMembers.add(reservationData.boatCrew[i].id);
-            }
-            String coxswain = null;
-            if (reservationData.coxswainSelected.equals("true")) {
-                coxswain = reservationData.coxswain.id;
-            }
-            BoatCrew crew = new BoatCrew(crewMembers, coxswain);
-
-            Reservation reservation = new Reservation(userId, reservationData.reservator.id, activity, boatTypes, date, crew);
+            Reservation reservation = reservationData.createReservation(activity);
             engine.publishNewReservation(reservation, false);
             ServerUtils.saveSystemState(getServletContext());
             resp.setStatus(HttpServletResponse.SC_OK);
         }
     }
 
-    private static class ReservationData {
+    /*private static class ReservationData {
         String day;
         ActivityData activity;
         String[] boatTypes;
@@ -87,5 +71,5 @@ public class CreateReservationServlet extends HttpServlet {
         MembersForReservationServlet.MemberData[] boatCrew;
         MembersForReservationServlet.MemberData coxswain;
         String coxswainSelected;
-    }
+    }*/
 }
