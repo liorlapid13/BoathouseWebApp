@@ -10,10 +10,7 @@ import webapp.utils.ServerUtils;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public class ReservationData {
     private MemberData reservationCreator;
@@ -99,7 +96,12 @@ public class ReservationData {
     }
 
     private Set<BoatType> parseBoatTypes(String[] boatTypes) {
-        return null;
+        Set<BoatType> boatTypesSet = new HashSet<>();
+        for (int i = 0; i < boatTypes.length; i++) {
+            boatTypesSet.add(BoatType.boatCodeToBoatType(boatTypes[i]));
+        }
+
+        return boatTypesSet;
     }
 
     private MemberData[] parseCrewMembers(List<Member> crewMembers) {

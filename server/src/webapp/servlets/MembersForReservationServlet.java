@@ -5,7 +5,9 @@ import engine.Engine;
 import engine.activity.WeeklyActivity;
 import engine.member.Member;
 import webapp.common.ActivityData;
+import webapp.common.MemberData;
 import webapp.constants.Constants;
+import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
 import webapp.utils.SessionUtils;
 
@@ -17,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,23 +48,20 @@ public class MembersForReservationServlet extends HttpServlet {
             RequestData requestData = gson.fromJson(jsonString, RequestData.class);
             WeeklyActivity activity;
             if (requestData.activity == null) {
-                String[] activityTimes = requestData.manualTime.split("-", 2);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
-                LocalTime startTime = LocalTime.parse(activityTimes[0], formatter);
-                LocalTime endTime = LocalTime.parse(activityTimes[1], formatter);
+                LocalTime startTime = ServerUtils.parseStartTime(requestData.manualTime);
+                LocalTime endTime = ServerUtils.parseEndTime(requestData.manualTime);
                 activity = new WeeklyActivity(member.getName() + "'s activity", startTime, endTime, null);
                 getServletContext().setAttribute(Constants.DUMMY_ACTIVITY, activity);
             } else {
                 activity = engine.findActivity(requestData.activity.getName(), requestData.activity.getTime());
             }
-            List<MemberData> memberDataList = new ArrayList<>();
-            List<Member> availMembers = engine.findAvailableMembersForReservation(activity, Integer.parseInt(requestData.day));
-            if (availMembers.isEmpty()) {
+            LocalDate date = ServerUtils.parseDate(requestData.date);
+            List<Member> availableMembers =
+                    engine.findAvailableMembersForReservation(activity, date);
+            if (availableMembers.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             } else {
-                for (Member availMember : availMembers) {
-                    parseMemberData(availMember, memberDataList);
-                }
+                List<MemberData> memberDataList = parseAvailableMembers(availableMembers);
                 String jsonResponse = gson.toJson(memberDataList);
                 resp.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
@@ -71,28 +70,28 @@ public class MembersForReservationServlet extends HttpServlet {
         }
     }
 
-    private void parseMemberData(Member member, List<MemberData> memberDataList) {
-        String id = member.getSerialNumber();
-        String name = member.getName();
-        String email = member.getEmail();
-        MemberData memberData = new MemberData(id, name, email);
+    private List<MemberData> parseAvailableMembers(List<Member> members) {
+        List<MemberData> memberDataList = new ArrayList<>();
+        for (Member member : members) {
+            memberDataList.add(new MemberData(member));
+        }
 
-        memberDataList.add(memberData);
+        return memberDataList;
     }
 
     private static class RequestData {
         ActivityData activity;
-        String day;
+        String date;
         String manualTime;
 
-        public RequestData(ActivityData activity, String day, String manualTime) {
+        public RequestData(ActivityData activity, String date, String manualTime) {
             this.activity = activity;
-            this.day = day;
+            this.date = date;
             this.manualTime = manualTime;
         }
     }
 
-    public static class MemberData {
+    /*public static class MemberData {
         String id;
         String name;
         String email;
@@ -102,5 +101,5 @@ public class MembersForReservationServlet extends HttpServlet {
             this.name = name;
             this.email = email;
         }
-    }
+    }*/
 }

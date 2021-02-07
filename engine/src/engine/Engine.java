@@ -1156,11 +1156,9 @@ public class Engine implements BMSEngine {
         return availableActivities;
     }
 
-    public List<Member> findAvailableMembersForReservation(WeeklyActivity activity, int daysFromToday) {
-        LocalDate selectedDay = LocalDate.now().plusDays(daysFromToday);
-
+    public List<Member> findAvailableMembersForReservation(WeeklyActivity activity, LocalDate date) {
         return memberList.stream()
-                .filter(member -> member.isActivityTimeAndDateAvailable(activity, selectedDay))
+                .filter(member -> member.isActivityTimeAndDateAvailable(activity, date))
                 .collect(Collectors.toList());
     }
 

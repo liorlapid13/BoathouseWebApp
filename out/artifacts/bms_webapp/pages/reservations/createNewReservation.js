@@ -62,15 +62,12 @@ function setupEventHandlers() {
 async function handleDaySelection(event) {
     selectDayButtonEl.disabled = true;
     selectActivityButtonEl.disabled = false;
-    const daysMenuEl = document.getElementById("daysDropDownMenu");
-    daysMenuEl.disabled = true;
-    selectedDay = document.getElementById('daysDropDownMenu').value;
+    const daysDropDownMenuEl = document.getElementById("daysDropDownMenu");
+    daysDropDownMenuEl.disabled = true;
+    const dropDownOptions = daysDropDownMenuEl.getElementsByTagName('option');
+    selectedDay = dropDownOptions[daysDropDownMenuEl.value - 1].textContent;
 
-    const activityDropDownMenuEl = document.getElementById('activityDropDownMenu');
-    const manualActivityEl = document.getElementById('manualActivity');
-    activityList = await fetchAndDisplayActivitiesInDropDownMenu(activityDropDownMenuEl, modal, modalTitle, modalBody,
-        selectActivityButtonEl, manualActivityEl);
-    /*const response = await fetch('../../activities', {
+    const response = await fetch('../../activities', {
         method: 'get',
     });
 
@@ -87,7 +84,7 @@ async function handleDaySelection(event) {
         selectActivityButtonEl.textContent = "Select Time";
         const manualActivityEl = document.getElementById('manualActivity');
         manualActivityEl.style.display = "block";
-    }*/
+    }
 }
 
 function handleActivitySelection(event) {
@@ -145,7 +142,7 @@ async function handleBoatTypesSelection(event) {
 
     const data = {
         activity: selectedActivity,
-        day: selectedDay,
+        date: selectedDay,
         manualTime: selectedManualTime
     }
 
@@ -260,13 +257,17 @@ function handleReservatorSelection(event) {
 
 async function handleReservationCreation(event) {
     const data = {
-        day: selectedDay,
+        reservationCreator: null,
+        id: null,
+        date: selectedDate,
         activity: selectedActivity,
         boatTypes: selectedBoatTypes,
         reservator: selectedReservator,
         boatCrew: selectedBoatCrew,
         coxswain: selectedCoxswain,
-        coxswainSelected: coxswainSelected
+        coxswainSelected: coxswainSelected,
+        status: null,
+        creationDate: null
     }
 
     const response = await fetch('../../createReservation', {
@@ -293,13 +294,13 @@ function doBoatTypesNeedCoxswain(selectedBoatTypes) {
     return false;
 }
 
-/*function createActivityOption(activity, index) {
+function createActivityOption(activity, index) {
     const activityOption = document.createElement('option');
     activityOption.value = index;
     activityOption.textContent = activity.name+ ", " +activity.time;
 
     return activityOption;
-}*/
+}
 
 function buildMemberTableEntry(member,index) {
     const tableRowEl = document.createElement('tr');
@@ -426,7 +427,7 @@ function checkManualTime(startTimeHours, startTimeMinutes, endTimeHours, endTime
 }
 
 function initializeModals() {
-    modal = document.getElementById("Modal");
+    modal = document.getElementById("modal");
     modalBody = document.getElementById("modalBody");
     modalTitle = document.getElementById("modalLabel");
     finalModal = document.getElementById("finalModal");
@@ -443,7 +444,7 @@ function initializeDaysDropDownMenu() {
     let i;
     for (i=1; i<=7; i++) {
         day.setDate(day.getDate() + 1);
-        dropDownOptions[i-1].textContent = day.toLocaleDateString(undefined, options);
+        dropDownOptions[i-1].textContent = day.toLocaleDateString("en-US", options);
     }
 }
 
