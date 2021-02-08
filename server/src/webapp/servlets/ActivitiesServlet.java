@@ -19,13 +19,13 @@ import java.util.List;
 @WebServlet(name = "ActivitiesServlet", urlPatterns = "/activities")
 public class ActivitiesServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        getAllActivities(req, resp);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getAllActivities(req, resp);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
     }
 
     protected void getAllActivities(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -53,22 +53,4 @@ public class ActivitiesServlet extends HttpServlet {
 
         return activityDataList;
     }
-
-    /*private static class RequestData {
-        String day;
-    }
-
-    public static class ActivityData {
-        String name;
-        String date;
-        String time;
-        String restriction;
-
-        public ActivityData(String name, String date, String time, String restriction) {
-            this.name = name;
-            this.date = date;
-            this.time = time;
-            this.restriction = restriction;
-        }
-    }*/
 }

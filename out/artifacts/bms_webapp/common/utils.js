@@ -28,3 +28,11 @@ function parseBoatTypes(boatTypes) {
 
     return boatTypesString;
 }
+
+function createActivityOption(activity, index) {
+    const activityOption = document.createElement('option');
+    activityOption.value = index;
+    activityOption.textContent = activity.name + ", " + activity.time;
+
+    return activityOption;
+}

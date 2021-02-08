@@ -1,6 +1,7 @@
 .activityTable{
-    width:30% !important;
+    width:40% !important;
 }
-.activityTable thead th{
+
+.activityTable thead th {
     background-color: moccasin !important;
 }

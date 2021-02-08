@@ -294,14 +294,6 @@ function doBoatTypesNeedCoxswain(selectedBoatTypes) {
     return false;
 }
 
-function createActivityOption(activity, index) {
-    const activityOption = document.createElement('option');
-    activityOption.value = index;
-    activityOption.textContent = activity.name+ ", " +activity.time;
-
-    return activityOption;
-}
-
 function buildMemberTableEntry(member,index) {
     const tableRowEl = document.createElement('tr');
     const tableHeaderEl = document.createElement('th');
