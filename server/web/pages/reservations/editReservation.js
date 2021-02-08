@@ -228,13 +228,15 @@ function initializeReservationData() {
     const currentActivityEl = document.getElementById('currentActivity');
     const currentBoatTypesEl = document.getElementById('currentBoatTypes');
     const currentBoatCrewEl = document.getElementById('currentBoatCrew');
+    const currentReservatorEl = document.getElementById('currentReservator');
     reservation = JSON.parse(sessionStorage.getItem('reservationToEdit'));
 
     currentDateEl.textContent = reservation.date;
     currentActivityEl.textContent = reservation.activity.name + "\n" + reservation.activity.time + "\n" +
         reservation.activity.restriction;
-    currentBoatTypesEl.textContent = reservation.boatTypes;
+    currentBoatTypesEl.textContent = parseBoatTypes(reservation.boatTypes);
     currentBoatCrewEl.textContent = parseBoatCrew(reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
+    currentReservatorEl.textContent = reservation.reservator.name;
 }
 
 function enableBoatTypeCheckBoxes() {
