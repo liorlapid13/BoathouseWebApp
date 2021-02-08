@@ -244,7 +244,7 @@ function appendTableData(tableEntryEl, reservation) {
     tableEntryEl.appendChild(creationDateDataEl);
 }
 
-function parseBoatTypes(boatTypes) {
+/*function parseBoatTypes(boatTypes) {
     let boatTypesString = "";
     for (let i = 0; i < boatTypes.length; i++) {
         boatTypesString = boatTypesString.concat(boatTypes[i]);
@@ -254,9 +254,9 @@ function parseBoatTypes(boatTypes) {
     }
 
     return boatTypesString;
-}
+}*/
 
-function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
+/*function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";
     for (let i = 0; i < boatCrew.length; i++) {
         boatCrewString = boatCrewString.concat(boatCrew[i].name);
@@ -273,7 +273,7 @@ function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     boatCrewString = boatCrewString.concat(coxswainSelected === "true" ? coxswain : "none");
 
     return boatCrewString;
-}
+}*/
 
 function initializeDaysDropDownMenu() {
     const daysDropDownMenu = document.getElementById('daysDropDownMenu');

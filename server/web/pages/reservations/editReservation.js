@@ -74,13 +74,14 @@ function handleEditDate(event) {
     daysDropDownMenuEl.disabled = false;
 }
 
-function handleConfirmDate(event) {
+async function handleConfirmDate(event) {
     if (dateEdited) {
         const daysDropDownMenuEl = document.getElementById('daysDropDownMenu');
         const dropDownOptions = daysDropDownMenuEl.getElementsByTagName('option');
         selectedDate = dropDownOptions[daysDropDownMenuEl.value - 1].textContent;
         if (selectedDate !== reservation.date) {
-            if (!checkIfBoatCrewIsAvailable()) {
+            let isBoatCrewAvailable = await checkIfBoatCrewIsAvailable();
+            if (!isBoatCrewAvailable) {
                 modalTitle.textContent = "Pay Attention!" ;
                 modalBody.textContent = "One or more of the crew members are not available on this day, please try again!"
                 showModal(modal);
@@ -114,11 +115,7 @@ async function checkIfBoatCrewIsAvailable() {
         body: JSON.stringify(data)
     });
 
-    if (response.status === STATUS_OK) {
-        return true;
-    } else {
-        return false;
-    }
+    return response.status === STATUS_OK;
 }
 
 async function handleEditActivity(event) {
@@ -234,9 +231,10 @@ function initializeReservationData() {
     reservation = JSON.parse(sessionStorage.getItem('reservationToEdit'));
 
     currentDateEl.textContent = reservation.date;
-    currentActivityEl.textContent = reservation.activity;
+    currentActivityEl.textContent = reservation.activity.name + "\n" + reservation.activity.time + "\n" +
+        reservation.activity.restriction;
     currentBoatTypesEl.textContent = reservation.boatTypes;
-    currentBoatCrewEl.textContent = reservation.boatCrew;
+    currentBoatCrewEl.textContent = parseBoatCrew(reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
 }
 
 function enableBoatTypeCheckBoxes() {

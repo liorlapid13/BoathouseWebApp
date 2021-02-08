@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="../../common/modal.js"></script>
+    <script src="../../common/utils.js"></script>
     <script src="../../addManagerNavBar.js"></script>
     <script src="editReservation.js"></script>
 
@@ -69,7 +70,7 @@
         <div class="row" style="margin-top: 20px;">
             <div class="col-sm">
                 <label for="currentActivity" class="form-label">2. Current Activity </label>
-                <input type="text" disabled="true" class="form-control textField" id="currentActivity" >
+                <textarea class="form-control" id="currentActivity" disabled=true></textarea>
             </div>
             <div class="col-sm" >
                 <button id="buttonConfirmActivity" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
@@ -84,7 +85,7 @@
         <div class="row" style="margin-top: 20px;">
             <div class="col-sm" style="margin-top: 50px">
                 <label for="currentBoatTypes" class="form-label">3. Current Boat Types </label>
-                <input type="text" disabled="true"  class="form-control textField" id="currentBoatTypes" >
+                <textarea class="form-control" id="currentBoatTypes" disabled=true></textarea>
             </div>
             <div class="col-sm" style="margin-top: 50px" >
                 <button id="buttonConfirmBoatTypes" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
@@ -147,7 +148,7 @@
         <div class="row" style="margin-top: 20px;">
             <div class="col-sm" style="margin-top: 50px">
                 <label for="currentBoatCrew" class="form-label">4. Current Boat Crew </label>
-                <input type="text" disabled="true"  class="form-control textField" id="currentBoatCrew" >
+                <textarea class="form-control" id="currentBoatCrew" disabled=true></textarea>
             </div>
             <div class="col-sm" style="margin-top: 50px" >
                 <button id="buttonConfirmBoatCrew" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
@@ -169,8 +170,8 @@
             </div>
             <div class="row" style="margin-top: 20px;">
                 <div class="col-sm" style="margin-top: 50px">
-                    <label for="currentBoatCrew" class="form-label">5. Current Boat Crew </label>
-                    <input type="text" disabled="true"  class="form-control textField" id="currentReservator" >
+                    <label for="currentReservator" class="form-label">5. Current Reservator </label>
+                    <textarea class="form-control" id="currentReservator" disabled=true></textarea>
                 </div>
                 <div class="col-sm" style="margin-top: 50px" >
                     <button id="buttonConfirmReservator" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
