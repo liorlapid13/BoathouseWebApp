@@ -1179,6 +1179,22 @@ public class Engine implements BMSEngine {
         return null;
     }
 
+    public boolean isBoatCrewAvailableForActivity(BoatCrew boatCrew, WeeklyActivity activity, LocalDate date) {
+        List<String> crewMembers = boatCrew.getCrewMembers();
+        for (String memberId : crewMembers) {
+            if (!findMemberByID(memberId).isActivityTimeAndDateAvailable(activity, date)) {
+                return false;
+            }
+        }
+
+        String coxswainId = boatCrew.getCoxswain();
+        if (coxswainId != null) {
+            return findMemberByID(coxswainId).isActivityTimeAndDateAvailable(activity, date);
+        }
+
+        return true;
+    }
+
    /* public void encryptPasswords() throws CryptorException {
         Cryptor cryptor = new Cryptor();
 

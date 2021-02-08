@@ -1,6 +1,8 @@
 package webapp.utils;
 
 import engine.Engine;
+import engine.boat.BoatCrew;
+import webapp.common.MemberData;
 
 import javax.servlet.ServletContext;
 import javax.swing.text.DateFormatter;
@@ -12,6 +14,8 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerUtils {
     public static void saveSystemState(ServletContext servletContext) {
@@ -47,5 +51,15 @@ public class ServerUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
         return LocalDate.parse(dates[1], formatter);
+    }
+
+    public static BoatCrew createBoatCrew(MemberData[] boatCrew, MemberData coxswain, boolean coxswainSelected) {
+        String coxswainId = coxswainSelected ? coxswain.getId() : null;
+        List<String> crewMembers = new ArrayList<>();
+        for (MemberData member : boatCrew) {
+            crewMembers.add(member.getId());
+        }
+
+        return new BoatCrew(crewMembers, coxswainId);
     }
 }

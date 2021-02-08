@@ -27,10 +27,10 @@ let finalModalBody;
 let finalModalTitle;
 
 const CONFIRM = "Confirm";
-
+const STATUS_OK = 200;
 window.addEventListener('load', () => {
     initializeReservationData();
-    initializeModals()
+    initializeModals();
     setupEventHandlers();
 });
 
@@ -77,7 +77,8 @@ function handleEditDate(event) {
 function handleConfirmDate(event) {
     if (dateEdited) {
         const daysDropDownMenuEl = document.getElementById('daysDropDownMenu');
-        selectedDate = daysDropDownMenuEl.value;
+        const dropDownOptions = daysDropDownMenuEl.getElementsByTagName('option');
+        selectedDate = dropDownOptions[daysDropDownMenuEl.value - 1].textContent;
         if (selectedDate !== reservation.date) {
             if (!checkIfBoatCrewIsAvailable()) {
                 modalTitle.textContent = "Pay Attention!" ;
@@ -98,18 +99,26 @@ function handleConfirmDate(event) {
 
 async function checkIfBoatCrewIsAvailable() {
     const data = {
-        day: selectedDate,
+        date: selectedDate,
         activity: reservation.activity,
-        boatCrew: reservation.boatCrew
+        boatCrew: reservation.boatCrew,
+        coxswain: reservation.coxswain,
+        coxswainSelected: reservation.coxswainSelected
     }
 
-    const response = await fetch('../../reservationActivity', {
+    const response = await fetch('../../boatCrewAvailability', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'
         }),
         body: JSON.stringify(data)
     });
+
+    if (response.status === STATUS_OK) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 async function handleEditActivity(event) {
@@ -260,9 +269,9 @@ function initializeDaysDropDownMenu() {
 }
 
 function initializeModals() {
-    modal = document.getElementById("Modal");
+    modal = document.getElementById("modal");
     modalBody = document.getElementById("modalBody");
-    modalTitle = document.getElementById("ModalLabel");
+    modalTitle = document.getElementById("modalLabel");
     finalModal = document.getElementById("finalModal");
     finalModalBody = document.getElementById("finalModalBody");
     finalModalTitle = document.getElementById("finalModalLabel");

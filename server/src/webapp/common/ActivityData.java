@@ -1,7 +1,9 @@
 package webapp.common;
 
 import engine.activity.WeeklyActivity;
+import engine.boat.BoatCrew;
 import engine.boat.BoatType;
+import engine.member.Member;
 import webapp.utils.ServerUtils;
 
 import java.time.LocalTime;

@@ -30,7 +30,7 @@ public class ReservationData {
         this.reservationCreator = parseMember(reservationCreator);
         this.id = reservation.getId();
         this.date = reservation.getActivityDate().getDayOfWeek().getDisplayName(
-                TextStyle.FULL, Locale.ENGLISH) + " " + reservation.getActivityDate();
+                TextStyle.FULL, Locale.ENGLISH) + ", " + reservation.getActivityDate();
         this.activity = new ActivityData(reservation.getWeeklyActivity());
         this.boatTypes = parseBoatTypes(reservation.getBoatTypes());
         this.reservator = parseMember(reservator);

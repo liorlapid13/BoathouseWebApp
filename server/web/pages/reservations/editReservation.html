@@ -46,8 +46,8 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                <label for="currentDate" class="form-label">1. Current Date </label>
-                <input type="text" class="form-control textField" id="currentDate" >
+                <label class="form-label">1. Current Date</label>
+                <textarea class="form-control" id="currentDate" disabled=true>Comments</textarea>
             </div>
             <div class="col-sm" >
                 <button id="buttonConfirmDate" style="margin-left: 40px;white-space: normal"  type="button" class="btn btn-primary standardButton">Continue</button>
@@ -55,7 +55,7 @@
             </div>
             <div class="col-sm" >
                 <label for="daysDropDownMenu" style="margin-left: 20px" class="form-label">Select New Date </label>
-                <select id="daysDropDownMenu" disabled =true  class="form-select daysDropDown" aria-label="Default select example">
+                <select id="daysDropDownMenu" disabled=true  class="form-select daysDropDown" aria-label="Default select example">
                     <option value="1"></option>
                     <option value="2"></option>
                     <option value="3"></option>
@@ -194,11 +194,42 @@
                 <div class="row justify-content-end">
                     <div class="col-4">
                         <button id="buttonConfirmChanges" style="width:100px" disabled="true" type="button" class="btn btn-primary ">Confirm Changes </button>
-                        <button id="buttonAbort"  style="width:100px"  type="button" class="btn btn-primary">Cancel Changes</button>
+                        <button id="buttonCancel"  style="width:100px"  type="button" class="btn btn-primary">Cancel Changes</button>
                     </div>
                 </div>
             </div>
         </div>
-
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div style="color:red"; class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Pay Attention!</h5>
+            </div>
+            <div id="modalBody"  class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="closeButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>>
+<!-- Final Modal -->
+<div class="modal fade" id="finalModal" tabindex="-1" aria-labelledby="finalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div style="color:red"; class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="finalModalLabel">Pay Attention!</h5>
+            </div>
+            <div id="finalModalBody" class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="redirectButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return to my reservations</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

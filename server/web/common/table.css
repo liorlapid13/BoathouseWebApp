@@ -1,0 +1,42 @@
+.tableFixHead {
+    overflow: auto;
+    max-height: 500px;
+    background-color: white;
+    margin-top: 130px;
+    width:90%;
+    margin-left: auto;
+    margin-right: auto;"
+}
+.tableFixHead thead th {
+    position: sticky;
+    top:0;
+    background-color: khaki ;
+}
+td {
+    height: 130px;
+    white-space: pre-wrap;
+}
+.alertPopup {
+    padding: 10px;
+    width: 220px;
+    display: block;
+    height: 50px;
+    margin-top: 15px;
+    margin-left:640px;
+    position:center;
+}
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.buttonsContainer{
+    height: 100px;
+    position: relative;
+}
+.buttonEdit{
+    margin-right: 120px;
+}

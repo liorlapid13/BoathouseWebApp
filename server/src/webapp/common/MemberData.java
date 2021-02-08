@@ -1,7 +1,10 @@
 package webapp.common;
 
+import engine.boat.BoatCrew;
 import engine.member.Member;
 import engine.member.MemberLevel;
+
+import java.util.List;
 
 public class MemberData {
     private String id;

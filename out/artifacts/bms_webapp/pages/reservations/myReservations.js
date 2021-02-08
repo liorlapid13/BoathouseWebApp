@@ -42,7 +42,7 @@ async function handlePastReservations(event) {
     currentSelectedOption = "past";
     const data = {
         requestType: "past",
-        day: null
+        daysFromToday : null
     }
     getSelectedReservations(data);
 }
@@ -53,7 +53,7 @@ async function handleNextWeekReservations(event) {
     currentSelectedOption = "next";
     const data = {
         requestType: "next",
-        day: null
+        daysFromToday : null
     }
     getSelectedReservations(data);
 }
@@ -65,7 +65,7 @@ async function handleSpecificDayReservations(event) {
     currentSelectedDay = document.getElementById('daysDropDownMenu').value;
     const data = {
         requestType: "day",
-        day: currentSelectedDay
+        daysFromToday : currentSelectedDay
     }
     getSelectedReservations(data);
 }
@@ -126,7 +126,7 @@ async function handleEditReservationRequest(event) {
         const reservationStatus = (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
         if (reservationStatus.textContent === "Unconfirmed") {
             const reservationToEdit = JSON.parse(sessionStorage.getItem('reservationList'))[checkedCheckBox];
-            sessionStorage.setItem('reservationToEdit', reservationToEdit);
+            sessionStorage.setItem('reservationToEdit', JSON.stringify(reservationToEdit));
             window.location.href = "editReservation.html";
         } else {
             modalTitle.textContent = "Pay Attention!" ;
