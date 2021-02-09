@@ -1,6 +1,6 @@
 .tableFixHead {
     overflow: auto;
-    max-height: 500px;
+    max-height: 450px;
     background-color: white;
     margin-top: 130px;
     width:90%;
@@ -34,7 +34,7 @@ td {
     transform: translate(-50%, -50%);
 }
 .buttonsContainer{
-    height: 100px;
+    height: 90px;
     position: relative;
 }
 .buttonEdit{

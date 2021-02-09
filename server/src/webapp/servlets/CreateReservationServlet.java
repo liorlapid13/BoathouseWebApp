@@ -62,13 +62,4 @@ public class CreateReservationServlet extends HttpServlet {
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 
-    /*private static class ReservationData {
-        String day;
-        ActivityData activity;
-        String[] boatTypes;
-        MembersForReservationServlet.MemberData reservator;
-        MembersForReservationServlet.MemberData[] boatCrew;
-        MembersForReservationServlet.MemberData coxswain;
-        String coxswainSelected;
-    }*/
 }

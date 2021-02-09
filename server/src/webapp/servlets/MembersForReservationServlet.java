@@ -39,6 +39,7 @@ public class MembersForReservationServlet extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
             Member member = engine.findMemberByID(SessionUtils.getUserId(req));

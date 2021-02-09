@@ -29,6 +29,7 @@ public class ActivitiesServlet extends HttpServlet {
     }
 
     protected void getAllActivities(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
             Gson gson = new Gson();

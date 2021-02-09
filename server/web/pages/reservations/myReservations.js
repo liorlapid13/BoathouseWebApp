@@ -1,4 +1,3 @@
-const STATUS_OK = 200;
 let currentSelectedOption;
 let currentSelectedDay;
 let removeReservationButtonEl;
@@ -72,7 +71,7 @@ async function handleSpecificDayReservations(event) {
 
 async function handleRemoveReservationRequest(event) {
     const tableBodyEl = document.querySelector("#tableBody");
-    let checkedCheckBox = findCheckedCheckBox();
+    let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
         const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
         const reservationStatus =
@@ -120,7 +119,7 @@ async function handleRemoveReservationRequest(event) {
 
 async function handleEditReservationRequest(event) {
     const tableBodyEl = document.querySelector("#tableBody");
-    let checkedCheckBox = findCheckedCheckBox();
+    let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
         const allTableRowEl = tableBodyEl.getElementsByTagName("tr");
         const reservationStatus = (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
@@ -194,17 +193,6 @@ function buildTableEntry(reservation, index) {
 function getAllCheckBoxes() {
     const tableBodyEl = document.querySelector("#tableBody");
     return tableBodyEl.getElementsByTagName("input");
-}
-
-function findCheckedCheckBox() {
-    const allCheckBoxes = getAllCheckBoxes();
-    for (let i = 0; i < allCheckBoxes.length; i++) {
-        if (allCheckBoxes[i].checked === true) {
-            return i;
-        }
-    }
-
-    return -1;
 }
 
 function checkAllCheckBoxes() {

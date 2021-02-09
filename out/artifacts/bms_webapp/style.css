@@ -12,3 +12,15 @@ body {
 .dropdown-item:hover {
     background-color: dodgerblue !important;
 }
+.contentBoard{
+    background-color: floralwhite;
+    opacity: 90%;
+    width:1000px;
+    margin-left: 50px;
+    margin-top: 10px;
+    padding: 20px;
+    overflow: auto;
+    height: calc(100% - 1.5em);
+    margin: auto;
+
+}

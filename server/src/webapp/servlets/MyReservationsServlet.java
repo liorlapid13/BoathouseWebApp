@@ -39,6 +39,7 @@ public class MyReservationsServlet extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
             String userId = SessionUtils.getUserId(request);

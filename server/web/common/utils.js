@@ -1,3 +1,4 @@
+const STATUS_OK = 200;
 function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";
     for (let i = 0; i < boatCrew.length; i++) {
@@ -35,4 +36,12 @@ function createActivityOption(activity, index) {
     activityOption.textContent = activity.name + ", " + activity.time;
 
     return activityOption;
+}
+function findCheckedCheckBox(allCheckBoxes) {
+    for (let i = 0; i < allCheckBoxes.length; i++) {
+        if (allCheckBoxes[i].checked === true) {
+            return i;
+        }
+    }
+    return -1;
 }

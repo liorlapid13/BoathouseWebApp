@@ -312,6 +312,8 @@ public class Engine implements BMSEngine {
         weeklyActivities.remove(activityListIndex);
     }
 
+    public void removeActivity(WeeklyActivity activityToRemove) { weeklyActivities.remove(activityToRemove);}
+
     @Override
     public void publishNewReservation(Reservation reservation, boolean isReservationInList) {
         if (!isReservationInList) {

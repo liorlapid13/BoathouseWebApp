@@ -27,7 +27,6 @@ let finalModal;
 let finalModalBody;
 let finalModalTitle;
 
-const STATUS_OK = 200;
 
 window.addEventListener('load', () => {
     initializeModals();

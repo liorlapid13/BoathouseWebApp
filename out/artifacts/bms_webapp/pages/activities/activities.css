@@ -1,6 +1,26 @@
 .activityTable{
-    width:30% !important;
+    width:40% !important;
+    margin-top: 40px !important;
 }
-.activityTable thead th{
+
+.activityTable thead th {
     background-color: moccasin !important;
+}
+td{
+    height: 70px !important;
+}
+h2.title {
+    margin-top: 10px ;
+    text-align: center ;
+    color: moccasin;
+    font-size: 75px;
+    font-family: 'Ultra', sans-serif;
+    text-shadow: 2px 2px 8px #FF0000;
+}
+.buttonImport{
+    margin-top: 20px;
+}
+input[type=file]:hover {
+    background-color: floralwhite;
+
 }

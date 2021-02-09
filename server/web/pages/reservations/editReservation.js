@@ -27,7 +27,6 @@ let finalModalBody;
 let finalModalTitle;
 
 const CONFIRM = "Confirm";
-const STATUS_OK = 200;
 window.addEventListener('load', () => {
     initializeReservationData();
     initializeModals();

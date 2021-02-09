@@ -27,8 +27,9 @@ function createManageAssignmentsOption() {
     const manageReservationsLiEl = document.createElement("li");
     manageReservationsLiEl.classList.add("nav-item", "dropdown");
     manageReservationsLiEl.appendChild(createLilink("Manage Assignments","navbarDropdown6"));
-    const namesOfItems = ["View All Assignments","Create New Assignment","Remove Assignment"]
-    manageReservationsLiEl.appendChild(createDropDownMenu(namesOfItems));
+    const namesOfItems = ["View All Assignments","Create New Assignment","Remove Assignment"];
+    const pageLinks = ["#","#","#"];
+    manageReservationsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageReservationsLiEl;
 }
@@ -38,7 +39,8 @@ function createManageReservationsOption() {
     manageReservationsLiEl.classList.add("nav-item", "dropdown");
     manageReservationsLiEl.appendChild(createLilink("Manage Reservations","navbarDropdown5"));
     const namesOfItems = ["View All Reservations","Edit Reservations","Remove Reservations"]
-    manageReservationsLiEl.appendChild(createDropDownMenu(namesOfItems));
+    const pageLinks = ["#","#","#"];
+    manageReservationsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageReservationsLiEl;
 }
@@ -49,7 +51,8 @@ function createManageMembersOption() {
     manageMembersLiEl.appendChild(createLilink("Manage Members","navbarDropdown4"));
     const namesOfItems = ["Add New Member","Remove Member",
         "View All Members","Edit Member","Import Members From XML","Export Members To XML"]
-    manageMembersLiEl.appendChild(createDropDownMenu(namesOfItems));
+    const pageLinks = ["#","#","#","#","#","#"];
+    manageMembersLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageMembersLiEl;
 }
@@ -60,7 +63,8 @@ function createManageBoatsOption() {
     manageBoatsLiEl.appendChild(createLilink("Manage Boats","navbarDropdown3"));
     const namesOfItems = ["Add New Boat","Remove Boat",
         "View All Boats","Edit Boat","Import Boats From XML","Export Boats To XML"]
-    manageBoatsLiEl.appendChild(createDropDownMenu(namesOfItems));
+    const pageLinks = ["#","#","#","#","#","#"];
+    manageBoatsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
     return manageBoatsLiEl;
 }
 
@@ -68,19 +72,19 @@ function createManageActivitiesOption() {
     const manageActivitiesLiEl = document.createElement("li");
     manageActivitiesLiEl.classList.add("nav-item", "dropdown");
     manageActivitiesLiEl.appendChild(createLilink("Manage Activities","navbarDropdown2"));
-    const namesOfItems = ["Add New Activity","Remove Activity",
-        "View All Activities","Edit Activity","Import Activities From XML","Export Activities To XML"]
-    manageActivitiesLiEl.appendChild(createDropDownMenu(namesOfItems));
+    const namesOfItems = ["Add New Activity","All Activities","Import Activities From XML","Export Activities To XML"]
+    const pageLinks = ["#","../activities/activities.html","../activities/importActivities.html","#"];
+    manageActivitiesLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageActivitiesLiEl;
 }
 
-function createDropDownMenu(items) {
+function createDropDownMenu(items,links) {
     const dropDownUlEl = document.createElement("ul");
     dropDownUlEl.classList.add("dropdown-menu");
     dropDownUlEl.setAttribute("aria-labelledby","navbarDropdown");
-    for(let i = 0; i<items.length;i++){
-        dropDownUlEl.appendChild(createDropDownItem("dropdown-item","#",items[i]));
+    for(let i = 0; i < items.length;i++){
+        dropDownUlEl.appendChild(createDropDownItem("dropdown-item",links[i],items[i]));
     }
 
     return dropDownUlEl;
