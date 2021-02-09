@@ -50,7 +50,7 @@ public class CreateReservationServlet extends HttpServlet {
         ReservationData reservationData = gson.fromJson(jsonString, ReservationData.class);
         WeeklyActivity activity;
         if (reservationData.getActivity() == null) {
-            activity = (WeeklyActivity)getServletContext().getAttribute(Constants.DUMMY_ACTIVITY);
+            activity = (WeeklyActivity)getServletContext().getAttribute(Constants.DUMMY_ACTIVITY + userId);
         } else {
             activity = engine.findActivity(reservationData.getActivity().getName(),
                     reservationData.getActivity().getTime());

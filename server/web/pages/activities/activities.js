@@ -29,13 +29,15 @@ function initializeModal() {
     modalTitle = document.getElementById("modalLabel");
 }
 
-async function initializeActivityTable(){
+async function initializeActivityTable() {
     const alertPopup = document.getElementById("alertText");
     alertPopup.style.background = "";
     alertPopup.textContent = "";
+
     const response = await fetch('../../activities', {
         method: 'get',
     });
+
     if (response.status === STATUS_OK) {
         const activityTableBody = document.getElementById('activityTableBody');
         activityList = await response.json();
@@ -44,7 +46,7 @@ async function initializeActivityTable(){
         }
     } else {
         alertPopup.style.background ="white";
-        alertPopup.textContent = "No reservations to display";
+        alertPopup.textContent = "No Activities to display";
         removeActivityButtonEl.disabled = true;
         editActivityButtonEl.disabled = true;
     }
@@ -55,7 +57,7 @@ function createActivityTableEntry(activity) {
     const tableHeaderEl = document.createElement("th");
     const checkBoxEl = document.createElement("input");
     checkBoxEl.setAttribute('type', 'radio');
-    checkBoxEl.setAttribute('name', 'reservatorRadio')
+    checkBoxEl.setAttribute('name', 'activityRadio');
     tableHeaderEl.setAttribute("scope", "row");
     tableHeaderEl.appendChild(checkBoxEl);
     tableEntryEl.appendChild(tableHeaderEl);
@@ -84,7 +86,6 @@ async function handleRemoveActivityRequest(){
     const activitytableBodyEl = document.getElementById("activityTableBody");
     let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
-        const allTableRowEl = activitytableBodyEl.getElementsByTagName("tr");
         const activityToRemove = activityList[checkedCheckBox];
 
         const response = await fetch('../../removeActivity', {
@@ -111,7 +112,6 @@ async function handleRemoveActivityRequest(){
     }
 
 }
-
 function getAllCheckBoxes() {
     const tableBodyEl = document.getElementById("activityTableBody");
     return tableBodyEl.getElementsByTagName("input");

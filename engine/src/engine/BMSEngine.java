@@ -71,6 +71,8 @@ public interface BMSEngine {
     void editReservationActivity(Reservation reservation, WeeklyActivity activity);
     void editReservationActivityDate(Reservation reservation, LocalDate date);
     void updateReservationBoatTypes(Reservation reservation, Set<BoatType> boatTypes);
+    void updateReservationCoxswain(Reservation reservation, String coxswain);
+    void updateReservationReservator(Reservation reservation, String reservator);
     void splitReservation(Reservation originalReservation, Reservation newReservation, BoatCrew newBoatCrew);
     boolean isValidActivityForReservationBoatCrew(Reservation reservation, WeeklyActivity activity, LocalDate activityDate);
     List<Boat> getBoatsForReservation(Reservation reservation);

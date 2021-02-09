@@ -45,3 +45,56 @@ function findCheckedCheckBox(allCheckBoxes) {
     }
     return -1;
 }
+
+function calculateMaxBoatTypesCapacity(selectedBoatTypes) {
+    let maxMembersInCrew = 0;
+    for (let i = 0; i < selectedBoatTypes.length; i++) {
+        let currentBoatType = selectedBoatTypes[i].charAt(0);
+        if (currentBoatType > maxMembersInCrew) {
+            maxMembersInCrew = parseInt(currentBoatType);
+        }
+    }
+
+    return maxMembersInCrew;
+}
+
+function doBoatTypesNeedCoxswain(selectedBoatTypes) {
+    for (let i = 0; i < selectedBoatTypes.length; i++) {
+        if (selectedBoatTypes[i].includes("+")) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function initializeDaysDropDownMenu(dropDownOptions) {
+    const options = {weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
+    let day = new Date();
+    let i;
+    for (i = 1; i <= 7; i++) {
+        day.setDate(day.getDate() + 1);
+        let isoDate = day.toISOString();
+        let isoSplit = isoDate.split("T", 2);
+        let modifyDate = day.toLocaleDateString("en-US", options);
+        let modifyDateSplit = modifyDate.split(" ", 2);
+        modifyDateSplit[0] = modifyDateSplit[0].concat(" ",isoSplit[0]);
+        dropDownOptions[i - 1].textContent = modifyDateSplit[0]
+    }
+}
+
+function createGreenCheckIcon(){
+    const newCheckIcon =document.createElement("i")
+    newCheckIcon.setAttribute("aria-hidden","true");
+    newCheckIcon.classList.add("fa","fa-check");
+    newCheckIcon.style.color = "green";
+    return newCheckIcon;
+}
+
+function createRedXIcon(){
+    const newCheckIcon =document.createElement("i")
+    newCheckIcon.setAttribute("aria-hidden","true");
+    newCheckIcon.classList.add("fa", "fa-times");
+    newCheckIcon.style.color = "red";
+    return newCheckIcon;
+}

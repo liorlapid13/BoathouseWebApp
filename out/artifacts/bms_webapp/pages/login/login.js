@@ -1,4 +1,3 @@
-const STATUS_OK = 200
 window.addEventListener('load', () => {
     checkIfLoggedIn();
     setupEventHandlers();
@@ -27,7 +26,7 @@ async function handleFormSubmit (event) {
             body: JSON.stringify(data)
         });
 
-        if (response.ok === STATUS_OK) {
+        if (response.status === STATUS_OK) {
             window.location.href = await response.text();
         } else {
             const alertPopup = document.getElementById('alertText');

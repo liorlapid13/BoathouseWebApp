@@ -537,6 +537,17 @@ public class Engine implements BMSEngine {
     }
 
     @Override
+    public void updateReservationCoxswain(Reservation reservation, String coxswain) {
+        removeCoxswainFromReservation(reservation);
+        addCoxswainToReservation(reservation, coxswain);
+    }
+
+    @Override
+    public void updateReservationReservator(Reservation reservation, String reservator) {
+        reservation.setReservator(reservator);
+    }
+
+    @Override
     public Reservation updateReservationCrewMembers(Reservation reservation, List<String> updatedCrewMembers) {
         List<String> currentCrewMembers = reservation.getBoatCrew().getCrewMembers();
         List<String> membersToRemove = new ArrayList<>();
@@ -1195,6 +1206,38 @@ public class Engine implements BMSEngine {
         }
 
         return true;
+    }
+
+    public void editReservation(String reservationId, LocalDate date, WeeklyActivity activity, Set<BoatType> boatTypes,
+                                BoatCrew boatCrew, String reservatorId) {
+        Reservation reservation = findReservationByID(reservationId);
+        if (!reservation.getActivityDate().equals(date)) {
+            editReservationActivityDate(reservation, date);
+        }
+
+        if (!reservation.getWeeklyActivity().equals(activity)) {
+            editReservationActivity(reservation, activity);
+        }
+
+        if (!reservation.getBoatTypes().equals(boatTypes)) {
+            updateReservationBoatTypes(reservation, boatTypes);
+        }
+
+        if (!reservation.getBoatCrew().getCrewMembers().equals(boatCrew.getCrewMembers())) {
+            updateReservationCrewMembers(reservation, boatCrew.getCrewMembers());
+        }
+
+        if (!reservation.getBoatCrew().getCoxswain().equals(boatCrew.getCoxswain())) {
+            updateReservationCoxswain(reservation, boatCrew.getCoxswain());
+        }
+
+        if (!reservation.getReservator().equals(reservatorId)) {
+            updateReservationReservator(reservation, reservatorId);
+        }
+    }
+
+    public void removeMember(Member memberToRemove) {
+        memberList.remove(memberToRemove);
     }
 
    /* public void encryptPasswords() throws CryptorException {

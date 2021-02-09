@@ -30,7 +30,9 @@ let finalModalTitle;
 
 window.addEventListener('load', () => {
     initializeModals();
-    initializeDaysDropDownMenu();
+    const daysDropDownMenu = document.getElementById('daysDropDownMenu');
+    const dropDownOptions = daysDropDownMenu.getElementsByTagName('option');
+    initializeDaysDropDownMenu(dropDownOptions);
     setupEventHandlers();
 });
 
@@ -137,7 +139,7 @@ async function handleBoatTypesSelection(event) {
         disableBoatTypeCheckBoxes();
     }
 
-    maxMembersInCrew = calculateMaxMembersInCrew(selectedBoatTypes);
+    maxMembersInCrew = calculateMaxBoatTypesCapacity(selectedBoatTypes);
 
     const data = {
         activity: selectedActivity,
@@ -169,18 +171,6 @@ async function handleBoatTypesSelection(event) {
         finalModalBody.textContent = "There are no available members for this activity, returning to my reservations";
         showModal(finalModal);
     }
-}
-
-function calculateMaxMembersInCrew(selectedBoatTypes) {
-    let maxMembersInCrew = 0;
-    for (let i = 0; i < selectedBoatTypes.length; i++) {
-        let currentBoatType = selectedBoatTypes[i].charAt(0);
-        if (currentBoatType > maxMembersInCrew) {
-            maxMembersInCrew = parseInt(currentBoatType);
-        }
-    }
-
-    return maxMembersInCrew;
 }
 
 function handleBoatCrewSelection(event) {
@@ -281,16 +271,6 @@ async function handleReservationCreation(event) {
     finalModalBody.textContent = response.status === STATUS_OK ?
         "Reservation successfully created!" : "Failed to create reservation!";
     showModal(finalModal);
-}
-
-function doBoatTypesNeedCoxswain(selectedBoatTypes) {
-    for (let i = 0; i < selectedBoatTypes.length; i++) {
-        if (selectedBoatTypes[i].includes("+")) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 function buildMemberTableEntry(member,index) {
@@ -424,18 +404,5 @@ function initializeModals() {
     finalModal = document.getElementById("finalModal");
     finalModalBody = document.getElementById("finalModalBody");
     finalModalTitle = document.getElementById("finalModalLabel");
-}
-
-function initializeDaysDropDownMenu() {
-    const daysDropDownMenu = document.getElementById('daysDropDownMenu');
-    const dropDownOptions = daysDropDownMenu.getElementsByTagName('option');
-    const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
-
-    let day = new Date();
-    let i;
-    for (i=1; i<=7; i++) {
-        day.setDate(day.getDate() + 1);
-        dropDownOptions[i-1].textContent = day.toLocaleDateString("en-US", options);
-    }
 }
 

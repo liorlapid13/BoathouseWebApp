@@ -42,6 +42,7 @@ public class MembersForReservationServlet extends HttpServlet {
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
+            String userId = SessionUtils.getUserId(req);
             Member member = engine.findMemberByID(SessionUtils.getUserId(req));
             Gson gson = new Gson();
             BufferedReader reader = req.getReader();
@@ -52,7 +53,7 @@ public class MembersForReservationServlet extends HttpServlet {
                 LocalTime startTime = ServerUtils.parseStartTime(requestData.manualTime);
                 LocalTime endTime = ServerUtils.parseEndTime(requestData.manualTime);
                 activity = new WeeklyActivity(member.getName() + "'s activity", startTime, endTime, null);
-                getServletContext().setAttribute(Constants.DUMMY_ACTIVITY, activity);
+                getServletContext().setAttribute(Constants.DUMMY_ACTIVITY + userId, activity);
             } else {
                 activity = engine.findActivity(requestData.activity.getName(), requestData.activity.getTime());
             }
@@ -84,23 +85,5 @@ public class MembersForReservationServlet extends HttpServlet {
         ActivityData activity;
         String date;
         String manualTime;
-
-        public RequestData(ActivityData activity, String date, String manualTime) {
-            this.activity = activity;
-            this.date = date;
-            this.manualTime = manualTime;
-        }
     }
-
-    /*public static class MemberData {
-        String id;
-        String name;
-        String email;
-
-        public MemberData(String id, String name, String email) {
-            this.id = id;
-            this.name = name;
-            this.email = email;
-        }
-    }*/
 }

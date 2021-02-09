@@ -2,6 +2,7 @@ package webapp.utils;
 
 import engine.Engine;
 import engine.boat.BoatCrew;
+import engine.boat.BoatType;
 import webapp.common.MemberData;
 
 import javax.servlet.ServletContext;
@@ -15,7 +16,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ServerUtils {
     public static void saveSystemState(ServletContext servletContext) {
@@ -61,5 +64,14 @@ public class ServerUtils {
         }
 
         return new BoatCrew(crewMembers, coxswainId);
+    }
+
+    public static Set<BoatType> parseBoatTypes(String[] boatTypes) {
+        Set<BoatType> boatTypesSet = new HashSet<>();
+        for (int i = 0; i < boatTypes.length; i++) {
+            boatTypesSet.add(BoatType.boatCodeToBoatType(boatTypes[i]));
+        }
+
+        return boatTypesSet;
     }
 }
