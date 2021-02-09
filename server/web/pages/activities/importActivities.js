@@ -11,6 +11,10 @@ window.addEventListener('load', () => {
 function setupEventHandlers(){
     const importFormEl= document.getElementById("formImportActivities");
     importFormEl.addEventListener('submit',handleImportSubmit)
+    const modalCloseButtonEl = document.getElementById("closeButton");
+    modalCloseButtonEl.addEventListener('click',() =>{
+        hideModal(modal);
+    });
 }
 function initializeModal(){
     modal = document.getElementById("modal");

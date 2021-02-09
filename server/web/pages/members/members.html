@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Activities</title>
-    <link href="activities.css" rel="stylesheet">
+    <title>Members</title>
     <link href="../../style.css" rel="stylesheet">
     <link href="../../common/table.css" rel="stylesheet">
+    <link href="members.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="../../common/modal.js"></script>
     <script src="../../common/utils.js"></script>
-    <script src="activities.js"></script>
+    <script src="members.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary" style="background-color: #2e6da4">
@@ -39,8 +39,8 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Add New Activity</a></li>
-                        <li><a class="dropdown-item" href="activities.html">All Activities</a></li>
-                        <li><a class="dropdown-item" href="importActivities.html">Import Activities From XML</a></li>
+                        <li><a class="dropdown-item" href="../activities/activities.html">All Activities</a></li>
+                        <li><a class="dropdown-item" href="../activities/importActivities.html">Import Activities From XML</a></li>
                         <li><a class="dropdown-item" href="#">Export Activities To XML</a></li>
                     </ul>
                 </li>
@@ -61,7 +61,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Add New Member</a></li>
-                        <li><a class="dropdown-item" href="../members/members.html">All Members</a></li>
+                        <li><a class="dropdown-item" href="members.html">All Members</a></li>
                         <li><a class="dropdown-item" href="#">Import Members From XML</a></li>
                         <li><a class="dropdown-item" href="#">Export Members To XML</a></li>
                     </ul>
@@ -93,15 +93,20 @@
         </div>
     </div>
 </nav>
-<h2 class="title">Activities</h2>
-<div class="tableFixHead activityTable" >
-    <table class="table" style="table-layout: fixed">
+<h2 class="title">Members</h2>
+<div class="membersTable tableFixHead ">
+    <table class="table" style="table-layout: fixed;text-align: center">
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th  scope="col">Name</th>
-            <th  scope="col">Time</th>
-            <th scope="col">Restriction</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Age</th>
+            <th scope="col">Registration Date</th>
+            <th scope="col">Level</th>
+            <th scope="col">Has Private Boat</th>
+            <th scope="col">Manager</th>
         </tr>
         </thead>
         <tbody id="activityTableBody">
@@ -112,8 +117,8 @@
 <strong id ="alertText" class="alertPopup"></strong>
 <div class="buttonsContainer">
     <div class="vertical-center" >
-        <button id="buttonEditActivity" type="button" class="btn btn-primary buttonEdit">Edit Activitiy</button>
-        <button id="buttonRemoveActivity"  type="button" class="btn btn-primary ">Remove Activity</button>
+        <button id="buttonEditMember" type="button" class="btn btn-primary buttonEdit">Edit Member</button>
+        <button id="buttonRemoveMember"  type="button" class="btn btn-primary ">Remove Member</button>
     </div>
 </div>
 

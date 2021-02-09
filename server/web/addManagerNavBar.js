@@ -49,9 +49,8 @@ function createManageMembersOption() {
     const manageMembersLiEl = document.createElement("li");
     manageMembersLiEl.classList.add("nav-item", "dropdown");
     manageMembersLiEl.appendChild(createLilink("Manage Members","navbarDropdown4"));
-    const namesOfItems = ["Add New Member","Remove Member",
-        "View All Members","Edit Member","Import Members From XML","Export Members To XML"]
-    const pageLinks = ["#","#","#","#","#","#"];
+    const namesOfItems = ["Add New Member","All Members","Import Members From XML","Export Members To XML"]
+    const pageLinks = ["#","../members/members.html","#","#"]
     manageMembersLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageMembersLiEl;
@@ -61,9 +60,8 @@ function createManageBoatsOption() {
     const manageBoatsLiEl = document.createElement("li");
     manageBoatsLiEl.classList.add("nav-item", "dropdown");
     manageBoatsLiEl.appendChild(createLilink("Manage Boats","navbarDropdown3"));
-    const namesOfItems = ["Add New Boat","Remove Boat",
-        "View All Boats","Edit Boat","Import Boats From XML","Export Boats To XML"]
-    const pageLinks = ["#","#","#","#","#","#"];
+    const namesOfItems = ["Add New Boat", "All Boats","Import Boats From XML","Export Boats To XML"]
+    const pageLinks = ["#","../boats/boats.html","#","#"];
     manageBoatsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
     return manageBoatsLiEl;
 }

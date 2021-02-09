@@ -46,13 +46,3 @@ function checkLegalXmlFileName(xmlFile){
 }
 
 
-function readFileContent(file) {
-    let reader = new FileReader();
-
-    reader.readAsText(file);
-
-    reader.onload = function() {
-        console.log(reader.result);
-    };
-
-}

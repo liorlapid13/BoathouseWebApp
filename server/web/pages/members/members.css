@@ -1,0 +1,17 @@
+.membersTable{
+    width:1350px!important;
+    margin-top: 40px ;
+}
+
+.membersTable thead th {
+    background-color: darkturquoise !important;
+}
+
+h2.title {
+    margin-top: 10px ;
+    text-align: center ;
+    color: darkturquoise;
+    font-size: 75px;
+    font-family: 'Ultra', sans-serif;
+    text-shadow: 2px 2px 8px lightyellow;
+}
