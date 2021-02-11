@@ -2,7 +2,7 @@ package webapp.servlets;
 
 import com.google.gson.Gson;
 import engine.Engine;
-import webapp.common.MemberData;
+import webapp.common.BoatData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
 
@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "RemoveMemberServlet", urlPatterns = {"/removeMember"})
-public class RemoveMemberServlet extends HttpServlet {
+@WebServlet(name = "RemoveBoatServlet", urlPatterns = {"/removeBoat"})
+public class RemoveBoatServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,29 +35,23 @@ public class RemoveMemberServlet extends HttpServlet {
             Gson gson = new Gson();
             BufferedReader reader = request.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
-            RemovalRequestData removalRequestData = gson.fromJson(jsonString, RemovalRequestData.class);
-            String memberToRemoveId = removalRequestData.memberToRemove.getId();
-            boolean isLoggedInMember = engine.isMemberLoggedIn(memberToRemoveId);
+            removeBoatRequestData requestData = gson.fromJson(jsonString, removeBoatRequestData.class);
+            String boatToRemoveId = requestData.boatToRemove.getId();
 
-            if(!isLoggedInMember){
-                if(removalRequestData.memberHasFutureReservation){
-                    engine.removeMemberFromFutureReservations(engine.findMemberByID(memberToRemoveId));
-                }
-                engine.removeMember(engine.findMemberByID(memberToRemoveId));
-                response.setStatus(HttpServletResponse.SC_OK);
-                ServerUtils.saveSystemState(getServletContext());
+            if(requestData.boatHasFutureAssignment){
+                engine.removeBoatFromFutureAssignments(engine.findBoatByID(boatToRemoveId));
             }
-            else{
-                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-                out.println("This member is logged in,you cannot remove him");
-            }
+            engine.removeBoat(engine.findBoatByID(boatToRemoveId));
+            response.setStatus(HttpServletResponse.SC_OK);
+            ServerUtils.saveSystemState(getServletContext());
         }
-
     }
-
-    private static class RemovalRequestData{
-        MemberData memberToRemove;
-        boolean memberHasFutureReservation;
+    private static class removeBoatRequestData {
+        BoatData boatToRemove;
+        boolean boatHasFutureAssignment;
     }
 
 }
+
+
+

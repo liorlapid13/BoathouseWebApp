@@ -70,13 +70,13 @@ function doBoatTypesNeedCoxswain(selectedBoatTypes) {
 
 function initializeDaysDropDownMenu(dropDownOptions) {
     const options = {weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
-    let day = new Date();
+    let date = new Date();
     let i;
     for (i = 1; i <= 7; i++) {
-        day.setDate(day.getDate() + 1);
-        let isoDate = day.toISOString();
+        date.setDate(date.getDate() + 1);
+        let isoDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
         let isoSplit = isoDate.split("T", 2);
-        let modifyDate = day.toLocaleDateString("en-US", options);
+        let modifyDate = date.toLocaleDateString("en-US", options);
         let modifyDateSplit = modifyDate.split(" ", 2);
         modifyDateSplit[0] = modifyDateSplit[0].concat(" ",isoSplit[0]);
         dropDownOptions[i - 1].textContent = modifyDateSplit[0]
@@ -97,4 +97,12 @@ function createRedXIcon(){
     newCheckIcon.classList.add("fa", "fa-times");
     newCheckIcon.style.color = "red";
     return newCheckIcon;
+}
+function addIconDependentOnCondition(parentEl,condition){
+    if(condition){
+        parentEl.appendChild(createGreenCheckIcon())
+    }
+    else{
+        parentEl.appendChild(createRedXIcon());
+    }
 }

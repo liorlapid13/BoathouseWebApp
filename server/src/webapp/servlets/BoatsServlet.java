@@ -3,9 +3,9 @@ package webapp.servlets;
 
 import com.google.gson.Gson;
 import engine.Engine;
-import engine.activity.WeeklyActivity;
+import engine.boat.Boat;
 import engine.member.Member;
-import webapp.common.ActivityData;
+import webapp.common.BoatData;
 import webapp.common.MemberData;
 import webapp.utils.ServletUtils;
 
@@ -21,29 +21,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "MembersServlet", urlPatterns = "/members")
-public class MembersServlet extends HttpServlet {
+@WebServlet(name = "BoatsServlet", urlPatterns = "/boats")
+public class BoatsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getAllMembers(req, resp);
+        getAllBoats(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doesMemberHasFutureReservation(req,resp);
+        doesBoatHasFutureAssignments(req,resp);
     }
 
-    protected void getAllMembers(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void getAllBoats(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
             Gson gson = new Gson();
-            List<Member> members = engine.getMemberList();
-            if (members.isEmpty()) {
+            List<Boat> boats = engine.getBoatList();
+            if (boats.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
-                List<MemberData> membersData = parseMembers(members);
-                String jsonResponse = gson.toJson(membersData);
+                List<BoatData> boatsData = parseBoats(boats);
+                String jsonResponse = gson.toJson(boatsData);
                 resp.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
                 out.flush();
@@ -51,22 +51,22 @@ public class MembersServlet extends HttpServlet {
         }
     }
 
-    private List<MemberData> parseMembers(List<Member> members) {
-        List<MemberData> memberDataList = new ArrayList<>();
-        for (Member member : members) {
-            memberDataList.add(new MemberData(member));
+    private List<BoatData> parseBoats(List<Boat> members) {
+        List<BoatData> boatDataList = new ArrayList<>();
+        for (Boat boat : members) {
+            boatDataList.add(new BoatData(boat));
         }
 
-        return memberDataList;
+        return boatDataList;
     }
 
-    protected void doesMemberHasFutureReservation(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doesBoatHasFutureAssignments(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Engine engine = ServletUtils.getEngine(getServletContext());
         Gson gson = new Gson();
         BufferedReader reader = req.getReader();
         String jsonString = reader.lines().collect(Collectors.joining());
-        MemberData member = gson.fromJson(jsonString, MemberData.class);
-        if(engine.doesMemberHaveFutureReservation(engine.findMemberByID(member.getId()))){
+        BoatData boat = gson.fromJson(jsonString, BoatData.class);
+        if(engine.doesBoatHaveFutureAssignments(engine.findBoatByID(boat.getId()))){
             resp.setStatus(HttpServletResponse.SC_FOUND);
         }
         else{

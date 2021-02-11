@@ -51,7 +51,7 @@ public class ServerUtils {
 
     public static LocalDate parseDate(String date) {
         String[] dates = date.split(" ", 2);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         return LocalDate.parse(dates[1], formatter);
     }

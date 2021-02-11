@@ -112,7 +112,7 @@ async function handleRemoveMemberRequest(){
             body: JSON.stringify(memberToRemove)
         });
 
-        let doesMemberHasFutureReservation;
+        let doesMemberHasFutureReservation = false;
         if(checkFutureReservationResponse.status !== STATUS_OK){
             doesMemberHasFutureReservation = true;
             if (!window.confirm("This member has an future reservation, are you sure you want to remove him?")) {

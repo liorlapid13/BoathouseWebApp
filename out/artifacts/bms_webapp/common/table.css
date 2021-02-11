@@ -39,3 +39,7 @@ td {
 .buttonEdit{
     margin-right: 120px;
 }
+.centerItems{
+    table-layout: fixed;
+    text-align: center;
+}

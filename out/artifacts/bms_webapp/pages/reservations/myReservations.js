@@ -7,7 +7,9 @@ let modalBody;
 let modalTitle;
 
 window.addEventListener('load', () => {
-    initializeDaysDropDownMenu();
+    const daysDropDownMenu = document.getElementById('daysDropDownMenu');
+    const dropDownOptions = daysDropDownMenu.getElementsByTagName('option');
+    initializeDaysDropDownMenu(dropDownOptions);
     initializeModal();
     setupEventHandlers();
 });
@@ -230,17 +232,4 @@ function appendTableData(tableEntryEl, reservation) {
     tableEntryEl.appendChild(boatCrewDataEl);
     tableEntryEl.appendChild(statusDataEl);
     tableEntryEl.appendChild(creationDateDataEl);
-}
-
-function initializeDaysDropDownMenu() {
-    const daysDropDownMenu = document.getElementById('daysDropDownMenu');
-    const dropDownOptions = daysDropDownMenu.getElementsByTagName('option');
-    const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
-
-    let day = new Date();
-    let i;
-    for (i=1; i<=7; i++) {
-        day.setDate(day.getDate() + 1);
-        dropDownOptions[i-1].textContent = day.toLocaleDateString(undefined, options);
-    }
 }

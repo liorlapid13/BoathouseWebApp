@@ -185,6 +185,10 @@ public class Engine implements BMSEngine {
         memberList.remove(memberIndex);
     }
 
+    public void removeMember(Member memberToRemove) {
+        memberList.remove(memberToRemove);
+    }
+
     @Override
     public boolean isEmailAvailable(String email) throws EmailAlreadyExistsException {
         for (Member memberInList : this.memberList) {
@@ -227,6 +231,8 @@ public class Engine implements BMSEngine {
     public void removeBoatByListIndex(int boatListIndex) {
         boatList.remove(boatListIndex);
     }
+
+    public void removeBoat(Boat boatToRemove) { boatList.remove(boatToRemove); }
 
     private List<Assignment> getBoatFutureAssignments(Boat boat) {
         LocalDate today = LocalDate.now();
@@ -1236,9 +1242,9 @@ public class Engine implements BMSEngine {
         }
     }
 
-    public void removeMember(Member memberToRemove) {
-        memberList.remove(memberToRemove);
-    }
+
+
+
 
    /* public void encryptPasswords() throws CryptorException {
         Cryptor cryptor = new Cryptor();
