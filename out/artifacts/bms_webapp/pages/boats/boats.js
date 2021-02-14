@@ -91,7 +91,7 @@ function appendBoatTableData(tableEntryEl, boat) {
     tableEntryEl.appendChild(boatDisabledEl);
 }
 async function handleRemoveBoatRequest(){
-    const membertableBodyEl = document.getElementById("boatsTableBody");
+    const boatsTableBodyEl = document.getElementById("boatsTableBody");
     let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
         const boatToRemove = boatList[checkedCheckBox];
@@ -129,8 +129,8 @@ async function handleRemoveBoatRequest(){
             modalTitle.textContent = "";
             modalBody.textContent = "Boat remove successfuly"
             showModal(modal);
-            while (membertableBodyEl.firstChild) {
-                membertableBodyEl.removeChild(membertableBodyEl.firstChild);
+            while (boatsTableBodyEl.firstChild) {
+                boatsTableBodyEl.removeChild(boatsTableBodyEl.firstChild);
             }
             initializeBoatsTable();
         }

@@ -49,8 +49,8 @@ function createManageMembersOption() {
     const manageMembersLiEl = document.createElement("li");
     manageMembersLiEl.classList.add("nav-item", "dropdown");
     manageMembersLiEl.appendChild(createLilink("Manage Members","navbarDropdown4"));
-    const namesOfItems = ["Add New Member","All Members","Import Members From XML","Export Members To XML"]
-    const pageLinks = ["#","../members/members.html","#","#"]
+    const namesOfItems = ["Add New Member","All Members","Import/Export Members"]
+    const pageLinks = ["#","../members/members.html","#"]
     manageMembersLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageMembersLiEl;
@@ -60,8 +60,8 @@ function createManageBoatsOption() {
     const manageBoatsLiEl = document.createElement("li");
     manageBoatsLiEl.classList.add("nav-item", "dropdown");
     manageBoatsLiEl.appendChild(createLilink("Manage Boats","navbarDropdown3"));
-    const namesOfItems = ["Add New Boat", "All Boats","Import Boats From XML","Export Boats To XML"]
-    const pageLinks = ["#","../boats/boats.html","#","#"];
+    const namesOfItems = ["Add New Boat", "All Boats","Import/Export Boats"]
+    const pageLinks = ["#","../boats/boats.html","#"];
     manageBoatsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
     return manageBoatsLiEl;
 }
@@ -70,8 +70,8 @@ function createManageActivitiesOption() {
     const manageActivitiesLiEl = document.createElement("li");
     manageActivitiesLiEl.classList.add("nav-item", "dropdown");
     manageActivitiesLiEl.appendChild(createLilink("Manage Activities","navbarDropdown2"));
-    const namesOfItems = ["Add New Activity","All Activities","Import Activities From XML","Export Activities To XML"]
-    const pageLinks = ["#","../activities/activities.html","../activities/importActivities.html","#"];
+    const namesOfItems = ["Add New Activity","All Activities","Import/Export Activities"]
+    const pageLinks = ["#","../activities/activities.html","../activities/importExportActivities.html"];
     manageActivitiesLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageActivitiesLiEl;

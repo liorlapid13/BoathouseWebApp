@@ -1073,9 +1073,7 @@ public class Engine implements BMSEngine {
     @Override
     public String exportMembers() throws XmlException {
         try {
-            /*decryptPasswords();*/
             String membersXmlString = xmlHandler.createMembersXmlString(memberList);
-            /*encryptPasswords();*/
 
             return membersXmlString;
         } catch (JAXBException | DatatypeConfigurationException e) {

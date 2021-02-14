@@ -6,7 +6,9 @@
 .membersTable thead th {
     background-color: darkturquoise !important;
 }
-
+td {
+    height: 70px !important;
+}
 h2.title {
     margin-top: 10px ;
     text-align: center ;

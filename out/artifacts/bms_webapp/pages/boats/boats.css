@@ -6,7 +6,9 @@
 .boatsTable thead th {
     background-color: brown !important;
 }
-
+td{
+    height: 70px !important;
+}
 h2.title {
     margin-top: 10px ;
     text-align: center ;
