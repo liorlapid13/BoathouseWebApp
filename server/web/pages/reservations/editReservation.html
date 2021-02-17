@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Create New Reservation</title>
     <link href="../../style.css" rel="stylesheet">
+    <link href="../../common/table.css" rel="stylesheet">
     <link href="editReservations.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
@@ -154,19 +155,22 @@
                 <button id="buttonConfirmBoatCrew" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
                 <button id="buttonEditBoatCrew"  disabled="true" type="button" class="btn btn-primary standardButton">Edit </button>
             </div>
+
             <div class="col-sm" >
                 <label style="margin-left: 20px;" class="form-label">Select New Boat Crew:</label>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Coxswain</th>
-                        <th scope="col">Crew Member</th>
-                        <th scope="col">ID, Name</th>
-                    </tr>
-                    </thead>
-                    <tbody style="display: block;max-height: 150px;overflow-y: scroll;"  id="boatCrewTableBody">
-                    </tbody>
-                </table>
+                <div class="mediumTable">
+                    <table class="table centerItems" >
+                        <thead>
+                        <tr>
+                            <th scope="col">Coxswain</th>
+                            <th scope="col">Crew Member</th>
+                            <th scope="col">ID, Name</th>
+                        </tr>
+                        </thead>
+                        <tbody id="boatCrewTableBody">
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="row" style="margin-top: 20px;">
                 <div class="col-sm" style="margin-top: 50px">
@@ -177,18 +181,20 @@
                     <button id="buttonConfirmReservator" disabled="true" style="margin-left: 40px"  type="button" class="btn btn-primary standardButton">Continue</button>
                     <button id="buttonEditReservator"  disabled="true" type="button" class="btn btn-primary standardButton">Edit </button>
                 </div>
-                <div class="col-sm" >
+                <div class="col-sm" style="margin-left: 30px" >
                     <label style="margin-left: 20px;" class="form-label">Select Reservator:</label>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Reservator</th>
-                            <th scope="col">Name</th>
-                        </tr>
-                        </thead>
-                        <tbody style="display: block;max-height: 150px;overflow-y: scroll;"  id="reservatorTableBody">
-                        </tbody>
-                    </table>
+                    <div class="mediumTable">
+                        <table class="table centerItems" >
+                            <thead>
+                            <tr>
+                                <th scope="col">Reservator</th>
+                                <th scope="col">ID,Name</th>
+                            </tr>
+                            </thead>
+                            <tbody  id="reservatorTableBody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="row justify-content-end" style="margin-top: 40px">

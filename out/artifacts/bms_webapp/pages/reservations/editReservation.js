@@ -320,7 +320,7 @@ function handleConfirmBoatCrew(event) {
                 membersSelected++;
                 if (i >= manuallyInsertedMembers) {
                     selectedBoatCrew.push(memberList[i - manuallyInsertedMembers]);
-                } else if (i === manuallyInsertedMembers - 1 && reservationToEdit.coxswain !== null) {
+                } else if (i === manuallyInsertedMembers - 1 && reservationToEdit.coxswain !== undefined) {
                     selectedBoatCrew.push(reservationToEdit.coxswain);
                 } else {
                     selectedBoatCrew.push(reservationToEdit.boatCrew[i]);
@@ -351,7 +351,7 @@ function handleConfirmBoatCrew(event) {
                 if (coxswainCheckBoxes[i].checked === true) {
                     if (i >= manuallyInsertedMembers) {
                         selectedCoxswain = memberList[i - manuallyInsertedMembers];
-                    } else if (i === manuallyInsertedMembers - 1 && reservationToEdit.coxswain !== null) {
+                    } else if (i === manuallyInsertedMembers - 1 && reservationToEdit.coxswain !== undefined) {
                         selectedCoxswain = reservationToEdit.coxswain;
                     } else {
                         selectedCoxswain = reservationToEdit.boatCrew[i];

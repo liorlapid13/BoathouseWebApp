@@ -87,7 +87,7 @@ function addOneMinute(startTime){
         }
     }
     else{
-        minEndTimeMinutes =  (parseInt(startTimeMinute[1]) + 1).toString();
+        minEndTimeMinutes =  (parseInt(startTimeMinute) + 1).toString();
         minEndTimeHours = startTimeSplit[0];
         if(parseInt(minEndTimeMinutes) < 10){
             minEndTimeMinutes = "0" + minEndTimeMinutes;

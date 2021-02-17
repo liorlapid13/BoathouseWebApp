@@ -18,6 +18,15 @@
     width: 250px !important;
     margin-left: 20px;
 }
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: lightslategrey !important;
+}
 textarea:read-only{
     background-color: white!important;
+}
+.mediumTable{
+    overflow:auto;
+    max-height: 200px;"
 }
