@@ -545,7 +545,9 @@ public class Engine implements BMSEngine {
     @Override
     public void updateReservationCoxswain(Reservation reservation, String coxswain) {
         removeCoxswainFromReservation(reservation);
-        addCoxswainToReservation(reservation, coxswain);
+        if (coxswain != null) {
+            addCoxswainToReservation(reservation, coxswain);
+        }
     }
 
     @Override
