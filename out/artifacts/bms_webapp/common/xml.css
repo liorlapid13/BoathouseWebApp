@@ -1,0 +1,17 @@
+.importOptions{
+    float: left;
+    margin-top: 25px;
+    margin-left: 15px;
+}
+.submitButton{
+    float: left;
+    margin-top: 20px;
+}
+textarea:read-only{
+    height:170px;
+    background-color: white!important;
+}
+.errorText{
+    margin-top: 70px;
+    display: none;
+}

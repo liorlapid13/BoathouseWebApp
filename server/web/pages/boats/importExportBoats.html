@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Import and Export Activities</title>
-    <link href="activities.css" rel="stylesheet">
+    <title>Import and Export Boats</title>
+    <link href="boats.css" rel="stylesheet">
     <link href="../../common/xml.css" rel="stylesheet">
     <link href="../../style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="../../common/modal.js"></script>
     <script src="../../common/utils.js"></script>
-    <script src="importExportActivities.js"></script>
+    <script src="importExportBoats.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary" style="background-color: #2e6da4">
@@ -39,8 +39,8 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Add New Activity</a></li>
-                        <li><a class="dropdown-item" href="activities.html">All Activities</a></li>
-                        <li><a class="dropdown-item" href="importExportActivities.html">Import/Export Activities</a></li>
+                        <li><a class="dropdown-item" href="../activities/activities.html">All Activities</a></li>
+                        <li><a class="dropdown-item" href="../activities/importExportActivities.html">Import/Export Activities</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -49,8 +49,8 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Add New Boat</a></li>
-                        <li><a class="dropdown-item" href="../boats/boats.html">All Boats</a></li>
-                        <li><a class="dropdown-item" href="../boats/importExportBoats.html">Import/Export Boats</a></li>
+                        <li><a class="dropdown-item" href="boats.html">All Boats</a></li>
+                        <li><a class="dropdown-item" href="importExportBoats.html">Import/Export Boats</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -90,15 +90,15 @@
         </div>
     </div>
 </nav>
-    <h2 class="title">Import/Export Activities</h2>
-    <div class="contentBoard" >
+<h2 class="title">Import/Export Boats</h2>
+<div class="contentBoard" >
     <div class="container">
         <div class="row">
             <div class="col">
-                <form id="formImportActivities" method="get" action="login">
-                    <label style="font-size: 20px" for="fileInput" class="form-label">Please select XML file to import activities:</label>
+                <form id="formImportBoats" method="get" action="login">
+                    <label style="font-size: 20px" for="fileInput" class="form-label">Please select XML file to import boats:</label>
                     <input class="form-control form-control-lg" id="fileInput" type="file" accept= ".xml">
-                    <input type="submit" class="btn btn-secondary submitButton" value="Import Activities"/>
+                    <input type="submit" class="btn btn-secondary submitButton" value="Import Boats"/>
                     <div class="importOptions" >
                         <label>
                             <input type="radio" name="overrideOrAppend"/>
@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="col" style="border-left-style: solid;border-color:gray">
-                <button type="button" id="exportActivitiesButton" class="btn btn-secondary" > Export Activities </button>
+                <button type="button" id="exportBoatsButton" class="btn btn-secondary" > Export Boats </button>
             </div>
         </div>
     </div>

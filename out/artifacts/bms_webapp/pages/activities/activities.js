@@ -97,6 +97,7 @@ async function handleRemoveActivityRequest(){
         });
         if (response.status === STATUS_OK) {
             modalTitle.textContent = "";
+            modalBody.style.color = "green";
             modalBody.textContent = "Activity remove successfuly"
             showModal(modal);
             while (activitytableBodyEl.firstChild) {

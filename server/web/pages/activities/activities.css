@@ -16,9 +16,6 @@ h2.title {
     font-family: 'Ultra', sans-serif;
     text-shadow: 2px 2px 8px #FF0000;
 }
-.buttonImport{
-    margin-top: 20px;
-}
 input[type=file]:hover {
     background-color: floralwhite;
 

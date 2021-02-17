@@ -134,6 +134,7 @@ async function handleRemoveMemberRequest(){
         });
         if (removalResponse.status === STATUS_OK) {
             modalTitle.textContent = "";
+            modalBody.style.color = "green";
             modalBody.textContent = "Member remove successfuly"
             showModal(modal);
             while (membertableBodyEl.firstChild) {

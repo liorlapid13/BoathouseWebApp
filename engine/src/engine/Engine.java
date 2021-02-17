@@ -1104,14 +1104,6 @@ public class Engine implements BMSEngine {
         StringBuilder importErrorsString = new StringBuilder();
         List<Member> members = xmlHandler.generateMemberListFromXmlString(membersXmlString, isOverride, importErrorsString);
 
-        /*try {
-            for (Member member : members) {
-                member.setPassword(cryptor.encrypt(member.getPassword()));
-            }
-        } catch (CryptorException e) {
-            throw new XmlException("Error: Failed to encrypt member passwords");
-        }
-*/
         if (isOverride) {
             overrideMemberList(members);
         }

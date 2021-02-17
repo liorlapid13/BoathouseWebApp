@@ -127,6 +127,7 @@ async function handleRemoveBoatRequest(){
         });
         if (removalResponse.status === STATUS_OK) {
             modalTitle.textContent = "";
+            modalBody.style.color = "green";
             modalBody.textContent = "Boat remove successfuly"
             showModal(modal);
             while (boatsTableBodyEl.firstChild) {

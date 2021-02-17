@@ -3,7 +3,6 @@ let modalBody;
 let modalTitle;
 let fileText;
 
-
 window.addEventListener('load', () => {
     initializeModal();
     setupEventHandlers();
@@ -11,10 +10,10 @@ window.addEventListener('load', () => {
 });
 
 function setupEventHandlers(){
-    const importFormEl= document.getElementById("formImportActivities");
+    const importFormEl= document.getElementById("formImportMembers");
     importFormEl.addEventListener('submit',handleImportSubmit)
-    const exportActivitiesButton = document.getElementById("exportActivitiesButton");
-    exportActivitiesButton.addEventListener('click',handleExportActivities)
+    const exportActivitiesButton = document.getElementById("exportBoatsButton");
+    exportActivitiesButton.addEventListener('click',handleExportMembers)
     const modalCloseButtonEl = document.getElementById("closeButton");
     document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
     modalCloseButtonEl.addEventListener('click',() =>{
@@ -26,10 +25,10 @@ function initializeModal(){
     modalBody = document.getElementById("modalBody");
     modalTitle = document.getElementById("modalLabel");
 }
-async function handleExportActivities(){
+async function handleExportMembers(){
 
     const data = {
-        typeOfData : "activities"
+        typeOfData : "members"
     }
     const response = await fetch('../../exportData', {
         method: 'post',
@@ -41,7 +40,7 @@ async function handleExportActivities(){
 
     if(response.status == STATUS_OK){
         var text = await response.text();
-        var fileName = "exportActivities.xml"
+        var fileName = "exportMembers.xml"
         download(fileName,text);
     }
 }
@@ -76,7 +75,7 @@ async function handleImportSubmit(event){
     const isOverride = radioButtons[0].checked;
 
     const data = {
-        typeOfData : "activities",
+        typeOfData : "members",
         xmlString : fileText,
         override : isOverride
     }
@@ -91,7 +90,7 @@ async function handleImportSubmit(event){
     if(response.status == STATUS_OK){
         modalTitle.textContent = "" ;
         modalBody.style.color = "green";
-        modalBody.textContent = "Activities imported successfuly"
+        modalBody.textContent = "Members imported successfuly"
         showModal(modal);
     }
     else {

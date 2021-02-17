@@ -47,6 +47,7 @@ async function handleFormSubmit (event) {
         const alertPopup = document.getElementById('emailAlertText');
         if (response.ok) {
             const alertText = document.getElementById('alertText');
+            alertText.style.color = "green";
             alertText.textContent = "Personal details successfully changed!";
             alertPopup.textContent = '';
         } else {
@@ -61,6 +62,7 @@ function areTextBoxesFilled(inputName, inputEmail, inputPassword, inputPhoneNumb
     let textBoxesFilled = true;
 
     if (inputName === '' || inputPhoneNumber === '' || inputEmail === '' || inputPassword === '') {
+        alertText.style.color = "red";
         alertText.textContent = "You must fill in all fields!";
         textBoxesFilled = false;
     } else {

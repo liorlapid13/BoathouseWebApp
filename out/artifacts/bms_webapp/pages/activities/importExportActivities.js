@@ -1,6 +1,8 @@
 let modal;
 let modalBody;
 let modalTitle;
+let fileText;
+
 
 window.addEventListener('load', () => {
     initializeModal();
@@ -12,8 +14,9 @@ function setupEventHandlers(){
     const importFormEl= document.getElementById("formImportActivities");
     importFormEl.addEventListener('submit',handleImportSubmit)
     const exportActivitiesButton = document.getElementById("exportActivitiesButton");
-    exportActivitiesButton.addEventListener('click',handleExportActivites)
+    exportActivitiesButton.addEventListener('click',handleExportActivities)
     const modalCloseButtonEl = document.getElementById("closeButton");
+    document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
     modalCloseButtonEl.addEventListener('click',() =>{
         hideModal(modal);
     });
@@ -23,7 +26,7 @@ function initializeModal(){
     modalBody = document.getElementById("modalBody");
     modalTitle = document.getElementById("modalLabel");
 }
-async function handleExportActivites(){
+async function handleExportActivities(){
 
     const data = {
         typeOfData : "activities"
@@ -43,38 +46,58 @@ async function handleExportActivites(){
     }
 }
 
-function handleImportSubmit(event){
-    event.preventDefault();
-    const xmlFile =document.getElementById("formFileLg").value;
+function handleFileSelect(event){
+    const reader = new FileReader()
+    reader.onload = handleFileLoad;
+    reader.readAsText(event.target.files[0])
+}
 
-    if(checkLegalXmlFileName(xmlFile)){
-        readFileContent(xmlFile);
-        fetch(xmlFile).then((response) =>{response.text().then((text) =>{
-            xmlString = text;
-       });
-        });
-    }
-    else{
-        modalTitle.textContent = "Pay Attention!";
-        modalBody.textContent = "You must to insert XML file"
+function handleFileLoad(event){
+    fileText = event.target.result;
+}
+async function handleImportSubmit(event){
+    event.preventDefault();
+    const errorText = document.querySelector(".errorText");
+    errorText.style.display = "none";
+
+    if( document.getElementById('fileInput').files.length == 0){
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select any xml file!"
         showModal(modal);
         return;
     }
-}
+    const radioButtons = document.querySelector(".importOptions").getElementsByTagName("input")
+    if(radioButtons[0].checked === false && radioButtons[1].checked === false) {
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select between override or append before import"
+        showModal(modal);
+        return;
+    }
+    const isOverride = radioButtons[0].checked;
 
-function checkLegalXmlFileName(xmlFile){
-    return xmlFile.length >= 5 &&
-        xmlFile.charAt(xmlFile.length - 1) === 'l' &&
-        xmlFile.charAt(xmlFile.length - 2) === 'm' &&
-        xmlFile.charAt(xmlFile.length - 3) === 'x' &&
-        xmlFile.charAt(xmlFile.length - 4) === '.';
-}
+    const data = {
+        typeOfData : "activities",
+        xmlString : fileText,
+        override : isOverride
+    }
+    const response = await fetch('../../importData', {
+        method: 'post',
+        headers: new Headers({
+            'Content-Type': 'application/json;charset=utf-8'
+        }),
+        body: JSON.stringify(data)
+    });
 
-function createAndOpenFile(){
-    var stupidExample = '<?xml version="1.0" encoding="UTF-8"?> <engine>\n' +
-        '    <assignmentList/>' +
-        '</engine>';
-    document.open('data:Application/octet-stream,' + encodeURIComponent(stupidExample));
+    if(response.status == STATUS_OK){
+        modalTitle.textContent = "" ;
+        modalBody.style.color = "green";
+        modalBody.textContent = "Activities imported successfuly"
+        showModal(modal);
+    }
+    else {
+        errorText.style.display = "block";
+        document.getElementById("errorsTextArea").textContent = await response.text();
+    }
 }
 
 
