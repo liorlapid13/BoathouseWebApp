@@ -1,0 +1,21 @@
+h2.title {
+    margin-top: 10px ;
+    text-align: center ;
+    color: slategray;
+    font-size: 50px;
+    font-family: 'Ultra', sans-serif;
+    text-shadow: 7px 7px 11px white;
+}
+.moccasinNarrow{
+    background-color: moccasin !important;
+    width: 750px !important;
+}
+#buttonCreateActivity{
+    margin-top: 25px;
+}
+.itemsMargin{
+    margin-top: 15px !important;
+}
+.itemWidth{
+    width: 250px !important;
+}

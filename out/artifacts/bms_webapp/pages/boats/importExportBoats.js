@@ -90,7 +90,7 @@ async function handleImportSubmit(event){
     if(response.status == STATUS_OK){
         modalTitle.textContent = "" ;
         modalBody.style.color = "green";
-        modalBody.textContent = "Boats imported successfuly"
+        modalBody.textContent = "Boats imported successfully"
         showModal(modal);
     }
     else {

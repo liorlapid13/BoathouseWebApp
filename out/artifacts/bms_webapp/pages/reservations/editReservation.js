@@ -6,14 +6,16 @@ let editBoatTypesButtonEl;
 let confirmBoatTypesButtonEl;
 let editBoatCrewButtonEl;
 let confirmBoatCrewButtonEl;
+let editReservatorButtonEl;
 let confirmReservatorButtonEl;
 let cancelButtonEl;
 let confirmButtonEl;
 
-let reservation;
+let reservationToEdit;
 let selectedDate;
 let selectedActivity;
 let selectedBoatTypes = [];
+let maxMembersInCrew;
 let doSelectedBoatTypesNeedCoxswain;
 let selectedBoatCrew = [];
 let selectedCoxswain;
@@ -27,6 +29,7 @@ let dateEdited = false;
 let activityEdited = false;
 let boatTypesEdited = false;
 let boatCrewEdited = false;
+let reservatorEdited = false;
 let forceBoatCrewReselection = false;
 let manuallyInsertedMembers = 0;
 
@@ -61,6 +64,8 @@ function setupEventHandlers() {
     editBoatCrewButtonEl.addEventListener('click', handleEditBoatCrew);
     confirmBoatCrewButtonEl = document.getElementById('buttonConfirmBoatCrew');
     confirmBoatCrewButtonEl.addEventListener('click', handleConfirmBoatCrew);
+    editReservatorButtonEl = document.getElementById('buttonEditReservator');
+    editReservatorButtonEl.addEventListener('click', handleEditReservator);
     confirmReservatorButtonEl = document.getElementById('buttonConfirmReservator');
     confirmReservatorButtonEl.addEventListener('click', handleConfirmReservator);
     cancelButtonEl = document.getElementById('buttonCancel');
@@ -93,9 +98,9 @@ async function handleConfirmDate(event) {
         const daysDropDownMenuEl = document.getElementById('daysDropDownMenu');
         const dropDownOptions = daysDropDownMenuEl.getElementsByTagName('option');
         selectedDate = dropDownOptions[daysDropDownMenuEl.value - 1].textContent;
-        if (selectedDate !== reservation.date) {
+        if (selectedDate !== reservationToEdit.date) {
             let isBoatCrewAvailable = await checkIfBoatCrewIsAvailable(
-                selectedDate, reservation.activity, reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
+                selectedDate, reservationToEdit.activity, reservationToEdit.boatCrew, reservationToEdit.coxswain, reservationToEdit.coxswainSelected);
             if (!isBoatCrewAvailable) {
                 modalTitle.textContent = "Pay Attention!" ;
                 modalBody.textContent = "One or more of the crew members are not available on this day, please try again!"
@@ -107,9 +112,10 @@ async function handleConfirmDate(event) {
         }
         daysDropDownMenuEl.disabled = true;
     } else {
-        selectedDate = reservation.date;
+        selectedDate = reservationToEdit.date;
     }
 
+    editDateButtonEl.disabled = true;
     confirmDateButtonEl.disabled = true;
     editActivityButtonEl.disabled = false;
     confirmActivityButtonEl.disabled = false;
@@ -134,7 +140,7 @@ async function handleEditActivity(event) {
         modalTitle.textContent = "Pay Attention!" ;
         modalBody.textContent = "There are no available activities, you cannot edit this reservation's activity"
         showModal(modal);
-        selectedActivity = reservation.activity;
+        selectedActivity = reservationToEdit.activity;
         confirmActivityButtonEl.disabled = true;
         editBoatTypesButtonEl.disabled = false;
         confirmBoatTypesButtonEl.disabled = false;
@@ -147,25 +153,25 @@ async function handleEditActivity(event) {
 
 async function handleConfirmActivity(event) {
     if (activityEdited) {
-        if (selectedActivity !== reservation.activity) {
+        const activityDropDownMenuEl = document.getElementById('activityDropDownMenu');
+        selectedActivity = activityList[activityDropDownMenuEl.value];
+        if (selectedActivity !== reservationToEdit.activity) {
             let isBoatCrewAvailable = await checkIfBoatCrewIsAvailable(
-                selectedDate, selectedActivity, reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
+                selectedDate, selectedActivity, reservationToEdit.boatCrew, reservationToEdit.coxswain, reservationToEdit.coxswainSelected);
             if (!isBoatCrewAvailable) {
                 modalTitle.textContent = "Pay Attention!" ;
                 modalBody.textContent = "One or more of the crew members are not available on this day, please try again!";
                 showModal(modal);
                 return;
             }
-        } else {
-            activityEdited = true;
         }
-        const activityDropDownMenuEl = document.getElementById('activityDropDownMenu');
-        selectedActivity = activityDropDownMenuEl.value;
+
         activityDropDownMenuEl.disabled = true;
     } else {
-        selectedActivity = reservation.activity;
+        selectedActivity = reservationToEdit.activity;
     }
 
+    editActivityButtonEl.disabled = true;
     confirmActivityButtonEl.disabled = true;
     editBoatTypesButtonEl.disabled = false;
     confirmBoatTypesButtonEl.disabled = false;
@@ -196,15 +202,16 @@ function handleConfirmBoatTypes(event) {
             showModal(modal);
             return;
         } else {
-            let newMaxCapacity = calculateMaxBoatTypesCapacity(selectedBoatTypes);
-            let boatCrewSize = reservation.boatCrew.length;
+            maxMembersInCrew = calculateMaxBoatTypesCapacity(selectedBoatTypes);
+            let boatCrewSize = reservationToEdit.boatCrew.length;
             doSelectedBoatTypesNeedCoxswain = doBoatTypesNeedCoxswain(selectedBoatTypes);
-            if (newMaxCapacity < boatCrewSize || (!doSelectedBoatTypesNeedCoxswain && reservation.coxswainSelected)) {
+            if (maxMembersInCrew < boatCrewSize || (!doSelectedBoatTypesNeedCoxswain && reservationToEdit.coxswainSelected)) {
                 forceBoatCrewReselection = true;
             }
         }
     } else {
-        selectedBoatTypes = reservation.boatTypes;
+        editBoatTypesButtonEl.disabled = true;
+        selectedBoatTypes = reservationToEdit.boatTypes;
         doSelectedBoatTypesNeedCoxswain = doBoatTypesNeedCoxswain(selectedBoatTypes);
     }
 
@@ -226,7 +233,7 @@ async function handleEditBoatCrew(event) {
     boatCrewEdited = true;
     editBoatCrewButtonEl.disabled = true;
     confirmBoatCrewButtonEl.textContent = CONFIRM;
-
+    //confirmBoatCrewButtonEl.disabled = false;
 
     const response1 = await fetch('../../activities', {
         method: 'post',
@@ -258,15 +265,16 @@ async function handleEditBoatCrew(event) {
         body: JSON.stringify(data2)
     });
 
-    const memberTableBodyEl = document.getElementById('memberTableBody');
+    const boatCrewTableBodyEl = document.getElementById('boatCrewTableBody');
     if (!dateEdited && !activityEdited) {
-        for (let i = 0; i < reservation.boatCrew.length; i++) {
-            memberTableBodyEl.appendChild(buildMemberTableEntry(reservation.boatCrew[i], i));
+        let i;
+        for (i = 0; i < reservationToEdit.boatCrew.length; i++) {
+            boatCrewTableBodyEl.appendChild(buildMemberTableEntry(reservationToEdit.boatCrew[i], i));
             manuallyInsertedMembers++;
         }
 
-        if (reservation.coxswainSelected) {
-            memberTableBodyEl.appendChild(buildMemberTableEntry(reservation.coxswain, i));
+        if (reservationToEdit.coxswainSelected) {
+            boatCrewTableBodyEl.appendChild(buildMemberTableEntry(reservationToEdit.coxswain, i));
             manuallyInsertedMembers++;
         }
     }
@@ -274,7 +282,7 @@ async function handleEditBoatCrew(event) {
     if (response2.status === STATUS_OK) {
         memberList = await response2.json();
         for (let i = manuallyInsertedMembers; i < manuallyInsertedMembers + memberList.length; i++) {
-            memberTableBodyEl.appendChild(buildMemberTableEntry(memberList[i - manuallyInsertedMembers], i));
+            boatCrewTableBodyEl.appendChild(buildMemberTableEntry(memberList[i - manuallyInsertedMembers], i));
         }
     } else {
         if (manuallyInsertedMembers === 0) {
@@ -288,8 +296,8 @@ async function handleEditBoatCrew(event) {
                 showModal(modal);
                 boatCrewEdited = false;
                 confirmBoatCrewButtonEl.disabled = true;
-                selectedBoatCrew = reservation.boatCrew;
-                selectedCoxswain = reservation.coxswain;
+                selectedBoatCrew = reservationToEdit.boatCrew;
+                selectedCoxswain = reservationToEdit.coxswain;
                 cancelButtonEl.disabled = false;
                 confirmButtonEl.disabled = false;
                 return;
@@ -304,18 +312,18 @@ async function handleEditBoatCrew(event) {
 
 function handleConfirmBoatCrew(event) {
     if (boatCrewEdited) {
-        const boatCrewTableBodyEl = document.getElementById('memberTableBody');
-        const crewCheckBoxes = document.getElementById("memberTableBody").getElementsByClassName("crewCheckBox");
+        const boatCrewTableBodyEl = document.getElementById('boatCrewTableBody');
+        const crewCheckBoxes = boatCrewTableBodyEl.getElementsByClassName("crewCheckBox");
         let membersSelected = 0;
         for (let i = 0; i < crewCheckBoxes.length; i++) {
             if (crewCheckBoxes[i].checked === true) {
                 membersSelected++;
                 if (i >= manuallyInsertedMembers) {
                     selectedBoatCrew.push(memberList[i - manuallyInsertedMembers]);
-                } else if (i === manuallyInsertedMembers - 1 && reservation.coxswain !== null) {
-                    selectedBoatCrew.push(reservation.coxswain);
+                } else if (i === manuallyInsertedMembers - 1 && reservationToEdit.coxswain !== null) {
+                    selectedBoatCrew.push(reservationToEdit.coxswain);
                 } else {
-                    selectedBoatCrew.push(reservation.boatCrew[i]);
+                    selectedBoatCrew.push(reservationToEdit.boatCrew[i]);
                 }
 
                 if (membersSelected === maxMembersInCrew) {
@@ -330,8 +338,8 @@ function handleConfirmBoatCrew(event) {
             showModal(modal);
             return;
         } else {
-            selectReservatorButtonEl.disabled = false;
-            selectBoatCrewButtonEl.disabled = true;
+            editReservatorButtonEl.disabled = false;
+            confirmBoatCrewButtonEl.disabled = true;
             disableCrewCheckBoxes();
         }
 
@@ -341,7 +349,14 @@ function handleConfirmBoatCrew(event) {
             const coxswainCheckBoxes = boatCrewTableBodyEl.getElementsByClassName("coxswainCheckBox");
             for (let i = 0; i < coxswainCheckBoxes.length; i++) {
                 if (coxswainCheckBoxes[i].checked === true) {
-                    selectedCoxswain = memberList[i];
+                    if (i >= manuallyInsertedMembers) {
+                        selectedCoxswain = memberList[i - manuallyInsertedMembers];
+                    } else if (i === manuallyInsertedMembers - 1 && reservationToEdit.coxswain !== null) {
+                        selectedCoxswain = reservationToEdit.coxswain;
+                    } else {
+                        selectedCoxswain = reservationToEdit.boatCrew[i];
+                    }
+
                     coxswainSelected = true;
                     break;
                 }
@@ -350,19 +365,25 @@ function handleConfirmBoatCrew(event) {
             if (!coxswainSelected) {
                 selectedCoxswain = null;
             }
+        } else {
+            selectedCoxswain = null;
         }
 
-        const reservatorTableBodyEl = document.getElementById('reservatorTableBody');
-        for (let i = 0; i < membersSelected; i++) {
-            let member = (i === membersSelected - 1 && doSelectedBoatTypesNeedCoxswain) ? selectedCoxswain : selectedBoatCrew[i];
-            reservatorTableBodyEl.appendChild(buildReservatorTableEntry(member, i));
+        if (!isMemberInBoatCrew(reservationToEdit.reservator, selectedBoatCrew, selectedCoxswain)) {
+            modalTitle.textContent = "Pay Attention!" ;
+            modalBody.textContent = "Please select a new reservator!"
+            showModal(modal);
+            handleEditReservator();
+        } else {
+            editReservatorButtonEl.disabled = false;
         }
 
         confirmReservatorButtonEl.disabled = false;
     } else {
-        selectedBoatCrew = reservation.boatCrew;
-        selectedCoxswain = reservation.coxswain;
-        selectedReservator = reservation.reservator;
+        editBoatCrewButtonEl.disabled = true;
+        selectedBoatCrew = reservationToEdit.boatCrew;
+        selectedCoxswain = reservationToEdit.coxswain;
+        selectedReservator = reservationToEdit.reservator;
         cancelButtonEl.disabled = false;
         confirmButtonEl.disabled = false;
     }
@@ -371,49 +392,93 @@ function handleConfirmBoatCrew(event) {
 }
 
 function handleConfirmReservator(event) {
-    const checkBoxes = document.getElementById('reservatorTableBody').getElementsByTagName("input");
-    let reservatorSelectionFound = false;
-    for (let i = 0; i < checkBoxes.length; i++) {
-        if (checkBoxes[i].checked === true) {
-            selectedReservator = (i === checkBoxes.length - 1 && coxswainSelected !== null) ? selectedCoxswain : selectedBoatCrew[i];
-            reservatorSelectionFound = true;
-            break;
+    if (reservatorEdited) {
+        const checkBoxes = document.getElementById('reservatorTableBody').getElementsByTagName("input");
+        let reservatorSelectionFound = false;
+        for (let i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked === true) {
+                selectedReservator = (i === checkBoxes.length - 1 && selectedCoxswain !== null) ? selectedCoxswain : selectedBoatCrew[i];
+                reservatorSelectionFound = true;
+                break;
+            }
         }
-    }
 
-    if (reservatorSelectionFound) {
-        selectReservatorButtonEl.disabled = true;
-        confirmButtonEl.disabled = false;
-        cancelButtonEl.disabled = false;
+        if (!reservatorSelectionFound) {
+            modalTitle.textContent = "Pay Attention!" ;
+            modalBody.textContent = "You must select a reservator!"
+            showModal(modal);
+            return;
+        }
+
         disableReservatorCheckBoxes();
     } else {
-        modalTitle.textContent = "Pay Attention!" ;
-        modalBody.textContent = "You must select a reservator!"
-        showModal(modal);
+        selectedReservator = reservationToEdit.reservator;
+    }
+
+    confirmReservatorButtonEl.disabled = true;
+    confirmButtonEl.disabled = false;
+    cancelButtonEl.disabled = false;
+}
+
+function handleEditReservator(event) {
+    reservatorEdited = true;
+    confirmReservatorButtonEl.textContent = CONFIRM;
+    editReservatorButtonEl.disabled = true;
+    const reservatorTableBodyEl = document.getElementById('reservatorTableBody');
+    let i;
+    for (i = 0; i < selectedBoatCrew.length; i++) {
+        reservatorTableBodyEl.appendChild(buildReservatorTableEntry(selectedBoatCrew[i], i));
+    }
+
+    if (selectedCoxswain != null) {
+        reservatorTableBodyEl.appendChild(buildReservatorTableEntry(selectedCoxswain, i));
     }
 }
 
 function handleCancel(event) {
-    finalModalTitle.textContent = "!";
+    finalModalTitle.textContent = "";
     finalModalBody.textContent = "Reservation has not been changed";
     showModal(finalModal);
 }
 
 async function handleConfirm(event) {
-    const data = {
-
+    if (!dateEdited && !activityEdited && !boatTypesEdited && !boatCrewEdited) {
+        finalModalTitle.textContent = "";
+        finalModalBody.textContent = "Reservation has not been changed";
+        showModal(finalModal);
     }
 
+    const data = {
+        reservation: reservationToEdit,
+        date: selectedDate,
+        activity: selectedActivity,
+        isDummyActivity: isDummyActivity,
+        boatTypes: selectedBoatTypes,
+        boatCrew: selectedBoatCrew,
+        coxswain: selectedCoxswain,
+        reservator: selectedReservator
+    }
 
+    const response = await fetch('../../editReservation', {
+        method: 'post',
+        headers: new Headers({
+            'Content-Type': 'application/json;charset=utf-8'
+        }),
+        body: JSON.stringify(data)
+    });
+
+    finalModalTitle.textContent = "";
+    finalModalBody.textContent = "Reservation successfully changed";
+    showModal(finalModal);
 }
 
 async function checkIfBoatCrewIsAvailable(date, activity, boatCrew, coxswain, coxswainSelected) {
     const data = {
-        date: selectedDate,
-        activity: reservation.activity,
-        boatCrew: reservation.boatCrew,
-        coxswain: reservation.coxswain,
-        coxswainSelected: reservation.coxswainSelected
+        date: date,
+        activity: activity,
+        boatCrew: boatCrew,
+        coxswain: coxswain,
+        coxswainSelected: coxswainSelected
     }
 
     const response = await fetch('../../boatCrewAvailability', {
@@ -433,14 +498,14 @@ function initializeReservationData() {
     const currentBoatTypesEl = document.getElementById('currentBoatTypes');
     const currentBoatCrewEl = document.getElementById('currentBoatCrew');
     const currentReservatorEl = document.getElementById('currentReservator');
-    reservation = JSON.parse(sessionStorage.getItem('reservationToEdit'));
+    reservationToEdit = JSON.parse(sessionStorage.getItem('reservationToEdit'));
 
-    currentDateEl.textContent = reservation.date;
-    currentActivityEl.textContent = reservation.activity.name + "\n" + reservation.activity.time + "\n" +
-        reservation.activity.restriction;
-    currentBoatTypesEl.textContent = parseBoatTypes(reservation.boatTypes);
-    currentBoatCrewEl.textContent = parseBoatCrew(reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
-    currentReservatorEl.textContent = reservation.reservator.name;
+    currentDateEl.textContent = reservationToEdit.date;
+    currentActivityEl.textContent = reservationToEdit.activity.name + "\n" + reservationToEdit.activity.time + "\n" +
+        reservationToEdit.activity.restriction;
+    currentBoatTypesEl.textContent = parseBoatTypes(reservationToEdit.boatTypes);
+    currentBoatCrewEl.textContent = parseBoatCrew(reservationToEdit.boatCrew, reservationToEdit.coxswain, reservationToEdit.coxswainSelected);
+    currentReservatorEl.textContent = reservationToEdit.reservator.name;
 }
 
 function enableBoatTypeCheckBoxes() {
@@ -468,7 +533,7 @@ function initializeModals() {
     finalModalTitle = document.getElementById("finalModalLabel");
 }
 
-function buildMemberTableEntry(member,index) {
+function buildMemberTableEntry(member, index) {
     const tableRowEl = document.createElement('tr');
     const tableHeaderEl = document.createElement('th');
     const tableDataEl1 = document.createElement('td');
@@ -512,8 +577,8 @@ function buildReservatorTableEntry(member, index) {
 }
 
 function checkCoxswainCheckBoxes() {
-    const crewCheckBoxes = document.getElementById("memberTableBody").getElementsByClassName("crewCheckBox");
-    const coxswainCheckBoxes = document.getElementById("memberTableBody").getElementsByClassName("coxswainCheckBox");
+    const crewCheckBoxes = document.getElementById("boatCrewTableBody").getElementsByClassName("crewCheckBox");
+    const coxswainCheckBoxes = document.getElementById("boatCrewTableBody").getElementsByClassName("coxswainCheckBox");
     for (let i = 0; i < coxswainCheckBoxes.length; i++) {
         if (coxswainCheckBoxes[i].id === this.id) {
             crewCheckBoxes[i].disabled = coxswainCheckBoxes[i].checked === true;
@@ -525,8 +590,8 @@ function checkCoxswainCheckBoxes() {
 }
 
 function checkCrewCheckBoxes() {
-    const coxswainCheckBoxes = document.getElementById("memberTableBody").getElementsByClassName("coxswainCheckBox");
-    const crewCheckBoxes = document.getElementById("memberTableBody").getElementsByClassName("crewCheckBox");
+    const coxswainCheckBoxes = document.getElementById("boatCrewTableBody").getElementsByClassName("coxswainCheckBox");
+    const crewCheckBoxes = document.getElementById("boatCrewTableBody").getElementsByClassName("crewCheckBox");
     let index = Array.from(crewCheckBoxes).indexOf(this);
     if (this.checked === true) {
         let checkedCheckBoxes = 0;
@@ -550,9 +615,25 @@ function checkCrewCheckBoxes() {
 }
 
 function disableCoxswainCheckBoxes() {
-    const coxswainCheckBoxes = document.getElementById("memberTableBody")
+    const coxswainCheckBoxes = document.getElementById("boatCrewTableBody")
         .getElementsByClassName("coxswainCheckBox");
     for (let i = 0; i < coxswainCheckBoxes.length; i++) {
         coxswainCheckBoxes[i].disabled = true;
+    }
+}
+
+function disableCrewCheckBoxes() {
+    const crewCheckBoxes = document.getElementById('boatCrewTableBody')
+        .getElementsByClassName("crewCheckBox");
+    for (let i = 0; i < crewCheckBoxes.length; i++) {
+        crewCheckBoxes[i].disabled = true;
+    }
+}
+
+function disableReservatorCheckBoxes() {
+    const reservatorCheckBoxes = document.getElementById('reservatorTableBody')
+        .getElementsByTagName('input');
+    for (let i = 0; i < reservatorCheckBoxes.length; i++) {
+        reservatorCheckBoxes[i].disabled = true;
     }
 }

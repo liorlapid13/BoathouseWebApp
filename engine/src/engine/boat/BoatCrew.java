@@ -1,6 +1,7 @@
 package engine.boat;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,8 +56,18 @@ public class BoatCrew implements Serializable {
         if (this == o) return true;
         if (!(o instanceof BoatCrew)) return false;
         BoatCrew boatCrew = (BoatCrew) o;
-        return Objects.equals(crewMembers, boatCrew.crewMembers) &&
-                Objects.equals(coxswain, boatCrew.coxswain);
+        boolean listsEqual = true;
+
+        if (crewMembers.size() == boatCrew.crewMembers.size()) {
+            for (int i = 0; i < crewMembers.size(); i++) {
+                if (!crewMembers.get(i).equals(boatCrew.crewMembers.get(i))) {
+                    listsEqual = false;
+                    break;
+                }
+            }
+        }
+
+        return listsEqual && Objects.equals(coxswain, boatCrew.coxswain);
     }
 
     @Override

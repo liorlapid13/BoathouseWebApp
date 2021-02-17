@@ -13,7 +13,7 @@ function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
 
     boatCrewString = boatCrewString.concat("\n");
     boatCrewString = boatCrewString.concat("Coxswain: ");
-    boatCrewString = boatCrewString.concat(coxswainSelected === "true" ? coxswain : "none");
+    boatCrewString = boatCrewString.concat(coxswainSelected === true ? coxswain.name : "none");
 
     return boatCrewString;
 }
@@ -118,4 +118,20 @@ function download(filename, text) {
     element.click();
 
     document.body.removeChild(element);
+}
+
+function isMemberInBoatCrew(member, boatCrew, coxswain) {
+    for (let i = 0; i < boatCrew.length; i++) {
+        if (member.id === boatCrew[i].id) {
+            return true;
+        }
+    }
+
+    if (coxswain != null) {
+        if (member.id === coxswain.id) {
+            return true;
+        }
+    }
+
+    return false;
 }

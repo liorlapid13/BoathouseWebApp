@@ -554,27 +554,33 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public Reservation updateReservationCrewMembers(Reservation reservation, List<String> updatedCrewMembers) {
+    public Reservation updateReservationCrewMembers(Reservation reservation, List<String> newCrewMembers) {
         List<String> currentCrewMembers = reservation.getBoatCrew().getCrewMembers();
         List<String> membersToRemove = new ArrayList<>();
+        List<String> membersToAdd = new ArrayList<>();
 
-        for (String memberId : currentCrewMembers) {
-            boolean memberInUpdatedCrew = false;
-
-            for (String updatedCrewMemberId : updatedCrewMembers) {
-                if (updatedCrewMemberId.equals(memberId)) {
-                    memberInUpdatedCrew = true;
-                    break;
-                }
+        for (String currentCrewMember : currentCrewMembers) {
+            if (!newCrewMembers.contains(currentCrewMember)) {
+                membersToRemove.add(currentCrewMember);
             }
+        }
 
-            if (!memberInUpdatedCrew) {
-                membersToRemove.add(memberId);
+        for (String newCrewMember : newCrewMembers) {
+            if (!currentCrewMembers.contains(newCrewMember)) {
+                membersToAdd.add(newCrewMember);
             }
         }
 
         for (String memberIdToRemove : membersToRemove) {
             removeCrewMemberFromReservation(findMemberByID(memberIdToRemove), reservation);
+        }
+
+        for (String memberIdToAdd : membersToAdd) {
+            addCrewMemberToReservation(reservation, memberIdToAdd);
+        }
+
+        if (!currentCrewMembers.contains(reservation.getReservator())) {
+            reservation.setReservator(null);
         }
 
         return reservation;
@@ -1223,32 +1229,19 @@ public class Engine implements BMSEngine {
             updateReservationCrewMembers(reservation, boatCrew.getCrewMembers());
         }
 
-        if (!reservation.getBoatCrew().getCoxswain().equals(boatCrew.getCoxswain())) {
-            updateReservationCoxswain(reservation, boatCrew.getCoxswain());
+        String coxswain = reservation.getBoatCrew().getCoxswain();
+        String newCoxswain = boatCrew.getCoxswain();
+        if (coxswain != null) {
+            if (!coxswain.equals(newCoxswain)) {
+                updateReservationCoxswain(reservation, newCoxswain);
+            }
+        } else if (newCoxswain != null) {
+            updateReservationCoxswain(reservation, newCoxswain);
         }
 
-        if (!reservation.getReservator().equals(reservatorId)) {
+        String reservator = reservation.getReservator();
+        if (reservator == null || !reservation.getReservator().equals(reservatorId)) {
             updateReservationReservator(reservation, reservatorId);
         }
     }
-
-
-
-
-
-   /* public void encryptPasswords() throws CryptorException {
-        Cryptor cryptor = new Cryptor();
-
-        for (Member member : memberList) {
-            member.setPassword(cryptor.encrypt(member.getPassword()));
-        }
-    }
-
-    public void decryptPasswords() throws CryptorException {
-        Cryptor cryptor = new Cryptor();
-
-        for (Member member : memberList) {
-            member.setPassword(cryptor.decrypt(member.getPassword()));
-        }
-    }*/
 }

@@ -23,10 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -60,6 +57,7 @@ public class EditReservationServlet extends HttpServlet {
         boolean coxswainSelected = requestData.coxswain != null;
         BoatCrew boatCrew = ServerUtils.createBoatCrew(requestData.boatCrew, requestData.coxswain, coxswainSelected);
         engine.editReservation(requestData.reservation.getId(), date, activity, boatTypes, boatCrew, requestData.reservator.getId());
+        ServerUtils.saveSystemState(getServletContext());
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 

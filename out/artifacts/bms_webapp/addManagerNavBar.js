@@ -71,7 +71,7 @@ function createManageActivitiesOption() {
     manageActivitiesLiEl.classList.add("nav-item", "dropdown");
     manageActivitiesLiEl.appendChild(createLilink("Manage Activities","navbarDropdown2"));
     const namesOfItems = ["Add New Activity","All Activities","Import/Export Activities"]
-    const pageLinks = ["#","../activities/activities.html","../activities/importExportActivities.html"];
+    const pageLinks = ["../activities/createActivity.html","../activities/activities.html","../activities/importExportActivities.html"];
     manageActivitiesLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageActivitiesLiEl;
