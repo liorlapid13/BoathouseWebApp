@@ -21,7 +21,7 @@
 thead th {
     position: sticky;
     top: 0;
-    background-color: lightslategrey !important;
+    background-color: white !important;
 }
 textarea:read-only{
     background-color: white!important;

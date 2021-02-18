@@ -498,7 +498,7 @@ function initializeReservationData() {
     const currentBoatTypesEl = document.getElementById('currentBoatTypes');
     const currentBoatCrewEl = document.getElementById('currentBoatCrew');
     const currentReservatorEl = document.getElementById('currentReservator');
-    reservationToEdit = JSON.parse(sessionStorage.getItem('reservationToEdit'));
+    reservationToEdit = JSON.parse(sessionStorage.getItem(RESERVATION_TO_EDIT));
 
     currentDateEl.textContent = reservationToEdit.date;
     currentActivityEl.textContent = reservationToEdit.activity.name + "\n" + reservationToEdit.activity.time + "\n" +

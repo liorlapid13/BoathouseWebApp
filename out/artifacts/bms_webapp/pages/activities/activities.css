@@ -8,7 +8,7 @@
 td{
     height: 70px !important;
 }
-h2.title {
+h2.titleMoccasin {
     margin-top: 10px ;
     text-align: center ;
     color: moccasin;
@@ -19,4 +19,25 @@ h2.title {
 input[type=file]:hover {
     background-color: floralwhite;
 
+}
+h2.titleGray {
+    margin-top: 10px ;
+    text-align: center ;
+    color: slategray;
+    font-size: 50px;
+    font-family: 'Ultra', sans-serif;
+    text-shadow: 7px 7px 11px white;
+}
+.moccasinNarrow{
+    background-color: moccasin !important;
+    width: 700px !important;
+}
+.buttonSubmit{
+    margin-top: 25px;
+}
+.itemsMargin{
+    margin-top: 15px !important;
+}
+.itemWidth{
+    width: 250px !important;
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Activity</title>
-    <link href="createActivity.css" rel="stylesheet">
+    <link href="activities.css" rel="stylesheet">
     <link href="../../style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
@@ -91,7 +91,7 @@
 </nav>
 
 <div class="contentBoard moccasinNarrow" >
-    <h2 class="title">Create New Activity</h2>
+    <h2 class="titleGray">Create New Activity</h2>
     <form id="formCreateActivity">
         <div class="container">
             <div class="row-">
@@ -133,26 +133,11 @@
             </div>
             <div class="row">
                 <div class="col-sm">
-                    <input id="buttonCreateActivity" type="submit" class="btn btn-primary" value="Create Activity">
+                    <input id="buttonCreateActivity" type="submit" class="btn btn-primary buttonSubmit" value="Create Activity">
                 </div>
             </div>
         </div>
     </form>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div style="color:red"; class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Pay Attention!</h5>
-            </div>
-            <div id="modalBody"  class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button id="closeButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- Final Modal -->
 <div class="modal fade" id="finalModal" tabindex="-1" aria-labelledby="finalModalLabel" aria-hidden="true">

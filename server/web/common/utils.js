@@ -1,4 +1,6 @@
 const STATUS_OK = 200;
+const RESERVATION_TO_EDIT = "reservationToEdit";
+const ACTIVITY_TO_EDIT = "activityToEdit";
 function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";
     for (let i = 0; i < boatCrew.length; i++) {
@@ -135,3 +137,26 @@ function isMemberInBoatCrew(member, boatCrew, coxswain) {
 
     return false;
 }
+function addOneMinute(startTime){
+    const startTimeSplit = startTime.split(":");
+    let startTimeMinute = startTimeSplit[1];
+    let minEndTimeMinutes;
+    let minEndTimeHours;
+    if(startTimeMinute === "59"){
+        minEndTimeMinutes = "00";
+        minEndTimeHours = (parseInt(startTimeSplit[0]) + 1).toString();
+        if(parseInt(minEndTimeHours) < 10){
+            minEndTimeHours = "0" + minEndTimeHours;
+        }
+    }
+    else{
+        minEndTimeMinutes =  (parseInt(startTimeMinute) + 1).toString();
+        minEndTimeHours = startTimeSplit[0];
+        if(parseInt(minEndTimeMinutes) < 10){
+            minEndTimeMinutes = "0" + minEndTimeMinutes;
+        }
+    }
+
+    return minEndTimeHours.concat(":",minEndTimeMinutes);
+}
+

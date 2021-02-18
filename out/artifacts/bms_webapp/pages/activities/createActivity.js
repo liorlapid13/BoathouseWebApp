@@ -1,15 +1,11 @@
-let modal;
-let modalBody;
-let modalTitle;
 let finalModal;
 let finalModalBody;
 let finalModalTitle;
 
 
 window.addEventListener('load', () => {
-    initializeModal();
+    initializeFinalModal();
     setupEventHandlers();
-
 });
 
 function setupEventHandlers(){
@@ -17,10 +13,6 @@ function setupEventHandlers(){
     formCreateActivityEl.addEventListener('submit',handleActivityCreation);
     const inputStartTime = document.getElementById("inputStartTime")
     inputStartTime.addEventListener("change", setMinEndTime);
-    const modalCloseButtonEl = document.getElementById("closeButton");
-    modalCloseButtonEl.addEventListener('click',() =>{
-        hideModal(modal);
-    });
     const finalModalRedirectButtonEl = document.getElementById('redirectButton');
     finalModalRedirectButtonEl.addEventListener('click', () => {
         hideModal(finalModal);
@@ -28,17 +20,8 @@ function setupEventHandlers(){
     });
 }
 function setMinEndTime(){
-
     const minEndTime = addOneMinute(this.value);
     document.getElementById("inputEndTime") .setAttribute("min",minEndTime);
-}
-function initializeModal() {
-    modal = document.getElementById("modal");
-    modalBody = document.getElementById("modalBody");
-    modalTitle = document.getElementById("modalLabel");
-    finalModal = document.getElementById("finalModal");
-    finalModalBody = document.getElementById("finalModalBody");
-    finalModalTitle = document.getElementById("finalModalLabel");
 }
 async function handleActivityCreation(event){
     event.preventDefault();
@@ -67,32 +50,14 @@ async function handleActivityCreation(event){
         showModal(finalModal);
     }
     else{
-
         finalModalTitle.textContent = "Pay Attention!";
         finalModalBody.style.color = "red";
         finalModalBody.textContent = await response.text()
         showModal(finalModal);
     }
 }
-function addOneMinute(startTime){
-    const startTimeSplit = startTime.split(":");
-    let startTimeMinute = startTimeSplit[1];
-    let minEndTimeMinutes;
-    let minEndTimeHours;
-    if(startTimeMinute === "59"){
-        minEndTimeMinutes = "00";
-        minEndTimeHours = (parseInt(startTimeSplit[0]) + 1).toString();
-        if(parseInt(minEndTimeHours) < 10){
-            minEndTimeHours = "0" + minEndTimeHours;
-        }
-    }
-    else{
-        minEndTimeMinutes =  (parseInt(startTimeMinute) + 1).toString();
-        minEndTimeHours = startTimeSplit[0];
-        if(parseInt(minEndTimeMinutes) < 10){
-            minEndTimeMinutes = "0" + minEndTimeMinutes;
-        }
-    }
-
-    return minEndTimeHours.concat(":",minEndTimeMinutes);
+function initializeFinalModal() {
+    finalModal = document.getElementById("finalModal");
+    finalModalBody = document.getElementById("finalModalBody");
+    finalModalTitle = document.getElementById("finalModalLabel");
 }

@@ -127,7 +127,7 @@ async function handleEditReservationRequest(event) {
         const reservationStatus = (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
         if (reservationStatus.textContent === "Unconfirmed") {
             const reservationToEdit = JSON.parse(sessionStorage.getItem('reservationList'))[checkedCheckBox];
-            sessionStorage.setItem('reservationToEdit', JSON.stringify(reservationToEdit));
+            sessionStorage.setItem(RESERVATION_TO_EDIT, JSON.stringify(reservationToEdit));
             window.location.href = "editReservation.html";
         } else {
             modalTitle.textContent = "Pay Attention!" ;

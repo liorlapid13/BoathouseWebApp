@@ -80,7 +80,22 @@ function appendActivityTableData(tableEntryEl, activity) {
     tableEntryEl.appendChild(activityRestrictionEl);
 }
 function handleEditActivityRequest(){
+    const tableBodyEl = document.getElementById("activityTableBody");
+    let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
+    if (checkedCheckBox !== -1) {
+        const activityToEdit = activityList[checkedCheckBox];
+        sessionStorage.setItem(ACTIVITY_TO_EDIT, JSON.stringify(activityToEdit));
+        window.location.href = "editActivity.html";
+    } else {
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select a activity to edit"
+        showModal(modal);
+    }
+}
 
+function getAllCheckBoxes() {
+    const tableBodyEl = document.querySelector("#activityTableBody");
+    return tableBodyEl.getElementsByTagName("input");
 }
 async function handleRemoveActivityRequest(){
     const activitytableBodyEl = document.getElementById("activityTableBody");
