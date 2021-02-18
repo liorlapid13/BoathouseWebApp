@@ -115,7 +115,7 @@ async function handleRemoveMemberRequest(){
         let doesMemberHasFutureReservation = false;
         if(checkFutureReservationResponse.status !== STATUS_OK){
             doesMemberHasFutureReservation = true;
-            if (!window.confirm("This member has an future reservation, are you sure you want to remove him?")) {
+            if (!window.confirm("This member is part of future reservations, are you sure you want to remove him?")) {
                 return;
             }
         }
@@ -135,7 +135,7 @@ async function handleRemoveMemberRequest(){
         if (removalResponse.status === STATUS_OK) {
             modalTitle.textContent = "";
             modalBody.style.color = "green";
-            modalBody.textContent = "Member remove successfuly"
+            modalBody.textContent = "Member removed successfully"
             showModal(modal);
             while (membertableBodyEl.firstChild) {
                 membertableBodyEl.removeChild(membertableBodyEl.firstChild);

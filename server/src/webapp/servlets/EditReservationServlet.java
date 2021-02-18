@@ -1,13 +1,10 @@
 package webapp.servlets;
 
 import com.google.gson.Gson;
-import com.sun.security.ntlm.Server;
 import engine.Engine;
 import engine.activity.WeeklyActivity;
 import engine.boat.BoatCrew;
 import engine.boat.BoatType;
-import engine.member.Member;
-import engine.reservation.Reservation;
 import webapp.common.ActivityData;
 import webapp.common.MemberData;
 import webapp.common.ReservationData;

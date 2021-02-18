@@ -506,6 +506,8 @@ function initializeReservationData() {
     currentBoatTypesEl.textContent = parseBoatTypes(reservationToEdit.boatTypes);
     currentBoatCrewEl.textContent = parseBoatCrew(reservationToEdit.boatCrew, reservationToEdit.coxswain, reservationToEdit.coxswainSelected);
     currentReservatorEl.textContent = reservationToEdit.reservator.name;
+    maxMembersInCrew = calculateMaxBoatTypesCapacity(reservationToEdit.boatTypes);
+    doSelectedBoatTypesNeedCoxswain = doBoatTypesNeedCoxswain(reservationToEdit.boatTypes);
 }
 
 function enableBoatTypeCheckBoxes() {
@@ -609,7 +611,7 @@ function checkCrewCheckBoxes() {
             modalBody.textContent = "No space in crew, you cannot select more members! "
             showModal(modal);
         }
-    } else {
+    } else if (doSelectedBoatTypesNeedCoxswain) {
         coxswainCheckBoxes[index].disabled = false;
     }
 }

@@ -1,6 +1,8 @@
 const STATUS_OK = 200;
 const RESERVATION_TO_EDIT = "reservationToEdit";
 const ACTIVITY_TO_EDIT = "activityToEdit";
+const BOAT_TO_EDIT = "boatToEdit";
+
 function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";
     for (let i = 0; i < boatCrew.length; i++) {

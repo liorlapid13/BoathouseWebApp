@@ -50,4 +50,11 @@ public class BoatData {
     public boolean isDisabled() {
         return isDisabled;
     }
+
+    public Boat createBoat() {
+        BoatType boatType = BoatType.boatCodeToBoatType(this.boatType);
+        boolean hasCoxswain = boatType != null && BoatType.doesBoatNeedCoxswain(boatType);
+
+        return new Boat(id, name, boatType, isWide, isPrivate, isCoastal, hasCoxswain, isDisabled);
+    }
 }

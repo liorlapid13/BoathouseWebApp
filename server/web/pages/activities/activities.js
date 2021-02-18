@@ -79,8 +79,7 @@ function appendActivityTableData(tableEntryEl, activity) {
     tableEntryEl.appendChild(activityTimeEl);
     tableEntryEl.appendChild(activityRestrictionEl);
 }
-function handleEditActivityRequest(){
-    const tableBodyEl = document.getElementById("activityTableBody");
+function handleEditActivityRequest() {
     let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
         const activityToEdit = activityList[checkedCheckBox];

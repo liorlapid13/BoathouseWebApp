@@ -17,3 +17,8 @@ h2.title {
     font-family: 'Ultra', sans-serif;
     text-shadow: 2px 2px 8px darkred;
 }
+
+.lightsteelblueBackGround{
+    background-color: lightsteelblue !important;
+    width: 750px !important;
+}

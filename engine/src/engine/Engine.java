@@ -1246,4 +1246,8 @@ public class Engine implements BMSEngine {
             updateReservationReservator(reservation, reservatorId);
         }
     }
+
+    public boolean doesBoatExist(String id, String name) {
+        return doesBoatSerialNumberExist(id) || doesBoatNameExist(name);
+    }
 }

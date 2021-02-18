@@ -107,8 +107,8 @@ async function handleRemoveBoatRequest(){
         let doesBoatHasFutureAssignments = false;
         if(checkFutureAssignmentsResponse.status !== STATUS_OK){
             doesBoatHasFutureAssignments = true;
-            if (!window.confirm("This boat has an future assignment,if you perform this change," +
-                " this boat's assignments will be removed are you sure you want to remove him?")) {
+            if (!window.confirm("This boat has future assignments, if you perform this change," +
+                " this boat's assignments will be removed, are you sure you want to remove this boat?")) {
                 return;
             }
         }
@@ -128,7 +128,7 @@ async function handleRemoveBoatRequest(){
         if (removalResponse.status === STATUS_OK) {
             modalTitle.textContent = "";
             modalBody.style.color = "green";
-            modalBody.textContent = "Boat remove successfuly"
+            modalBody.textContent = "Boat removed successfully"
             showModal(modal);
             while (boatsTableBodyEl.firstChild) {
                 boatsTableBodyEl.removeChild(boatsTableBodyEl.firstChild);
@@ -147,6 +147,16 @@ function getAllCheckBoxes() {
     const tableBodyEl = document.getElementById("boatsTableBody");
     return tableBodyEl.getElementsByTagName("input");
 }
-function handleEditBoatRequest(){
 
+function handleEditBoatRequest() {
+    let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
+    if (checkedCheckBox !== -1) {
+        const boatToEdit = boatList[checkedCheckBox];
+        sessionStorage.setItem(BOAT_TO_EDIT, JSON.stringify(boatToEdit));
+        window.location.href = "editBoat.html";
+    } else {
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select a boat to edit"
+        showModal(modal);
+    }
 }
