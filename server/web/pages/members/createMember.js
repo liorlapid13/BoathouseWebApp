@@ -160,6 +160,7 @@ function handleChangeHasPrivateBoat(event) {
         createMemberButtonEl.disabled = true;
         checkBoatIdButtonEl.disabled = false;
         boatIdInputEl.disabled = false;
+        checkAllMandatoryFields();
     } else {
         boatIdAvailabilityTextEl.textContent = "";
         checkBoatIdButtonEl.textContent = "Check Boat ID";
@@ -222,7 +223,7 @@ async function handleCreateMember(event) {
         id: idInputEl.value,
         name: nameInputEl.value,
         age: ageInputEl.value,
-        details: detailsTextEl.textContent,
+        details: detailsTextEl.value,
         level: memberLevelDropDownMenuEl.value,
         hasBoat: hasPrivateBoatCheckBoxEl.checked,
         privateBoatId: boatId,

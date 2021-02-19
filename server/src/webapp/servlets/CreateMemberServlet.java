@@ -5,6 +5,7 @@ import engine.Engine;
 import engine.member.Member;
 import webapp.common.BoatData;
 import webapp.common.MemberData;
+import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
 
 import javax.servlet.ServletException;
@@ -36,6 +37,7 @@ public class CreateMemberServlet extends HttpServlet {
         MemberData memberData = gson.fromJson(jsonString, MemberData.class);
         Member member = memberData.createMember();
         engine.addMemberToList(member);
+        ServerUtils.saveSystemState(getServletContext());
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

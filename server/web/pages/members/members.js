@@ -160,6 +160,15 @@ function getAllCheckBoxes() {
     const tableBodyEl = document.getElementById("membersTableBody");
     return tableBodyEl.getElementsByTagName("input");
 }
-function handleEditMemberRequest(){
-
+function handleEditMemberRequest() {
+    let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
+    if (checkedCheckBox !== -1) {
+        const memberToEdit = memberList[checkedCheckBox];
+        sessionStorage.setItem(MEMBER_TO_EDIT, JSON.stringify(memberToEdit));
+        window.location.href = "editMember.html";
+    } else {
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select a member to edit"
+        showModal(modal);
+    }
 }
