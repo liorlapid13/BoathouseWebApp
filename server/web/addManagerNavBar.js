@@ -15,12 +15,11 @@ async function addManagerNavBar() {
 
 function addNavBar() {
     const navUlEl = document.getElementById('mainNav');
-    const logoutButton = document.getElementById("logoutButton");
-    navUlEl.insertBefore(createManageActivitiesOption(),logoutButton);
-    navUlEl.insertBefore(createManageBoatsOption(),logoutButton);
-    navUlEl.insertBefore(createManageMembersOption(),logoutButton);
-    navUlEl.insertBefore(createManageReservationsOption(),logoutButton);
-    navUlEl.insertBefore(createManageAssignmentsOption(),logoutButton);
+    navUlEl.appendChild(createManageActivitiesOption());
+    navUlEl.appendChild(createManageBoatsOption());
+    navUlEl.appendChild(createManageMembersOption());
+    navUlEl.appendChild(createManageReservationsOption());
+    navUlEl.appendChild(createManageAssignmentsOption());
 }
 
 function createManageAssignmentsOption() {
