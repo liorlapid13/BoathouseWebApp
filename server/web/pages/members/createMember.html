@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Boat</title>
+    <title>Create New Member</title>
     <link href="../../style.css" rel="stylesheet">
-    <link href="boats.css" rel="stylesheet">
+    <link href="../../common/table.css" rel="stylesheet">
+    <link href="members.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="../../common/modal.js"></script>
     <script src="../../common/utils.js"></script>
-    <script src="editBoat.js"></script>
+    <script src="createMember.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary" style="background-color: #2e6da4">
@@ -20,7 +21,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul id="mainNav" class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul id="mainNav" class="navbar-nav mx-auto me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="../personalDetails/editPersonalDetails.html">Edit Personal Details</a>
                 </li>
@@ -48,9 +49,9 @@
                         Manage Boats
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="createBoat.html">Add New Boat</a></li>
-                        <li><a class="dropdown-item" href="boats.html">All Boats</a></li>
-                        <li><a class="dropdown-item" href="importExportBoats.html">Import/Export Boats</a></li>
+                        <li><a class="dropdown-item" href="../boats/createBoat.html">Add New Boat</a></li>
+                        <li><a class="dropdown-item" href="../boats/boats.html">All Boats</a></li>
+                        <li><a class="dropdown-item" href="../boats/importExportBoats.html">Import/Export Boats</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -58,9 +59,9 @@
                         Manage Members
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="../members/createMember.html">Add New Member</a></li>
-                        <li><a class="dropdown-item" href="../members/members.html">All Members</a></li>
-                        <li><a class="dropdown-item" href="../members/importExportMembers.html">Import/Export Members </a></li>
+                        <li><a class="dropdown-item" href="createMember.html">Add New Member</a></li>
+                        <li><a class="dropdown-item" href="members.html">All Members</a></li>
+                        <li><a class="dropdown-item" href="importExportMembers.html">Import/Export Members</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -83,6 +84,8 @@
                         <li><a class="dropdown-item" href="#">Remove Assignments</a></li>
                     </ul>
                 </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
                 <li id="logoutButton" class="nav-item " >
                     <a class="nav-link active" aria-current="page" href="../../logout">Logout</a>
                 </li>
@@ -90,50 +93,100 @@
         </div>
     </div>
 </nav>
-<div class="contentBoard lightsteelblueBackGround" >
-    <h2 class="title">Edit Boat</h2>
-    <form id="formEditBoat">
+<div class="contentBoard seashellBackGround" >
+    <h2 class="title">Create New Member</h2>
+    <form id="formCreateMember">
         <div class="container">
             <div class="row">
-                <div class="col-sm-6 mb-2">
+                <div class="col mb-2 itemWidth " >
+                    <label for="inputId" class="form-label"><strong>Id</strong></label>
+                    <div class="input-group" >
+                        <input type="text" class="form-control" id="inputId" required pattern=".*\S.*" title="You must enter an ID">
+                        <button type="button" class="btn btn-success" id="buttonCheckId">Check ID</button>
+                    </div>
+                    <span><small><strong id="idAvailabilityText"></strong></small></span>
+                </div>
+                <div class="col mb-2 itemWidth" >
+                    <label for="inputEmail" class="form-label"><strong>Email</strong></label>
+                    <div class="input-group">
+                        <input type="email" class="form-control"  id="inputEmail" placeholder="example@gmail.com" required pattern=".*\S.*" title="You must enter a valid email">
+                        <button type="button" class="btn btn-success" id="buttonCheckEmail">Check Email</button>
+                    </div>
+                    <span><small><strong id="emailAvailabilityText"></strong></small></span>
+                </div>
+                <div class="col mb-2 itemWidth">
+                    <label for="inputPassword" class="form-label"><strong>Password</strong></label>
+                    <div>
+                        <input type="text" class="form-control"  id="inputPassword"  required pattern=".*\S.*" title="You must enter a password">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-2 itemWidth">
                     <label for="inputName" class="form-label"><strong>Name</strong></label>
-                    <div class="input-group  col-6">
-                        <input type="text" class="form-control"  id="inputName" required pattern=".*\S.*" title="You must enter non empty Name">
-                        <button type="button" class="btn btn-success" id="buttonCheckName">Check Name</button>
-                    </div>
-                    <span><small><strong id="nameAvailabilityText"></strong></small></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 mb-2">
-                    <label for="boatTypesDropDownMenu" class="form-label"><strong>Boat Type</strong></label>
-                    <div class="col-6">
-                        <select id="boatTypesDropDownMenu"  class="form-select" aria-label="Default select example">
-                        </select>
+                    <div>
+                        <input type="text" class="form-control"  id="inputName"  required pattern=".*\S.*" title="You must enter a name">
                     </div>
                 </div>
-            </div>
-            <div class="row ">
-                <div class="col-sm-23">
-                    <label style="margin-right: 11px" for="checkBoxCoastal" class="form-label"><strong>Is Coastal</strong></label>
-                    <input id="checkBoxCoastal" type="checkbox" class="form-check-input" >
+                <div class="col mb-2 itemWidth">
+                    <label for="inputAge" class="form-label"><strong>Age</strong></label>
+                    <div>
+                        <input type="text" class="form-control"  id="inputAge" required pattern="^[0-9]+$" title="You must enter a valid age">
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <label style="margin-right: 13px" for="checkBoxPrivate" class="form-label"><strong>Is Private</strong></label>
-                    <input id="checkBoxPrivate" type="checkbox" class="form-check-input" >
+                <div class="col mb-2 itemWidth">
+                    <label for="inputPhoneNumber" class="form-label"><strong>Phone Number</strong></label>
+                    <div>
+                        <input type="text" class="form-control"  id="inputPhoneNumber" required pattern="^[0-9]+$" title="You must enter a valid phone number">
+                    </div>
                 </div>
             </div>
             <div class="row mb-5">
-                <div class="col-sm-3">
-                    <label for="checkBoxDisabled" class="form-label"><strong>Is Disabled</strong></label>
-                    <input id="checkBoxDisabled" type="checkbox" class="form-check-input" >
+                <div class="col mb-2 itemWidth" >
+                    <label for="memberLevelDropDownMenu" class="form-label"><strong>Member Level</strong></label>
+                    <div class="itemWidth">
+                        <select id="memberLevelDropDownMenu"  class="form-select" aria-label="Default select example">
+                            <option value="1">Beginner</option>
+                            <option value="2">Intermediate</option>
+                            <option value="3">Advanced</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col mb-2 itemWidth">
+                    <label for="textAreaDetails" class="form-label"><strong>Details</strong></label>
+                    <div class="itemWidth">
+                        <textarea class="form-control" placeholder="Enter member details" id="textAreaDetails" ></textarea>
+                    </div>
+                </div>
+                <div class="col mb-2 itemWidth" >
+                    <div class="row">
+                        <div class="col">
+                            <label style="margin-right: 41px" for="checkBoxIsManager" class="form-label"><strong>Is Manager</strong></label>
+                            <input id="checkBoxIsManager" type="checkbox" class="form-check-input" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label  for="checkBoxHasPrivateBoat" class="form-label"><strong>Has Private Boat</strong></label>
+                            <input id="checkBoxHasPrivateBoat" type="checkbox" class="form-check-input" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-2 itemWidth " >
+                            <label for="inputId" class="form-label"><strong>Private Boat Id</strong></label>
+                            <div class="input-group" >
+                                <input type="text" class="form-control" id="inputBoatId" disabled="true" required pattern=".*\S.*" title="You must enter non empty Id">
+                                <button type="button" class="btn btn-success" id="buttonCheckBoatId" disabled="true">Check Boat ID</button>
+                            </div>
+                            <span><small><strong id="boatIdAvailabilityText"></strong></small></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row ">
+
+            <div class="row">
                 <div class="col-4">
-                    <input id="buttonEditBoat" type="submit" class="btn btn-success" value="Edit Boat">
+                    <input id="buttonCreateMember" disabled="true" type="submit" class="btn btn-success btn-lg" value="Create Member">
                 </div>
             </div>
         </div>
@@ -164,7 +217,7 @@
             <div id="finalModalBody" class="modal-body">
             </div>
             <div class="modal-footer">
-                <button id="redirectButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return to all Boats</button>
+                <button id="redirectButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return to all members</button>
             </div>
         </div>
     </div>

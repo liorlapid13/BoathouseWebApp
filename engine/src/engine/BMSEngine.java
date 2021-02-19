@@ -50,8 +50,8 @@ public interface BMSEngine {
     //Boat related methods
     void updateBoatType(BoatType boatType, Boat boatToEdit);
     void removeBoatFromFutureAssignments(Boat boat);
-    void updateBoatOwnershipStatus(boolean isPrivate, Boat boatToEdit);
-    void updateBoatStatus(boolean isDisabled, Boat boatToEdit);
+    void updateBoatPrivateStatus(boolean isPrivate, Boat boatToEdit);
+    void updateBoatDisabledStatus(boolean isDisabled, Boat boatToEdit);
     void updateBoatCoastalStatus(boolean isCoastal, Boat boatToEdit);
     void removeBoatByListIndex(int boatListIndex);
     void addBoatToList(Boat newBoat);

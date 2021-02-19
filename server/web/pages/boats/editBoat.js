@@ -1,5 +1,13 @@
 let boatToEdit;
 
+let nameInputEl;
+let boatTypesDropDownMenuEl;
+let checkNameButtonEl;
+let coastalCheckBoxEl;
+let privateCheckBoxEl;
+let disabledCheckBoxEl;
+let confirmButtonEl;
+
 let nameChanged = false;
 let boatTypeChanged = false;
 let doesNewBoatTypeNeedCoxswain;
@@ -21,14 +29,21 @@ window.addEventListener('load', () => {
 });
 
 function setupEventHandlers() {
-    const nameInputEl = document.getElementById('inputName');
+    nameInputEl = document.getElementById('inputName');
     nameInputEl.addEventListener('change', handleNameChanged);
-    const boatTypesDropDownMenuEl = document.getElementById('boatTypesDropDownMenu');
+    boatTypesDropDownMenuEl = document.getElementById('boatTypesDropDownMenu');
     boatTypesDropDownMenuEl.addEventListener('change', handleBoatTypeChanged);
-    const checkNameButtonEl = document.getElementById('buttonCheckName');
+    checkNameButtonEl = document.getElementById('buttonCheckName');
     checkNameButtonEl.addEventListener('click', handleCheckName);
-    const confirmButtonEl = document.getElementById('buttonEditBoat');
-    confirmButtonEl.addEventListener('click', handleConfirm);
+    coastalCheckBoxEl = document.getElementById('checkBoxCoastal');
+    coastalCheckBoxEl.addEventListener('change', handleChangeCoastal);
+    privateCheckBoxEl = document.getElementById('checkBoxPrivate');
+    privateCheckBoxEl.addEventListener('change', handleChangePrivate);
+    disabledCheckBoxEl = document.getElementById('checkBoxDisabled');
+    disabledCheckBoxEl.addEventListener('change', handleChangeDisabled);
+    const formEditBoatEl = document.getElementById('formEditBoat');
+    formEditBoatEl.addEventListener('submit', handleConfirm);
+    confirmButtonEl = document.getElementById('buttonEditBoat');
     const modalCloseButtonEl = document.getElementById("closeButton");
     modalCloseButtonEl.addEventListener('click',() => {
         hideModal(modal);
@@ -48,11 +63,8 @@ function handleNameChanged(event) {
 }
 
 async function handleCheckName(event) {
-
     const nameAvailabilityEl = document.getElementById('nameAvailabilityText');
     const checkNameButtonEl = document.getElementById('buttonCheckName');
-    const confirmButtonEl = document.getElementById('buttonEditBoat');
-    const nameInputEl = document.getElementById('inputName');
     let name = nameInputEl.value;
 
     if (nameChanged) {
@@ -63,6 +75,7 @@ async function handleCheckName(event) {
         nameChanged = false;
     } else {
         if (name.trim() === '') {
+            nameChanged = false;
             modalTitle.textContent = "Pay Attention!" ;
             modalBody.textContent = "You must enter a name!";
             showModal(modal);
@@ -104,17 +117,95 @@ async function handleCheckName(event) {
 }
 
 function handleBoatTypeChanged(event) {
-    const boatTypesDropDownMenuEl = document.getElementById('boatTypesDropDownMenu');
-    const confirmButtonEl = document.getElementById('buttonConfirm');
     let selectedBoatType = boatTypesDropDownMenuEl.value;
     if (selectedBoatType !== boatToEdit.boatType) {
+        doesNewBoatTypeNeedCoxswain = doesBoatTypeNeedCoxswain(selectedBoatType);
         boatTypeChanged = true;
         confirmButtonEl.disabled = false;
+    } else {
+        boatTypeChanged = false;
+        confirmButtonEl.disabled = true;
+    }
+}
+
+function handleChangeCoastal(event) {
+    if (boatToEdit.isCoastal !== coastalCheckBoxEl.checked) {
+        isCoastalChanged = true;
+        confirmButtonEl.disabled = false;
+    } else {
+        isCoastalChanged = false;
+        confirmButtonEl.disabled = true;
+    }
+}
+
+function handleChangePrivate(event) {
+    if (boatToEdit.isPrivate !== privateCheckBoxEl.checked) {
+        isPrivateChanged = true;
+        confirmButtonEl.disabled = false;
+    } else {
+        isPrivateChanged = false;
+        confirmButtonEl.disabled = true;
+    }
+}
+
+function handleChangeDisabled(event) {
+    if (boatToEdit.isDisabled !== disabledCheckBoxEl.checked) {
+        isDisabledChanged = true;
+        confirmButtonEl.disabled = false;
+    } else {
+        isDisabledChanged = false;
+        confirmButtonEl.disabled = true;
     }
 }
 
 async function handleConfirm(event) {
+    event.preventDefault();
+    if (boatTypeChanged && (doesBoatTypeNeedCoxswain(boatToEdit.boatType) !== doesNewBoatTypeNeedCoxswain)) {
+        if (!window.confirm("Coxswain status has changed, any future assignments will be removed, do you want to continue?")) {
+            return;
+        }
+    }
 
+    if (!boatToEdit.isDisabled && isDisabledChanged) {
+        if (!window.confirm("Boat will become disabled, any future assignments will be removed, do you want to continue?")) {
+            return;
+        }
+    }
+
+    let id = boatToEdit.id;
+    let name = nameChanged ? nameInputEl.value : boatToEdit.name;
+    let boatType = boatTypeChanged ? boatTypesDropDownMenuEl.value : boatToEdit.boatType;
+    let isWide = boatToEdit.isWide;
+    let isPrivate = privateCheckBoxEl.checked;
+    let isCoastal = coastalCheckBoxEl.checked;
+    let isDisabled = disabledCheckBoxEl.checked;
+
+    const data = {
+        id: id,
+        name: name,
+        boatType: boatType,
+        isWide: isWide,
+        isPrivate: isPrivate,
+        isCoastal: isCoastal,
+        isDisabled: isDisabled
+    }
+
+    const response = await fetch('../../editBoat', {
+        method: 'post',
+        headers: new Headers({
+            'Content-Type': 'application/json;charset=utf-8'
+        }),
+        body: JSON.stringify(data)
+    });
+
+    if (response.status === STATUS_OK) {
+        finalModalTitle.textContent = "";
+        finalModalBody.textContent = "Boat edited successfully";
+    } else {
+        finalModalTitle.textContent = "";
+        finalModalBody.textContent = "Boat has not been changed";
+    }
+    showModal(finalModal);
 }
 
 function initializeBoatData() {

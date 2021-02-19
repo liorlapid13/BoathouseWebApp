@@ -17,3 +17,13 @@ h2.title {
     font-family: 'Ultra', sans-serif;
     text-shadow: 2px 2px 8px lightyellow;
 }
+.seashellBackGround{
+    background-color: seashell !important;
+    width: 1100px !important;
+}
+.itemWidth{
+    width: 330px !important;
+}
+#textAreaDetails{
+    height: 110px
+}

@@ -447,14 +447,18 @@ public class Engine implements BMSEngine {
     }
 
     @Override
-    public void updateBoatStatus(boolean isDisabled, Boat boatToEdit) {
+    public void updateBoatDisabledStatus(boolean isDisabled, Boat boatToEdit) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
+
+        if (!boat.isDisabled() && isDisabled) {
+            removeBoatFromFutureAssignments(boat);
+        }
 
         boat.setDisabled(isDisabled);
     }
 
     @Override
-    public void updateBoatOwnershipStatus(boolean isPrivate, Boat boatToEdit) {
+    public void updateBoatPrivateStatus(boolean isPrivate, Boat boatToEdit) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
 
         boat.setPrivate(isPrivate);
@@ -470,6 +474,10 @@ public class Engine implements BMSEngine {
     @Override
     public void updateBoatType(BoatType boatType, Boat boatToEdit) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
+
+        if (BoatType.doesBoatNeedCoxswain(boat.getBoatType()) != BoatType.doesBoatNeedCoxswain(boatType)) {
+            removeBoatFromFutureAssignments(boat);
+        }
 
         boat.setBoatType(boatType);
     }
@@ -1247,7 +1255,13 @@ public class Engine implements BMSEngine {
         }
     }
 
-    public boolean doesBoatExist(String id, String name) {
-        return doesBoatSerialNumberExist(id) || doesBoatNameExist(name);
+    public void editBoat(String boatId, String name, BoatType boatType, boolean isCoastal, boolean isPrivate, boolean isDisabled) {
+        Boat boat = findBoatByID(boatId);
+
+        updateBoatName(name, boat);
+        updateBoatType(boatType, boat);
+        updateBoatCoastalStatus(isCoastal, boat);
+        updateBoatPrivateStatus(isPrivate, boat);
+        updateBoatDisabledStatus(isDisabled, boat);
     }
 }

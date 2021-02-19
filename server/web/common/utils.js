@@ -62,14 +62,18 @@ function calculateMaxBoatTypesCapacity(selectedBoatTypes) {
     return maxMembersInCrew;
 }
 
-function doBoatTypesNeedCoxswain(selectedBoatTypes) {
-    for (let i = 0; i < selectedBoatTypes.length; i++) {
-        if (selectedBoatTypes[i].includes("+")) {
+function doBoatTypesNeedCoxswain(boatTypes) {
+    for (let i = 0; i < boatTypes.length; i++) {
+        if (boatTypes[i].includes("+")) {
             return true;
         }
     }
 
     return false;
+}
+
+function doesBoatTypeNeedCoxswain(boatType) {
+    return boatType.includes("+");
 }
 
 function initializeDaysDropDownMenu(dropDownOptions) {
