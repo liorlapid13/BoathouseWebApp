@@ -37,8 +37,8 @@ function createManageReservationsOption() {
     const manageReservationsLiEl = document.createElement("li");
     manageReservationsLiEl.classList.add("nav-item", "dropdown");
     manageReservationsLiEl.appendChild(createLilink("Manage Reservations","navbarDropdown5"));
-    const namesOfItems = ["View All Reservations","Edit Reservations","Remove Reservations"]
-    const pageLinks = ["#","#","#"];
+    const namesOfItems = ["All Reservations","Edit Reservations"]
+    const pageLinks = ["../manageReservations/reservations.html","#"];
     manageReservationsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageReservationsLiEl;

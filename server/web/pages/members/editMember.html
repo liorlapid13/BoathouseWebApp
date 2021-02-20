@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create New Member</title>
+    <title>Edit Member</title>
     <link href="../../style.css" rel="stylesheet">
     <link href="../../common/table.css" rel="stylesheet">
     <link href="members.css" rel="stylesheet">
@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="../../common/modal.js"></script>
     <script src="../../common/utils.js"></script>
-    <script src="createMember.js"></script>
+    <script src="editMember.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary" style="background-color: #2e6da4">
@@ -93,19 +93,17 @@
     </div>
 </nav>
 <div class="contentBoard seashellBackGround" >
-    <h2 class="title">Create New Member</h2>
-    <form id="formCreateMember">
+    <h2 class="title">Edit Member</h2>
+    <form id="formEditMember">
         <div class="container">
             <div class="row">
-                <div class="col mb-2 itemWidth " >
-                    <label for="inputId" class="form-label"><strong>Id</strong></label>
-                    <div class="input-group" >
-                        <input type="text" class="form-control" id="inputId" required pattern=".*\S.*" title="You must enter an ID">
-                        <button type="button" class="btn btn-success" id="buttonCheckId">Check ID</button>
+                <div class="col mb-2">
+                    <label for="inputName" class="form-label"><strong>Name</strong></label>
+                    <div>
+                        <input type="text" class="form-control"  id="inputName"  required pattern=".*\S.*" title="You must enter a name">
                     </div>
-                    <span><small><strong id="idAvailabilityText"></strong></small></span>
                 </div>
-                <div class="col mb-2 itemWidth" >
+                <div class="col mb-2" >
                     <label for="inputEmail" class="form-label"><strong>Email</strong></label>
                     <div class="input-group">
                         <input type="email" class="form-control"  id="inputEmail" placeholder="example@gmail.com" required pattern=".*\S.*" title="You must enter a valid email">
@@ -113,7 +111,7 @@
                     </div>
                     <span><small><strong id="emailAvailabilityText"></strong></small></span>
                 </div>
-                <div class="col mb-2 itemWidth">
+                <div class="col mb-2">
                     <label for="inputPassword" class="form-label"><strong>Password</strong></label>
                     <div>
                         <input type="text" class="form-control"  id="inputPassword"  required pattern=".*\S.*" title="You must enter a password">
@@ -121,29 +119,21 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col mb-2 itemWidth">
-                    <label for="inputName" class="form-label"><strong>Name</strong></label>
-                    <div>
-                        <input type="text" class="form-control"  id="inputName"  required pattern=".*\S.*" title="You must enter a name">
-                    </div>
-                </div>
-                <div class="col mb-2 itemWidth">
+                <div class="col mb-2">
                     <label for="inputAge" class="form-label"><strong>Age</strong></label>
                     <div>
                         <input type="text" class="form-control"  id="inputAge" required pattern="^[0-9]+$" title="You must enter a valid age">
                     </div>
                 </div>
-                <div class="col mb-2 itemWidth">
+                <div class="col mb-2">
                     <label for="inputPhoneNumber" class="form-label"><strong>Phone Number</strong></label>
                     <div>
                         <input type="text" class="form-control"  id="inputPhoneNumber" required pattern="^[0-9]+$" title="You must enter a valid phone number">
                     </div>
                 </div>
-            </div>
-            <div class="row mb-5">
-                <div class="col mb-2 itemWidth" >
+                <div class="col mb-2">
                     <label for="memberLevelDropDownMenu" class="form-label"><strong>Member Level</strong></label>
-                    <div class="itemWidth">
+                    <div>
                         <select id="memberLevelDropDownMenu"  class="form-select" aria-label="Default select example">
                             <option value="1">Beginner</option>
                             <option value="2">Intermediate</option>
@@ -151,13 +141,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="col mb-2 itemWidth">
+            </div>
+            <div class="row mb-5">
+                <div class="col mb-2 ">
+                    <label for="inputExpirationDate" class="form-label"><strong>Expiration Date </strong></label>
+                    <input  id="inputExpirationDate" type="date" class="form-control " required >
+                </div>
+                <div class="col mb-2 ">
                     <label for="textAreaDetails" class="form-label"><strong>Details</strong></label>
-                    <div class="itemWidth">
+                    <div>
                         <textarea class="form-control" placeholder="Enter member details" id="textAreaDetails" ></textarea>
                     </div>
                 </div>
-                <div class="col mb-2 itemWidth" >
+                <div class="col mb-2 " >
                     <div class="row">
                         <div class="col">
                             <label style="margin-right: 41px" for="checkBoxIsManager" class="form-label"><strong>Is Manager</strong></label>
@@ -171,9 +167,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col mb-2 itemWidth " >
+                        <div class="col mb-2">
                             <label for="inputBoatId" class="form-label"><strong>Private Boat Id</strong></label>
-                            <div class="input-group" >
+                            <div class="input-group">
                                 <input type="text" class="form-control" id="inputBoatId" disabled="true" required pattern=".*\S.*" title="You must enter non empty Id">
                                 <button type="button" class="btn btn-success" id="buttonCheckBoatId" disabled="true">Check Boat ID</button>
                             </div>
@@ -182,10 +178,9 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-4">
-                    <input id="buttonCreateMember" disabled="true" type="submit" class="btn btn-success btn-lg" value="Create Member">
+                    <input id="buttonEditMember" disabled="true" type="submit" class="btn btn-success btn-lg" value="Edit Member">
                 </div>
             </div>
         </div>

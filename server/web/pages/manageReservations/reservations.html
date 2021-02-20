@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Members</title>
+    <title>All Reservations</title>
     <link href="../../style.css" rel="stylesheet">
     <link href="../../common/table.css" rel="stylesheet">
-    <link href="members.css" rel="stylesheet">
+    <link href="reservations.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="../../common/modal.js"></script>
     <script src="../../common/utils.js"></script>
-    <script src="members.js"></script>
+    <script src="reservations.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary" style="background-color: #2e6da4">
@@ -59,9 +59,9 @@
                         Manage Members
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="createMember.html">Add New Member</a></li>
-                        <li><a class="dropdown-item" href="members.html">All Members</a></li>
-                        <li><a class="dropdown-item" href="importExportMembers.html">Import/Export Members</a></li>
+                        <li><a class="dropdown-item" href="../members/createMember.html">Add New Member</a></li>
+                        <li><a class="dropdown-item" href="../members/members.html">All Members</a></li>
+                        <li><a class="dropdown-item" href="../members/importExportMembers.html">Import/Export Members</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -69,7 +69,7 @@
                         Manage Reservations
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="../manageReservations/reservations.html">All Reservations</a></li>
+                        <li><a class="dropdown-item" href="reservations.html">All Reservations</a></li>
                         <li><a class="dropdown-item" href="#">Edit Reservations</a></li>
                     </ul>
                 </li>
@@ -92,23 +92,36 @@
         </div>
     </div>
 </nav>
-<h2 class="title">Members</h2>
-<div class="membersTable tableFixHead ">
-    <table class="table centerItems" >
+<h2 class="title">All Reservations</h2>
+<div class="selectOptions centerMargin">
+    <button id="buttonNextWeekReservations" type="button" class="btn btn-primary ">Next Week Reservations</button>
+    <button id="buttonSpecificDayReservations"  type="button" class="btn btn-primary optionButton ">Specific Day </button>
+    <select id="daysDropDownMenu"  class="form-select daysDropDown" aria-label="Default select example">
+        <option value="1"></option>
+        <option value="2"></option>
+        <option value="3"></option>
+        <option value="4"></option>
+        <option value="5"></option>
+        <option value="6"></option>
+        <option value="7"></option>
+    </select>
+</div>
+
+<div class="tableFixHead allReservationsTable">
+    <table class="table centerItems">
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Age</th>
-            <th scope="col">Member Level</th>
-            <th scope="col">Has Private Boat</th>
-            <th scope="col">Member Type</th>
+            <th scope="col">Reservator</th>
+            <th scope="col">Activity Date</th>
+            <th scope="col">Activity</th>
+            <th scope="col">Boat Types</th>
+            <th scope="col">Boat crew</th>
+            <th scope="col">Status</th>
+            <th scope="col">Creation Date</th>
         </tr>
         </thead>
-        <tbody id="membersTableBody">
+        <tbody id="tableBody">
         </tbody>
     </table>
 </div>
@@ -116,24 +129,8 @@
 <strong id ="alertText" class="alertPopup"></strong>
 <div class="buttonsContainer">
     <div class="vertical-center" >
-        <button id="buttonEditMember" type="button" class="btn btn-primary buttonEdit">Edit Member</button>
-        <button id="buttonRemoveMember"  type="button" class="btn btn-primary ">Remove Member</button>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div style="color:red"; class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Pay Attention!</h5>
-            </div>
-            <div id="modalBody"  class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button id="closeButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
+        <button id="buttonEditBoat" type="button" class="btn btn-primary buttonEdit">Edit Reservation</button>
+        <button id="buttonRemoveBoat"  type="button" class="btn btn-primary ">Remove Reservation</button>
     </div>
 </div>
 </body>

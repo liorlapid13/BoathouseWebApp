@@ -1,42 +1,12 @@
-.tableFixHead {
-    overflow: auto;
-    max-height: 500px;
-    background-color: white;
-    margin-top: 130px;
-    width:90%;
-    margin-left:50px;"
-}
-.tableFixHead thead th {
-    position: sticky;
-    top:0;
-    background-color: khaki ;
+.reservationsTable{
+    width:1300px!important;
+    margin-top: 130px !important;
 }
 td {
-    height: 130px;
+    height: 100px;
     white-space: pre-wrap;
 }
-.alertPopup {
-    padding: 10px;
-    width: 220px;
-    display: block;
-    height: 50px;
-    margin-top: 15px;
-    margin-left:640px;
-    position:center;
-}
-.optionButton {
-    margin-left:100px;
-}
-.selectOptions {
-    margin-top: 35px;
-    margin-left: 350px;
-    float: left;
-}
-.daysDropDown {
-    width: 250px !important;
-    float: right;
-    margin-left: 20px;
-}
+
 .editRemoveButtons {
     margin-top: 10px;
     margin-left: 190px;

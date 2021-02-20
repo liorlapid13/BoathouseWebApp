@@ -42,3 +42,16 @@ td {
     table-layout: fixed;
     text-align: center;
 }
+.selectOptions {
+    margin-top: 35px;
+    margin-left: 350px;
+    float: left;
+}
+.optionButton {
+    margin-left:100px;
+}
+.daysDropDown {
+    width: 250px !important;
+    float: right;
+    margin-left: 20px;
+}
