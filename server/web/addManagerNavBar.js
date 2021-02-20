@@ -38,7 +38,7 @@ function createManageReservationsOption() {
     manageReservationsLiEl.classList.add("nav-item", "dropdown");
     manageReservationsLiEl.appendChild(createLilink("Manage Reservations","navbarDropdown5"));
     const namesOfItems = ["All Reservations","Edit Reservations"]
-    const pageLinks = ["../manageReservations/reservations.html","#"];
+    const pageLinks = ["../manage/reservations/reservations.html","#"];
     manageReservationsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageReservationsLiEl;
@@ -49,7 +49,7 @@ function createManageMembersOption() {
     manageMembersLiEl.classList.add("nav-item", "dropdown");
     manageMembersLiEl.appendChild(createLilink("Manage Members","navbarDropdown4"));
     const namesOfItems = ["Add New Member","All Members","Import/Export Members"]
-    const pageLinks = ["../members/createMember.html","../members/members.html","../members/importExportMembers.html"]
+    const pageLinks = ["../manage/members/createMember.html","../manage/members/members.html","../manage/members/importExportMembers.html"]
     manageMembersLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageMembersLiEl;
@@ -60,7 +60,7 @@ function createManageBoatsOption() {
     manageBoatsLiEl.classList.add("nav-item", "dropdown");
     manageBoatsLiEl.appendChild(createLilink("Manage Boats","navbarDropdown3"));
     const namesOfItems = ["Add New Boat", "All Boats","Import/Export Boats"]
-    const pageLinks = ["../boats/createBoat.html","../boats/boats.html","../boats/importExportBoats.html"];
+    const pageLinks = ["../manage/boats/createBoat.html","../manage/boats/boats.html","../manage/boats/importExportBoats.html"];
     manageBoatsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
     return manageBoatsLiEl;
 }
@@ -70,7 +70,7 @@ function createManageActivitiesOption() {
     manageActivitiesLiEl.classList.add("nav-item", "dropdown");
     manageActivitiesLiEl.appendChild(createLilink("Manage Activities","navbarDropdown2"));
     const namesOfItems = ["Add New Activity","All Activities","Import/Export Activities"]
-    const pageLinks = ["../activities/createActivity.html","../activities/activities.html","../activities/importExportActivities.html"];
+    const pageLinks = ["../manage/activities/createActivity.html","../manage/activities/activities.html","../manage/activities/importExportActivities.html"];
     manageActivitiesLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageActivitiesLiEl;

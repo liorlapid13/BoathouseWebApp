@@ -175,6 +175,19 @@ public class Engine implements BMSEngine {
         return member;
     }
 
+    private void updateMemberPrivateBoat(boolean hasPrivateBoat, String boatId, String memberId) {
+        Member member = findMemberByID(memberId);
+
+        if (member.isHasBoat() && !hasPrivateBoat) {
+            member.removePrivateBoat();
+        } else if (!member.isHasBoat() && hasPrivateBoat) {
+            member.addPrivateBoat(boatId);
+        } else if (member.isHasBoat() && hasPrivateBoat && !member.getPrivateBoatSerialNumber().equals(boatId)) {
+            member.removePrivateBoat();
+            member.addPrivateBoat(boatId);
+        }
+    }
+
     @Override
     public void addMemberToList(Member newMember) {
         memberList.add(newMember);
@@ -1263,5 +1276,24 @@ public class Engine implements BMSEngine {
         updateBoatCoastalStatus(isCoastal, boat);
         updateBoatPrivateStatus(isPrivate, boat);
         updateBoatDisabledStatus(isDisabled, boat);
+    }
+
+    public void editMember(String memberId, String name, String email, String password, int age, String details,
+                           String phoneNumber, MemberLevel level, boolean isManager, boolean hasPrivateBoat,
+                           String privateBoatId, LocalDateTime expirationDate) {
+        Member member = findMemberByID(memberId);
+
+        updateMemberName(name, memberId);
+        try {
+            updateMemberEmail(email, memberId);
+        } catch (EmailAlreadyExistsException e) { }
+        updateMemberPassword(password, memberId);
+        updateMemberAge(age, memberId);
+        updateMemberDetails(details, memberId);
+        updateMemberPhoneNumber(phoneNumber, memberId);
+        updateMemberLevel(level, memberId);
+        updateMemberManagerialStatus(isManager, memberId);
+        updateMemberPrivateBoat(hasPrivateBoat, privateBoatId, memberId);
+        updateMemberExpirationDate(expirationDate, memberId);
     }
 }

@@ -161,7 +161,7 @@ async function getSelectedReservations(data) {
         const reservationList = await response.json();
         sessionStorage.setItem('reservationList', JSON.stringify(reservationList));
         for(let i = 0; i < reservationList.length; i++) {
-            reservationTableBody.appendChild(buildTableEntry(reservationList[i], i+1));
+            reservationTableBody.appendChild(buildReservationTableEntry(reservationList[i]));
         }
     } else {
         noReservationsAlert();
@@ -176,22 +176,6 @@ function noReservationsAlert() {
     editReservationButtonEl.disabled = true;
 }
 
-function buildTableEntry(reservation, index) {
-    const tableEntryEl = document.createElement("tr");
-    const tableHeaderEl = document.createElement("th");
-    const checkBoxEl = document.createElement("input");
-    checkBoxEl.classList.add("form-check-input");
-    checkBoxEl.setAttribute("type", "checkbox");
-    checkBoxEl.setAttribute("id", "check" + index);
-    checkBoxEl.addEventListener("change", checkAllCheckBoxes);
-    tableHeaderEl.setAttribute("scope", "row");
-    tableHeaderEl.appendChild(checkBoxEl);
-    tableEntryEl.appendChild(tableHeaderEl);
-    appendTableData(tableEntryEl, reservation);
-
-    return tableEntryEl;
-}
-
 function getAllCheckBoxes() {
     const tableBodyEl = document.querySelector("#tableBody");
     return tableBodyEl.getElementsByTagName("input");
@@ -204,32 +188,4 @@ function checkAllCheckBoxes() {
             allCheckBoxes[i].checked = false;
         }
     }
-}
-
-function appendTableData(tableEntryEl, reservation) {
-    const reservatorDataEl = document.createElement("td");
-    const dateDataEl = document.createElement("td");
-    const activityDataEl = document.createElement("td");
-    const boatTypesDataEl = document.createElement("td");
-    const boatCrewDataEl = document.createElement("td");
-    const statusDataEl = document.createElement("td");
-    const creationDateDataEl = document.createElement("td");
-
-    statusDataEl.classList.add("reservationStatus");
-
-    reservatorDataEl.textContent = reservation.reservator.name;
-    dateDataEl.textContent = reservation.date;
-    activityDataEl.textContent = reservation.activity.name + "\n" + reservation.activity.time;
-    boatTypesDataEl.textContent = parseBoatTypes(reservation.boatTypes);
-    boatCrewDataEl.textContent = parseBoatCrew(reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
-    statusDataEl.textContent = reservation.status;
-    creationDateDataEl.textContent = reservation.creationDate;
-
-    tableEntryEl.appendChild(reservatorDataEl);
-    tableEntryEl.appendChild(dateDataEl);
-    tableEntryEl.appendChild(activityDataEl);
-    tableEntryEl.appendChild(boatTypesDataEl);
-    tableEntryEl.appendChild(boatCrewDataEl);
-    tableEntryEl.appendChild(statusDataEl);
-    tableEntryEl.appendChild(creationDateDataEl);
 }

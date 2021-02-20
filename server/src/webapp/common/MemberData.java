@@ -19,6 +19,7 @@ public class MemberData {
     private String email;
     private String password;
     private boolean isManager;
+    private String expirationDate;
 
     public MemberData(Member member) {
         this.id = member.getSerialNumber();
@@ -32,6 +33,7 @@ public class MemberData {
         this.email = member.getEmail();
         this.password = member.getPassword();
         this.isManager = member.isManager();
+        this.expirationDate = member.getMembershipExpirationDate().toString();
     }
 
     public String getId() {
@@ -76,6 +78,10 @@ public class MemberData {
 
     public boolean isManager() {
         return isManager;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
     }
 
     public Member createMember() {

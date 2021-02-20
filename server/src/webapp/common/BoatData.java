@@ -13,7 +13,7 @@ public class BoatData {
     private boolean isCoastal;
     private boolean isDisabled;
 
-    public BoatData(Boat boat){
+    public BoatData(Boat boat) {
         this.id = boat.getSerialNumber();
         this.name = boat.getName();
         this.boatType = BoatType.boatTypeToBoatCode(boat.getBoatType());

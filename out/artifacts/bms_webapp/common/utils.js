@@ -144,7 +144,8 @@ function isMemberInBoatCrew(member, boatCrew, coxswain) {
 
     return false;
 }
-function addOneMinute(startTime){
+
+function addOneMinute(startTime) {
     const startTimeSplit = startTime.split(":");
     let startTimeMinute = startTimeSplit[1];
     let minEndTimeMinutes;
@@ -167,3 +168,44 @@ function addOneMinute(startTime){
     return minEndTimeHours.concat(":",minEndTimeMinutes);
 }
 
+function buildReservationTableEntry(reservation) {
+    const tableEntryEl = document.createElement("tr");
+    const tableHeaderEl = document.createElement("th");
+    const checkBoxEl = document.createElement("input");
+    checkBoxEl.setAttribute('type', 'radio');
+    checkBoxEl.setAttribute('name', 'activityRadio');
+    tableHeaderEl.setAttribute("scope", "row");
+    tableHeaderEl.appendChild(checkBoxEl);
+    tableEntryEl.appendChild(tableHeaderEl);
+    appendReservationTableData(tableEntryEl, reservation);
+
+    return tableEntryEl;
+}
+
+function appendReservationTableData(tableEntryEl, reservation) {
+    const reservatorDataEl = document.createElement("td");
+    const dateDataEl = document.createElement("td");
+    const activityDataEl = document.createElement("td");
+    const boatTypesDataEl = document.createElement("td");
+    const boatCrewDataEl = document.createElement("td");
+    const statusDataEl = document.createElement("td");
+    const creationDateDataEl = document.createElement("td");
+
+    statusDataEl.classList.add("reservationStatus");
+
+    reservatorDataEl.textContent = reservation.reservator.name;
+    dateDataEl.textContent = reservation.date;
+    activityDataEl.textContent = reservation.activity.name + "\n" + reservation.activity.time;
+    boatTypesDataEl.textContent = parseBoatTypes(reservation.boatTypes);
+    boatCrewDataEl.textContent = parseBoatCrew(reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
+    statusDataEl.textContent = reservation.status;
+    creationDateDataEl.textContent = reservation.creationDate;
+
+    tableEntryEl.appendChild(reservatorDataEl);
+    tableEntryEl.appendChild(dateDataEl);
+    tableEntryEl.appendChild(activityDataEl);
+    tableEntryEl.appendChild(boatTypesDataEl);
+    tableEntryEl.appendChild(boatCrewDataEl);
+    tableEntryEl.appendChild(statusDataEl);
+    tableEntryEl.appendChild(creationDateDataEl);
+}

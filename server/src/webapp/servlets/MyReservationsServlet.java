@@ -69,25 +69,12 @@ public class MyReservationsServlet extends HttpServlet {
             if (reservationList.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
-                parseReservationDetails(reservationList, reservationDataList, engine);
+                ReservationData.parseReservationDetails(reservationList, reservationDataList, engine);
                 String jsonResponse = gson.toJson(reservationDataList);
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
                 out.flush();
             }
-        }
-    }
-
-    private void parseReservationDetails(List<Reservation> reservationList,
-                                         List<ReservationData> reservationDataList, Engine engine) {
-        for (Reservation reservation : reservationList) {
-            Member reservationCreator = engine.findMemberByID(reservation.getReservationCreator());
-            Member reservator = engine.findMemberByID(reservation.getReservator());
-            List<Member> crewMembers = engine.findMemberListByIDList(reservation.getBoatCrew().getCrewMembers());
-            Member coxswain = engine.findMemberByID(reservation.getBoatCrew().getCoxswain());
-            boolean coxswainSelected = coxswain != null;
-            reservationDataList.add(new ReservationData(reservation, reservationCreator, reservator, crewMembers,
-                    coxswainSelected, coxswain));
         }
     }
 

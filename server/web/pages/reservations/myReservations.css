@@ -1,7 +1,8 @@
-.reservationsTable{
+.reservationsTable {
     width:1300px!important;
     margin-top: 130px !important;
 }
+
 td {
     height: 100px;
     white-space: pre-wrap;
@@ -11,14 +12,17 @@ td {
     margin-top: 10px;
     margin-left: 190px;
 }
+
 #buttonEditReservation {
     float: left;
     margin-left:25%;
 }
+
 #buttonRemoveReservation {
     float: left;
     margin-left:10%;
 }
+
 h2.title {
     margin-top: 30px ;
     text-align: center ;
@@ -27,3 +31,4 @@ h2.title {
     font-family: 'Ultra', sans-serif;
     text-shadow: 2px 2px 8px #FF0000;
 }
+

@@ -13,6 +13,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -73,5 +74,11 @@ public class ServerUtils {
         }
 
         return boatTypesSet;
+    }
+
+    public static LocalDateTime parseDateTime(String expirationDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        return LocalDate.parse(expirationDate, formatter).atStartOfDay();
     }
 }

@@ -4,9 +4,7 @@ package webapp.servlets;
 import com.google.gson.Gson;
 import engine.Engine;
 import engine.boat.Boat;
-import engine.member.Member;
 import webapp.common.BoatData;
-import webapp.common.MemberData;
 import webapp.utils.ServletUtils;
 
 import javax.servlet.ServletException;
