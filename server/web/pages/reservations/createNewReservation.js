@@ -268,6 +268,7 @@ async function handleReservationCreation(event) {
     });
 
     finalModalTitle.textContent = "";
+    finalModalBody.style.color ="green";
     finalModalBody.textContent = response.status === STATUS_OK ?
         "Reservation successfully created!" : "Failed to create reservation!";
     showModal(finalModal);
