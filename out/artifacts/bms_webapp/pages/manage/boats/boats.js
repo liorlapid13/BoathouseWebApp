@@ -33,7 +33,7 @@ async function initializeBoatsTable(){
     const alertPopup = document.getElementById("alertText");
     alertPopup.style.background = "";
     alertPopup.textContent = "";
-    const response = await fetch('../../boats', {
+    const response = await fetch('../../../boats', {
         method: 'get',
     });
     if (response.status === STATUS_OK) {
@@ -96,7 +96,7 @@ async function handleRemoveBoatRequest(){
     if (checkedCheckBox !== -1) {
         const boatToRemove = boatList[checkedCheckBox];
 
-        const checkFutureAssignmentsResponse = await fetch('../../boats', {
+        const checkFutureAssignmentsResponse = await fetch('../../../boats', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -118,7 +118,7 @@ async function handleRemoveBoatRequest(){
             boatHasFutureAssignment:doesBoatHasFutureAssignments
         }
 
-        const removalResponse = await fetch('../../removeBoat', {
+        const removalResponse = await fetch('../../../removeBoat', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'

@@ -94,7 +94,7 @@ async function handleCheckName(event) {
             name: name
         }
 
-        const response = await fetch('../../boatAvailability', {
+        const response = await fetch('../../../boatAvailability', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -190,7 +190,7 @@ async function handleConfirm(event) {
         isDisabled: isDisabled
     }
 
-    const response = await fetch('../../editBoat', {
+    const response = await fetch('../../../editBoat', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'

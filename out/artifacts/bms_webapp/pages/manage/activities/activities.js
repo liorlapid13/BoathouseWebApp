@@ -34,7 +34,7 @@ async function initializeActivityTable() {
     alertPopup.style.background = "";
     alertPopup.textContent = "";
 
-    const response = await fetch('../../activities', {
+    const response = await fetch('../../../activities', {
         method: 'get',
     });
 
@@ -96,13 +96,14 @@ function getAllCheckBoxes() {
     const tableBodyEl = document.querySelector("#activityTableBody");
     return tableBodyEl.getElementsByTagName("input");
 }
+
 async function handleRemoveActivityRequest(){
     const activitytableBodyEl = document.getElementById("activityTableBody");
     let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
         const activityToRemove = activityList[checkedCheckBox];
 
-        const response = await fetch('../../removeActivity', {
+        const response = await fetch('../../../removeActivity', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -112,7 +113,7 @@ async function handleRemoveActivityRequest(){
         if (response.status === STATUS_OK) {
             modalTitle.textContent = "";
             modalBody.style.color = "green";
-            modalBody.textContent = "Activity remove successfuly"
+            modalBody.textContent = "Activity removed successfully"
             showModal(modal);
             while (activitytableBodyEl.firstChild) {
                 activitytableBodyEl.removeChild(activitytableBodyEl.firstChild);
@@ -122,11 +123,11 @@ async function handleRemoveActivityRequest(){
     }
     else {
         modalTitle.textContent = "Pay Attention!" ;
-        modalBody.textContent = "You must select activity to remove"
+        modalBody.textContent = "You must select an activity to remove"
         showModal(modal);
     }
-
 }
+
 function getAllCheckBoxes() {
     const tableBodyEl = document.getElementById("activityTableBody");
     return tableBodyEl.getElementsByTagName("input");

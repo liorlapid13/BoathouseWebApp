@@ -55,7 +55,7 @@ async function handleEditActivity(event){
         newTime: time,
         newRestriction: inputBoatTypeRestriction
     }
-    const response = await fetch('../../editActivity', {
+    const response = await fetch('../../../editActivity', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'

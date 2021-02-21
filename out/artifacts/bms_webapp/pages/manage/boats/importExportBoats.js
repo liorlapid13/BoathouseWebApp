@@ -30,7 +30,7 @@ async function handleExportBoats(){
     const data = {
         typeOfData : "boats"
     }
-    const response = await fetch('../../exportData', {
+    const response = await fetch('../../../exportData', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'
@@ -79,7 +79,7 @@ async function handleImportSubmit(event){
         xmlString : fileText,
         override : isOverride
     }
-    const response = await fetch('../../importData', {
+    const response = await fetch('../../../importData', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'

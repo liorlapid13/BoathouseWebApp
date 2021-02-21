@@ -44,19 +44,27 @@
     </div>
 </nav>
 <h2 class="title">My Reservations</h2>
-<div class="selectOptions">
-    <button id="buttonNextWeekReservations" type="button" class="btn btn-primary ">Next Week Reservations</button>
-    <button id="buttonPastWeekReservations"  type="button" class="btn btn-primary optionButton ">Past Week Reservations</button>
-    <button id="buttonSpecificDayReservations"  type="button" class="btn btn-primary optionButton ">Specific Day </button>
-    <select id="daysDropDownMenu"  class="form-select daysDropDown" aria-label="Default select example">
-        <option value="1"></option>
-        <option value="2"></option>
-        <option value="3"></option>
-        <option value="4"></option>
-        <option value="5"></option>
-        <option value="6"></option>
-        <option value="7"></option>
-    </select>
+<div class="container optionsContainer mx-auto mt-4 mb-5 " id = reservationsFilters>
+    <div class="row justify-content-md-center">
+        <div class="col justify-content-center" >
+            <button id="buttonNextWeekReservations" type="button" class="btn btn-primary ">Next Week Reservations</button>
+        </div>
+        <div class="col" >
+            <button id="buttonPastWeekReservations"  type="button" class="btn btn-primary">Past Week Reservations</button>
+        </div>
+        <div class="col-5" >
+            <button id="buttonSpecificDayReservations"  type="button" class="btn btn-primary ">Specific Day </button>
+            <select id="daysDropDownMenu"  class="form-select daysDropDown" aria-label="Default select example">
+                <option value="1"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+                <option value="4"></option>
+                <option value="5"></option>
+                <option value="6"></option>
+                <option value="7"></option>
+            </select>
+        </div>
+    </div>
 </div>
 <div class="tableFixHead reservationsTable">
     <table class="table centerItems">
@@ -78,9 +86,15 @@
 </div>
 
 <strong id ="alertText" class="alertPopup"></strong>
-<div class="editRemoveButtons">
-    <button id="buttonEditReservation" disabled = ture   type="button" class="btn btn-primary ">Edit Reservation</button>
-    <button id="buttonRemoveReservation" disabled = true type="button" class="btn btn-primary ">Remove Reservation</button>
+<div class="container mx-auto mt-3 buttonsContainer" >
+    <div class="row">
+        <div class="col">
+            <button id="buttonEditReservation" disabled = ture   type="button" class="btn btn-primary ">Edit Reservation</button>
+        </div>
+        <div class="col" >
+            <button id="buttonRemoveReservation" disabled = true type="button" class="btn btn-primary ">Remove Reservation</button>
+        </div>
+    </div>
 </div>
 
 <!-- Modal -->

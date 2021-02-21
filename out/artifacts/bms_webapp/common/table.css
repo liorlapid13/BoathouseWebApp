@@ -31,6 +31,9 @@ td {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+.buttonsContainer1 {
+    width:540px !important;
+}
 .buttonsContainer{
     height: 90px;
     position: relative;
@@ -48,10 +51,13 @@ td {
     float: left;
 }
 .optionButton {
-    margin-left:100px;
+    margin-left:70px;
 }
 .daysDropDown {
-    width: 250px !important;
+    width: 230px !important;
     float: right;
     margin-left: 20px;
+}
+.optionsContainer {
+    width:1030px !important;
 }

@@ -16,10 +16,6 @@ h2.title {
     background-color: gold !important;
 }
 
-.optionsContainer {
+.filterContainer {
     width:1030px !important;
-}
-
-.buttonsContainer1 {
-    width:540px !important;
 }

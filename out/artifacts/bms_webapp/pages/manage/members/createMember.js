@@ -84,7 +84,7 @@ async function handleCheckId(event) {
             email: null
         }
 
-        const response = await fetch('../../memberAvailability', {
+        const response = await fetch('../../../memberAvailability', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -130,7 +130,7 @@ async function handleCheckEmail(event) {
             email: email
         }
 
-        const response = await fetch('../../memberAvailability', {
+        const response = await fetch('../../../memberAvailability', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -194,7 +194,7 @@ async function handleCheckBoatId(event) {
             boatId: boatId
         }
 
-        const response = await fetch('../../privateBoatAvailability', {
+        const response = await fetch('../../../privateBoatAvailability', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -234,7 +234,7 @@ async function handleCreateMember(event) {
         expirationDate: null
     }
 
-    const response = await fetch('../../createMember', {
+    const response = await fetch('../../../createMember', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'

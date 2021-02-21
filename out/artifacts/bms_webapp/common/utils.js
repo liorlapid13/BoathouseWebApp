@@ -3,6 +3,8 @@ const RESERVATION_TO_EDIT = "reservationToEdit";
 const ACTIVITY_TO_EDIT = "activityToEdit";
 const BOAT_TO_EDIT = "boatToEdit";
 const MEMBER_TO_EDIT = "memberToEdit";
+const RESERVATION_TO_MANAGER_EDIT = "reservationToManagerEdit";
+const ALL_RESERVATIONS_LIST = "allReservationsList";
 
 function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";

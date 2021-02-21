@@ -33,7 +33,7 @@ async function initializeMembersTable(){
     const alertPopup = document.getElementById("alertText");
     alertPopup.style.background = "";
     alertPopup.textContent = "";
-    const response = await fetch('../../members', {
+    const response = await fetch('../../../members', {
         method: 'get',
     });
     if (response.status === STATUS_OK) {
@@ -99,12 +99,12 @@ function appendMemberTableData(tableEntryEl, member) {
 
 }
 async function handleRemoveMemberRequest(){
-    const membertableBodyEl = document.getElementById("membersTableBody");
+    const memberTableBodyEl = document.getElementById("membersTableBody");
     let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
         const memberToRemove = memberList[checkedCheckBox];
 
-        const checkFutureReservationResponse = await fetch('../../members', {
+        const checkFutureReservationResponse = await fetch('../../../members', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -125,7 +125,7 @@ async function handleRemoveMemberRequest(){
             memberHasFutureReservation:doesMemberHasFutureReservation
         }
 
-        const removalResponse = await fetch('../../removeMember', {
+        const removalResponse = await fetch('../../../removeMember', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -137,8 +137,8 @@ async function handleRemoveMemberRequest(){
             modalBody.style.color = "green";
             modalBody.textContent = "Member removed successfully"
             showModal(modal);
-            while (membertableBodyEl.firstChild) {
-                membertableBodyEl.removeChild(membertableBodyEl.firstChild);
+            while (memberTableBodyEl.firstChild) {
+                memberTableBodyEl.removeChild(memberTableBodyEl.firstChild);
             }
             initializeMembersTable();
         }
@@ -160,6 +160,7 @@ function getAllCheckBoxes() {
     const tableBodyEl = document.getElementById("membersTableBody");
     return tableBodyEl.getElementsByTagName("input");
 }
+
 function handleEditMemberRequest() {
     let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {

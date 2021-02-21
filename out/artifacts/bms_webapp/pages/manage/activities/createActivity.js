@@ -36,7 +36,7 @@ async function handleActivityCreation(event){
         restriction: inputBoatTypeRestriction
     }
 
-    const response = await fetch('../../createActivity', {
+    const response = await fetch('../../../createActivity', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'

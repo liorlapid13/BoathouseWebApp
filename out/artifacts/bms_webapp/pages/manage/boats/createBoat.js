@@ -58,7 +58,7 @@ async function handleCheckId(event) {
             name: null
         }
 
-        const response = await fetch('../../boatAvailability', {
+        const response = await fetch('../../../boatAvailability', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -107,7 +107,7 @@ async function handleCheckName(event) {
             name: name
         }
 
-        const response = await fetch('../../boatAvailability', {
+        const response = await fetch('../../../boatAvailability', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -154,7 +154,7 @@ async function handleCreateBoat(event) {
         isDisabled: false
     }
 
-    const response = await fetch('../../createBoat', {
+    const response = await fetch('../../../createBoat', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'

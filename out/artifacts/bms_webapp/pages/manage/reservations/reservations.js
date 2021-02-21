@@ -1,3 +1,5 @@
+let reservationList;
+
 let currentSelectedOption;
 let currentSelectedDay;
 let removeReservationButtonEl;
@@ -72,8 +74,8 @@ async function getSelectedReservations(data) {
     }
 
     if (response.status === STATUS_OK) {
-        const reservationList = await response.json();
-        sessionStorage.setItem('reservationList', JSON.stringify(reservationList));
+        reservationList = await response.json();
+        sessionStorage.setItem(ALL_RESERVATIONS_LIST, JSON.stringify(reservationList));
         for(let i = 0; i < reservationList.length; i++) {
             reservationTableBody.appendChild(buildReservationTableEntry(reservationList[i]));
         }
@@ -82,21 +84,59 @@ async function getSelectedReservations(data) {
     }
 }
 
-function handleRemoveReservationRequest(){
+async function handleRemoveReservationRequest() {
+    const reservationTableBodyEl = document.getElementById('tableBody');
+    let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
+    if (checkedCheckBox !== -1) {
+        const reservationToRemove = reservationList[checkedCheckBox];
 
+        const response = await fetch('../../../removeReservation', {
+            method: 'post',
+            headers: new Headers({
+                'Content-Type': 'application/json;charset=utf-8'
+            }),
+            body: JSON.stringify(reservationToRemove)
+        });
+
+        if (response.status === STATUS_OK) {
+            modalTitle.textContent = "";
+            modalBody.style.color = "green";
+            modalBody.textContent = "Reservation removed successfully"
+            showModal(modal);
+            // TODO - remove only the selected reservation instead?
+            while (reservationTableBodyEl.firstChild) {
+                reservationTableBodyEl.removeChild(reservationTableBodyEl.firstChild);
+            }
+            // TODO - initializeReservationTable?
+        }
+    }
+    else {
+        modalTitle.textContent = "Pay Attention!" ;
+        modalBody.textContent = "You must select a reservation to remove"
+        showModal(modal);
+    }
 }
 
-function handleEditReservationRequest(){
-
+function handleEditReservationRequest() {
+    let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
+    if (checkedCheckBox !== -1) {
+        const reservationToEdit = reservationList[checkedCheckBox];
+        sessionStorage.setItem(RESERVATION_TO_MANAGER_EDIT, JSON.stringify(reservationToEdit));
+        window.location.href = "#"; // TODO - add link to manager-edit reservation
+    } else {
+        modalTitle.textContent = "Pay Attention!";
+        modalBody.textContent = "You must select a reservation to edit!"
+        showModal(modal);
+    }
 }
 
-function initializeModal(){
+function initializeModal() {
     modal = document.getElementById("Modal");
     modalBody = document.querySelector(".modal-body");
     modalTitle = document.getElementById("ModalLabel");
 }
 
-function activeOptions(){
+function activeOptions() {
     document.getElementById('buttonSpecificDayReservations').disabled = false;
     document.getElementById('buttonNextWeekReservations').disabled = false;
 }
@@ -116,4 +156,9 @@ function checkedFilter() {
             return i;
         }
     }
+}
+
+function getAllCheckBoxes() {
+    const reservationTableBodyEl = document.getElementById("tableBody");
+    return reservationTableBodyEl.getElementsByTagName("input");
 }
