@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import engine.Engine;
 import engine.activity.WeeklyActivity;
 import engine.boat.Boat;
+import engine.member.Member;
 import engine.reservation.Reservation;
 import webapp.common.BoatData;
 import webapp.common.ReservationData;
@@ -21,7 +22,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "MergeReservationsServlet", urlPatterns = {"/mergeReservationsServlet"})
+@WebServlet(name = "MergeReservationsServlet", urlPatterns = {"/mergeReservations"})
 public class MergeReservationsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,8 +47,15 @@ public class MergeReservationsServlet extends HttpServlet {
             Reservation updatedReservation = engine.combineReservations(originalReservation, reservationToMerge,
                     requestData.assignCoxswain);
             if (updatedReservation != null) {
-                String jsonResponse = gson.toJson(updatedReservation);
+                Member reservationCreator = engine.findMemberByID(updatedReservation.getReservationCreator());
+                Member reservator = engine.findMemberByID(updatedReservation.getReservator());
+                List<Member> crewMembers = engine.findMemberListByIDList(updatedReservation.getBoatCrew().getCrewMembers());
+                Member coxswain = engine.findMemberByID(updatedReservation.getBoatCrew().getCoxswain());
+                boolean coxswainSelected = coxswain != null;
+                String jsonResponse = gson.toJson(new ReservationData(updatedReservation,reservationCreator,reservator,
+                        crewMembers,coxswainSelected,coxswain));
                 resp.setStatus(HttpServletResponse.SC_OK);
+                ServerUtils.saveSystemState(getServletContext());
                 out.print(jsonResponse);
                 out.flush();
             } else {

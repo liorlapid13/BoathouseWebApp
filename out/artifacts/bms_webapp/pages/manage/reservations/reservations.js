@@ -129,7 +129,7 @@ function handleEditReservationRequest() {
     if (checkedCheckBox !== -1) {
         const reservationToEdit = reservationList[checkedCheckBox];
         sessionStorage.setItem(RESERVATION_TO_MANAGER_EDIT, JSON.stringify(reservationToEdit));
-        window.location.href = "#"; // TODO - add link to manager-edit reservation
+        window.location.href = "managerEditReservation.html";
     } else {
         modalTitle.textContent = "Pay Attention!";
         modalBody.textContent = "You must select a reservation to edit!"

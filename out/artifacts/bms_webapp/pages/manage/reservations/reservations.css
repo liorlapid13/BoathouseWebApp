@@ -1,4 +1,4 @@
-.allReservationsTable {
+.longReservationsTable {
     width:1300px!important;
     margin-top: 20px !important;
 }
@@ -11,11 +11,29 @@ h2.title {
     font-family: 'Ultra', sans-serif;
     text-shadow: 2px 2px 8px #FF0000;
 }
-
-.allReservationsTable thead th {
+.titleBlack{
+    margin-top: 30px ;
+    text-align: center ;
+    color: black;
+    font-size: 75px;
+    font-family: 'Ultra', sans-serif;
+    text-shadow: 2px 2px 8px white;
+}
+thead th {
     background-color: gold !important;
 }
 
 .filterContainer {
     width:1030px !important;
+}
+.shortReservationsTable{
+    width:800px!important;
+    margin-top: 20px !important;
+}
+.availableBoatsTable{
+    width:500px !important;
+    max-height: 250px !important;
+}
+caption{
+    text-align: center !important;
 }

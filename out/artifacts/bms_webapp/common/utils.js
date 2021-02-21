@@ -5,6 +5,7 @@ const BOAT_TO_EDIT = "boatToEdit";
 const MEMBER_TO_EDIT = "memberToEdit";
 const RESERVATION_TO_MANAGER_EDIT = "reservationToManagerEdit";
 const ALL_RESERVATIONS_LIST = "allReservationsList";
+const RESERVATION_TO_MERGE = "reservationToMerge";
 
 function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";
@@ -52,7 +53,9 @@ function findCheckedCheckBox(allCheckBoxes) {
     }
     return -1;
 }
-
+function getMaxBoatTypeCapacity(boatType){
+    return parseInt(boatType.charAt(0));
+}
 function calculateMaxBoatTypesCapacity(selectedBoatTypes) {
     let maxMembersInCrew = 0;
     for (let i = 0; i < selectedBoatTypes.length; i++) {
@@ -78,7 +81,27 @@ function doBoatTypesNeedCoxswain(boatTypes) {
 function doesBoatTypeNeedCoxswain(boatType) {
     return boatType.includes("+");
 }
+function getBoatCrewSize(reservation){
+    let crewSize = reservation.boatCrew.length;
 
+    if(reservation.coxswain !== undefined){
+        crewSize++;
+    }
+    return crewSize;
+}
+function getSpaceInCrew(boatTypes,crewSize) {
+    let maxBoatTypeCapacity = calculateMaxBoatTypesCapacity(boatTypes)
+
+    for(let i = 0; i < boatTypes.length;i++){
+        if (getMaxBoatTypeCapacity(boatTypes[i]) === maxBoatTypeCapacity &&
+            doesBoatTypeNeedCoxswain(boatTypes[i])) {
+            maxBoatTypeCapacity++;
+            break;
+        }
+    }
+
+    return maxBoatTypeCapacity - crewSize;
+}
 function initializeDaysDropDownMenu(dropDownOptions) {
     const options = {weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
     let date = new Date();
@@ -175,11 +198,34 @@ function buildReservationTableEntry(reservation) {
     const tableHeaderEl = document.createElement("th");
     const checkBoxEl = document.createElement("input");
     checkBoxEl.setAttribute('type', 'radio');
-    checkBoxEl.setAttribute('name', 'activityRadio');
+    checkBoxEl.setAttribute('name', 'reservationRadio');
     tableHeaderEl.setAttribute("scope", "row");
     tableHeaderEl.appendChild(checkBoxEl);
     tableEntryEl.appendChild(tableHeaderEl);
     appendReservationTableData(tableEntryEl, reservation);
+
+    return tableEntryEl;
+}
+
+function buildShortReservationTableEntry(reservation) {
+    const tableEntryEl = document.createElement("tr");
+    const reservatorEl = document.createElement("td");
+    const dateEl = document.createElement("td");
+    const activityEl = document.createElement("td");
+    const boatTypesEl = document.createElement("td");
+    const boatCrewEl = document.createElement("td");
+
+    reservatorEl.textContent = reservation.reservator.name;
+    dateEl.textContent = reservation.date;
+    activityEl.textContent = reservation.activity.name + "\n" + reservation.activity.time;
+    boatTypesEl.textContent = parseBoatTypes(reservation.boatTypes);
+    boatCrewEl.textContent = parseBoatCrew(reservation.boatCrew, reservation.coxswain, reservation.coxswainSelected);
+
+    tableEntryEl.appendChild(reservatorEl);
+    tableEntryEl.appendChild(dateEl);
+    tableEntryEl.appendChild(activityEl);
+    tableEntryEl.appendChild(boatTypesEl);
+    tableEntryEl.appendChild(boatCrewEl);
 
     return tableEntryEl;
 }

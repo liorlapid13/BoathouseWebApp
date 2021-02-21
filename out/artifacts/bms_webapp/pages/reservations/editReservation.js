@@ -47,7 +47,7 @@ window.addEventListener('load', () => {
     setupEventHandlers();
 });
 
-function setupEventHandlers() {
+    function setupEventHandlers() {
     editDateButtonEl = document.getElementById('buttonEditDate');
     editDateButtonEl.addEventListener('click', handleEditDate);
     confirmDateButtonEl = document.getElementById('buttonConfirmDate');

@@ -53,7 +53,9 @@ function findCheckedCheckBox(allCheckBoxes) {
     }
     return -1;
 }
-
+function getMaxBoatTypeCapacity(boatType){
+    return parseInt(boatType.charAt(0));
+}
 function calculateMaxBoatTypesCapacity(selectedBoatTypes) {
     let maxMembersInCrew = 0;
     for (let i = 0; i < selectedBoatTypes.length; i++) {
@@ -79,7 +81,27 @@ function doBoatTypesNeedCoxswain(boatTypes) {
 function doesBoatTypeNeedCoxswain(boatType) {
     return boatType.includes("+");
 }
+function getBoatCrewSize(reservation){
+    let crewSize = reservation.boatCrew.length;
 
+    if(reservation.coxswain !== undefined){
+        crewSize++;
+    }
+    return crewSize;
+}
+function getSpaceInCrew(boatTypes,crewSize) {
+    let maxBoatTypeCapacity = calculateMaxBoatTypesCapacity(boatTypes)
+
+    for(let i = 0; i < boatTypes.length;i++){
+        if (getMaxBoatTypeCapacity(boatTypes[i]) === maxBoatTypeCapacity &&
+            doesBoatTypeNeedCoxswain(boatTypes[i])) {
+            maxBoatTypeCapacity++;
+            break;
+        }
+    }
+
+    return maxBoatTypeCapacity - crewSize;
+}
 function initializeDaysDropDownMenu(dropDownOptions) {
     const options = {weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
     let date = new Date();
@@ -176,7 +198,7 @@ function buildReservationTableEntry(reservation) {
     const tableHeaderEl = document.createElement("th");
     const checkBoxEl = document.createElement("input");
     checkBoxEl.setAttribute('type', 'radio');
-    checkBoxEl.setAttribute('name', 'activityRadio');
+    checkBoxEl.setAttribute('name', 'reservationRadio');
     tableHeaderEl.setAttribute("scope", "row");
     tableHeaderEl.appendChild(checkBoxEl);
     tableEntryEl.appendChild(tableHeaderEl);
