@@ -32,7 +32,7 @@ function setupEventHandlers() {
     });
 
 }
-function initializeModal(){
+function initializeModal() {
     modal = document.getElementById("Modal");
     modalBody = document.querySelector(".modal-body");
     modalTitle = document.getElementById("ModalLabel");
