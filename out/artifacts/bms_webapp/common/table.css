@@ -23,23 +23,8 @@ td {
     margin-left:640px;
     position:center;
 }
-.vertical-center {
-    margin: 0;
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
-.buttonsContainer1 {
-    width:540px !important;
-}
 .buttonsContainer{
-    height: 90px;
-    position: relative;
-}
-.buttonEdit{
-    margin-right: 120px;
+    width:450px !important;
 }
 .centerItems{
     table-layout: fixed;
@@ -49,9 +34,6 @@ td {
     margin-top: 35px;
     margin-left: 350px;
     float: left;
-}
-.optionButton {
-    margin-left:70px;
 }
 .daysDropDown {
     width: 230px !important;

@@ -89,6 +89,16 @@ async function handleRemoveReservationRequest() {
     let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
         const reservationToRemove = reservationList[checkedCheckBox];
+        const allTableRowEl = reservationTableBodyEl.getElementsByTagName("tr");
+        const reservationStatus =
+            (allTableRowEl[checkedCheckBox].getElementsByClassName("reservationStatus"))[0];
+        if (reservationStatus.textContent === "Confirmed") {
+            modalTitle.textContent = "";
+            modalBody.style.color = "red";
+            modalBody.textContent = "You cannot remove confirmed reservation"
+            showModal(modal);
+            return;
+        }
 
         const response = await fetch('../../../removeReservation', {
             method: 'post',
@@ -103,11 +113,8 @@ async function handleRemoveReservationRequest() {
             modalBody.style.color = "green";
             modalBody.textContent = "Reservation removed successfully"
             showModal(modal);
-            // TODO - remove only the selected reservation instead?
-            while (reservationTableBodyEl.firstChild) {
-                reservationTableBodyEl.removeChild(reservationTableBodyEl.firstChild);
-            }
-            // TODO - initializeReservationTable?
+            reservationList.splice(checkedCheckBox, 1);
+            allTableRowEl[checkedCheckBox].remove();
         }
     }
     else {

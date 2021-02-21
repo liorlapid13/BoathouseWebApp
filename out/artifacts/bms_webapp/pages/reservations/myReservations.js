@@ -2,6 +2,7 @@ let currentSelectedOption;
 let currentSelectedDay;
 let removeReservationButtonEl;
 let editReservationButtonEl;
+let reservationList;
 let modal;
 let modalBody;
 let modalTitle;
@@ -84,25 +85,18 @@ async function handleRemoveReservationRequest(event) {
             }
         }
 
-        const data = {
-            requestType: currentSelectedOption,
-            day: currentSelectedDay,
-            index: checkedCheckBox
-        }
-
         const response = await fetch('../../removeReservation', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
             }),
-            body: JSON.stringify(data)
+            body: JSON.stringify(reservationList[checkedCheckBox])
         });
 
         if (response.status === STATUS_OK) {
             modalTitle.textContent = "" ;
-            modalBody.textContent = "Reservation remove successfuly"
+            modalBody.textContent = "Reservation removed successfully"
             showModal(modal);
-            const reservationList = JSON.parse(sessionStorage.getItem('reservationList'));
             reservationList.splice(checkedCheckBox, 1);
             allTableRowEl[checkedCheckBox].remove();
             if (!tableBodyEl.firstChild) {
@@ -158,7 +152,7 @@ async function getSelectedReservations(data) {
     }
 
     if (response.status === STATUS_OK) {
-        const reservationList = await response.json();
+        reservationList = await response.json();
         sessionStorage.setItem('reservationList', JSON.stringify(reservationList));
         for(let i = 0; i < reservationList.length; i++) {
             reservationTableBody.appendChild(buildReservationTableEntry(reservationList[i]));

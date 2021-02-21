@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import engine.Engine;
 import engine.member.Member;
 import engine.reservation.Reservation;
+import webapp.common.ReservationData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
 import webapp.utils.SessionUtils;
@@ -34,36 +35,15 @@ public class RemoveReservationServlet extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try (PrintWriter out = response.getWriter()) {
-            Engine engine = ServletUtils.getEngine(getServletContext());
-            String userId = SessionUtils.getUserId(request);
-            Member member = engine.findMemberByID(userId);
-            Gson gson = new Gson();
-            BufferedReader reader = request.getReader();
-            String jsonString = reader.lines().collect(Collectors.joining());
-            RemovalRequest removalRequest = gson.fromJson(jsonString, RemovalRequest.class);
-            List<Reservation> reservationList;
-            switch (removalRequest.requestType) {
-                case "next":
-                    reservationList = member.getNextWeekReservations();
-                    break;
-                case "day":
-                    reservationList = member.getSpecificDateReservations(
-                            LocalDate.now().plusDays(Integer.parseInt(removalRequest.day)));
-                    break;
-                default:
-                    reservationList = new ArrayList<>();
-            }
+        Engine engine = ServletUtils.getEngine(getServletContext());
+        Gson gson = new Gson();
+        BufferedReader reader = request.getReader();
+        String jsonString = reader.lines().collect(Collectors.joining());
+        ReservationData reservationToRemove = gson.fromJson(jsonString, ReservationData.class);
 
-            engine.removeReservation(reservationList.get(Integer.parseInt(removalRequest.index)), false);
-            response.setStatus(HttpServletResponse.SC_OK);
-            ServerUtils.saveSystemState(getServletContext());
-        }
+        engine.removeReservation(engine.findReservationByID(reservationToRemove.getId()), false);
+        response.setStatus(HttpServletResponse.SC_OK);
+        ServerUtils.saveSystemState(getServletContext());
     }
 
-    private static class RemovalRequest {
-        String requestType;
-        String day;
-        String index;
-    }
 }
