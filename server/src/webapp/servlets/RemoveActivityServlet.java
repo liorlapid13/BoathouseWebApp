@@ -28,7 +28,6 @@ public class RemoveActivityServlet extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         Engine engine = ServletUtils.getEngine(getServletContext());
         Gson gson = new Gson();
         BufferedReader reader = request.getReader();

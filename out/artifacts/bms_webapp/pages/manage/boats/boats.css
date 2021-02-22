@@ -2,10 +2,6 @@
     width:1300px!important;
     margin-top: 40px ;
 }
-
-.boatsTable thead th {
-    background-color: brown !important;
-}
 td{
     height: 70px !important;
 }
@@ -18,7 +14,6 @@ h2.title {
     text-shadow: 2px 2px 8px darkred;
 }
 
-.lightsteelblueBackGround{
-    background-color: lightsteelblue !important;
-    width: 750px !important;
+.contentBoard{
+    width: 750px;
 }

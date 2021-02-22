@@ -2,31 +2,15 @@
     width:1100px !important;
     margin-top: 40px !important;
 }
-.activityTable thead th {
-    background-color: moccasin !important;
-}
 td{
     height: 70px !important;
-}
-h2.titleMoccasin {
-    margin-top: 10px ;
-    text-align: center ;
-    color: moccasin;
-    font-size: 75px;
-    font-family: 'Ultra', sans-serif;
-    text-shadow: 2px 2px 8px #FF0000;
 }
 input[type=file]:hover {
     background-color: floralwhite;
 
 }
-h2.titleGray {
-    margin-top: 10px ;
-    text-align: center ;
-    color: slategray;
-    font-size: 50px;
-    font-family: 'Ultra', sans-serif;
-    text-shadow: 7px 7px 11px white;
+.title-white-blue{
+    font-size: 50px !important;
 }
 .moccasinNarrow{
     background-color: moccasin !important;

@@ -101,7 +101,7 @@ function checkCurrentSplitState() {
         if (!currentCrewHasCoxswain) {
             modalTitle.textContent = "Pay Attention!";
             modalBody.textContent = "You cannot move anymore members to the new crew";
-            showModal();
+            showModal(modal);
         }
     }
 
@@ -144,8 +144,12 @@ function disableTableRow(index) {
     tableRows[index].disabled = true;
     tableRows[index].style.pointerEvents = "none";
     tableRows[index].style.background = "gainsboro";
-    tableRows.getElementsByClassName("moveToCrewButton").style.background = "gainsboro";
-    tableRows.getElementsByClassName("moveToCoxswainButton").style.background = "gainsboro";
+    let moveToCrewButton = tableRows[index].getElementsByClassName("moveToCrewButton")[0];
+    moveToCrewButton.classList.remove("btn-darkblue");
+    moveToCrewButton.classList.add("btn-gray");
+    let moveToCoxswainButton = tableRows[index].getElementsByClassName("moveToCoxswainButton")[0];
+    moveToCoxswainButton.classList.remove("btn-darkblue");
+    moveToCoxswainButton.classList.add("btn-gray");
 }
 
 function disableCrewMemberRows() {
@@ -168,7 +172,8 @@ function initializeCurrentCrewTable() {
     reservationToEdit = JSON.parse(sessionStorage.getItem(RESERVATION_TO_MANAGER_EDIT));
     currentCrewTable = document.getElementById('currentCrewTableBody');
     newCrewTable = document.getElementById('newCrewTableBody');
-    for (let i = 0; i < reservationToEdit.boatCrew.length; i++) {
+    let i;
+    for (i = 0; i < reservationToEdit.boatCrew.length; i++) {
         currentCrewTable.appendChild(buildCrewMemberTableEntry(reservationToEdit.boatCrew[i], false, i+1));
     }
     currentCrewSize = i;
@@ -198,15 +203,17 @@ function buildCrewMemberTableEntry(member, isCoxswain, index) {
 
     moveCrewButtonEl.setAttribute("id", "buttonMoveCrew" + index);
     moveCrewButtonEl.setAttribute("type", "button");
-    moveCrewButtonEl.classList.add("bg-darkblue", "text-white", "moveToCrewButton");
-    moveCrewEl.textContent = "Move to Crew";
+    moveCrewButtonEl.classList.add("btn-darkblue", "moveToCrewButton");
+    moveCrewButtonEl.textContent = "Move to Crew";
+    moveCrewButtonEl.addEventListener('click',handleMoveToCrew)
     moveCrewEl.appendChild(moveCrewButtonEl);
 
     moveCoxswainButtonEl.setAttribute("id", "buttonMoveCoxswain" + index);
     moveCoxswainButtonEl.setAttribute("type", "button");
-    moveCoxswainButtonEl.classList.add("bg-darkblue", "text-white", "moveToCoxswainButton");
-    moveCoxswainEl.textContent = "Move to Coxswain";
-    moveCoxswainEl.appendChild(moveCrewButtonEl);
+    moveCoxswainButtonEl.classList.add("btn-darkblue", "moveToCoxswainButton");
+    moveCoxswainButtonEl.textContent = "Move to Coxswain";
+    moveCoxswainButtonEl.addEventListener('click',handleMoveToCoxswain);
+    moveCoxswainEl.appendChild(moveCoxswainButtonEl);
 
     tableEntryEl.appendChild(roleEl);
     tableEntryEl.appendChild(nameAndIdEl);

@@ -14,7 +14,7 @@
     <script src="managerEditReservation.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary" style="background-color: #2e6da4">
+<nav class="navbar navbar-expand-lg navbar navbar-dark " style="background-color: #2e6da4">
     <div class="container-fluid" >
         <a class="navbar-brand" href="../../home/homePage.html">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,16 +91,16 @@
         </div>
     </div>
 </nav>
-<h2 class="titleBlack">Manager Edit Reservation</h2>
+<h2 class="title-blue-white">Manager Edit Reservation</h2>
 <div class="tableFixHead shortReservationsTable">
     <table class="table centerItems">
         <thead>
         <tr>
-            <th class="bg-dark text-white" scope="col">Reservator</th>
-            <th class="bg-dark text-white" scope="col">Activity Date</th>
-            <th class="bg-dark text-white" scope="col">Activity</th>
-            <th class="bg-dark text-white" scope="col">Boat Types</th>
-            <th class="bg-dark text-white" scope="col">Boat crew</th>
+            <th class=" text-white" scope="col">Reservator</th>
+            <th class=" text-white" scope="col">Activity Date</th>
+            <th class=" text-white" scope="col">Activity</th>
+            <th class=" text-white" scope="col">Boat Types</th>
+            <th class=" text-white" scope="col">Boat crew</th>
         </tr>
         </thead>
         <tbody id="reservationTableBody">
@@ -110,12 +110,12 @@
 
 <div class="tableFixHead availableBoatsTable mt-5">
     <table class="table caption-top centerItems">
-        <caption class="bg-dark text-white" ><strong>Available boats for this reservation</strong></caption>
+        <caption class="bg-darkblue text-white" ><strong>Available boats for this reservation</strong></caption>
         <thead>
         <tr>
-            <th class="bg-dark text-white" scope="col">ID</th>
-            <th class="bg-dark text-white" scope="col">Name</th>
-            <th class="bg-dark text-white" scope="col">Boat Type</th>
+            <th class="text-white" scope="col">ID</th>
+            <th class="text-white" scope="col">Name</th>
+            <th class="text-white" scope="col">Boat Type</th>
         </tr>
         </thead>
         <tbody id="availableBoatsTableBody">
@@ -133,13 +133,28 @@
 <div class="container mx-auto mt-5 buttonsContainer" >
     <div class="row">
         <div class="col">
-            <button id="buttonSplit" onclick="location.href='splitReservation.html'"  type="button" class="btn btn-dark">Split Reservation</button>
+            <button id="buttonSplit"  type="button" class="btn btn-darkblue">Split Reservation</button>
         </div>
         <div class="col" >
-            <button id="buttonMerge" onclick="location.href='mergeReservation.html'"   type="button" class="btn btn-dark">Merge Reservation</button>
+            <button id="buttonMerge" onclick="location.href='mergeReservation.html'"   type="button" class="btn btn-darkblue">Merge Reservation</button>
         </div>
         <div class="col" >
-            <button id="buttonEditBoatTypes" onclick="location.href='editBoatTypes.html'"   type="button" class="btn btn-dark">Change Boat Types</button>
+            <button id="buttonEditBoatTypes" onclick="location.href='editBoatTypes.html'"   type="button" class="btn btn-darkblue">Change Boat Types</button>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div style="color:red"; class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Pay Attention!</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="closeButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>

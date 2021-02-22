@@ -2,10 +2,6 @@
     width:1400px!important;
     margin-top: 40px ;
 }
-
-.membersTable thead th {
-    background-color: darkturquoise !important;
-}
 td {
     height: 70px !important;
 }

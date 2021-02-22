@@ -1,9 +1,34 @@
 let reservationToEdit;
 
+let modal;
+let modalBody;
+let modalTitle;
+
 window.addEventListener('load', () => {
     initializeReservationData();
     initializeAvailableBoats();
+    initializeModal();
+    setupEventHandlers();
 });
+
+function setupEventHandlers() {
+    const splitButtonEl = document.getElementById('buttonSplit');
+    splitButtonEl.addEventListener('click', handleSplitReservation);
+    const modalCloseButtonEl = document.getElementById("closeButton");
+    modalCloseButtonEl.addEventListener('click',() =>{
+        hideModal(modal);
+    });
+}
+
+function handleSplitReservation(event) {
+    if (reservationToEdit.boatCrew.length > 1 || reservationToEdit.coxswainSelected) {
+        window.location.href="splitReservation.html";
+    } else {
+        modalTitle.textContent = "Pay Attention!";
+        modalBody.textContent = "This reservation is unsplittable!"
+        showModal(modal);
+    }
+}
 
 function initializeReservationData() {
     reservationToEdit = JSON.parse(sessionStorage.getItem(RESERVATION_TO_MANAGER_EDIT));
@@ -50,3 +75,8 @@ function buildBoatTableEntry(boat) {
     return tableEntryEl;
 }
 
+function initializeModal() {
+    modal = document.getElementById("Modal");
+    modalBody = document.querySelector(".modal-body");
+    modalTitle = document.getElementById("ModalLabel");
+}

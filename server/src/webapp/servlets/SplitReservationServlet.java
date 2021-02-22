@@ -25,15 +25,15 @@ import java.util.stream.Collectors;
 public class SplitReservationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        processRequest(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        splitReservation(req, resp);
+        processRequest(req, resp);
     }
 
-    protected void splitReservation(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());

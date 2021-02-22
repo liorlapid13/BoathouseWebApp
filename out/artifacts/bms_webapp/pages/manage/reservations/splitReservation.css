@@ -12,7 +12,6 @@
     white-space: pre-wrap;
     overflow: hidden;
 }
-
 .row-number {
     width: 15%;
 }
@@ -24,4 +23,8 @@
 }
 .row-button-coxswain {
     width: 35%;
+}
+.btn-gray{
+    background-color: gainsboro;
+    color: white;
 }

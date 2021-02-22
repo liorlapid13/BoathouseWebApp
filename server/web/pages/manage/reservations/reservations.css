@@ -3,26 +3,6 @@
     margin-top: 20px !important;
 }
 
-h2.title {
-    margin-top: 30px ;
-    text-align: center ;
-    color: gold;
-    font-size: 75px;
-    font-family: 'Ultra', sans-serif;
-    text-shadow: 2px 2px 8px #FF0000;
-}
-.titleBlack{
-    margin-top: 30px ;
-    text-align: center ;
-    color: black;
-    font-size: 75px;
-    font-family: 'Ultra', sans-serif;
-    text-shadow: 2px 2px 8px white;
-}
-thead th {
-    background-color: #112d4e !important;
-}
-
 .filterContainer {
     width:1030px !important;
 }
