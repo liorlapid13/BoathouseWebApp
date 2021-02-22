@@ -2,7 +2,6 @@ package webapp.servlets;
 
 import com.google.gson.Gson;
 import engine.Engine;
-import engine.boat.BoatType;
 import engine.member.Member;
 import engine.reservation.Reservation;
 import webapp.common.ReservationData;
@@ -18,12 +17,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "MyReservationsServlet", urlPatterns = {"/myReservations"})
@@ -69,7 +64,7 @@ public class MyReservationsServlet extends HttpServlet {
             if (reservationList.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
-                ReservationData.parseReservationDetails(reservationList, reservationDataList, engine);
+                ReservationData.parseReservations(reservationList, reservationDataList, engine);
                 String jsonResponse = gson.toJson(reservationDataList);
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);

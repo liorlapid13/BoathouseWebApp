@@ -244,7 +244,7 @@ public class Member implements Serializable {
     }
 
     public void removeReservation(Reservation reservation) {
-        this.reservationList.remove(reservation);
+        reservationList.remove(reservation);
     }
 
     public void addReservation(Reservation reservation) {

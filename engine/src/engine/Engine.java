@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @XmlRootElement
-public class Engine implements BMSEngine {
+public class Engine {
     private List<Member> loggedInMembers;
     private List<Member> memberList;
     private List<Boat> boatList;
@@ -76,19 +76,16 @@ public class Engine implements BMSEngine {
         this.weeklyActivities = weeklyActivities;
     }
 
-    @Override
     public List<Member> getMemberList() {
         return memberList;
     }
 
-    @Override
     public List<WeeklyActivity> getWeeklyActivities() { return weeklyActivities; }
 
     public List<Assignment> getAssignmentList() {
         return assignmentList;
     }
 
-    @Override
     public List<Boat> getBoatList() { return boatList;}
 
     public List<Reservation> getReservationList() {
@@ -99,7 +96,6 @@ public class Engine implements BMSEngine {
         xmlHandler = new XMLHandler(this);
     }
 
-    @Override
     public Member findAndLoginMember(String email, String password) throws MemberAlreadyLoggedInException {
         Member loggedInMember = null;
 
@@ -122,7 +118,6 @@ public class Engine implements BMSEngine {
         return loggedInMember;
     }
 
-    @Override
     public boolean isMemberLoggedIn(String id) {
         boolean result = false;
 
@@ -135,12 +130,10 @@ public class Engine implements BMSEngine {
         return result;
     }
 
-    @Override
     public void logoutMember(String id) {
         loggedInMembers.remove(findMemberByID(id));
     }
 
-    @Override
     public Member updateMemberName(String name, String id) {
         Member member = findMemberByID(id);
 
@@ -148,7 +141,6 @@ public class Engine implements BMSEngine {
         return member;
     }
 
-    @Override
     public Member updateMemberPhoneNumber(String phoneNumber, String id) {
         Member member = findMemberByID(id);
 
@@ -156,7 +148,6 @@ public class Engine implements BMSEngine {
         return member;
     }
 
-    @Override
     public Member updateMemberEmail(String email, String id) throws EmailAlreadyExistsException {
         Member member = findMemberByID(id);
 
@@ -167,7 +158,6 @@ public class Engine implements BMSEngine {
         return member;
     }
 
-    @Override
     public Member updateMemberPassword(String password, String id) {
         Member member = findMemberByID(id);
 
@@ -188,12 +178,10 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public void addMemberToList(Member newMember) {
         memberList.add(newMember);
     }
 
-    @Override
     public void removeMemberByListIndex(int memberIndex) {
         memberList.remove(memberIndex);
     }
@@ -202,7 +190,6 @@ public class Engine implements BMSEngine {
         memberList.remove(memberToRemove);
     }
 
-    @Override
     public boolean isEmailAvailable(String email) throws EmailAlreadyExistsException {
         for (Member memberInList : this.memberList) {
             if (memberInList.getEmail().equalsIgnoreCase(email)) {
@@ -213,10 +200,8 @@ public class Engine implements BMSEngine {
         return true;
     }
 
-    @Override
     public void addBoatToList(Boat newBoat) { boatList.add(newBoat); }
 
-    @Override
     public boolean doesBoatNameExist(String name) {
         for (Boat boat : boatList) {
             if (boat.getName().equalsIgnoreCase(name)) {
@@ -227,7 +212,6 @@ public class Engine implements BMSEngine {
         return false;
     }
 
-    @Override
     public boolean doesActivityExist(String activityName, LocalTime startTime, LocalTime endTime) {
         for (WeeklyActivity weeklyActivity : this.weeklyActivities) {
             if (weeklyActivity.getName().equalsIgnoreCase(activityName) &&
@@ -240,7 +224,6 @@ public class Engine implements BMSEngine {
         return false;
     }
 
-    @Override
     public void removeBoatByListIndex(int boatListIndex) {
         boatList.remove(boatListIndex);
     }
@@ -256,14 +239,12 @@ public class Engine implements BMSEngine {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public boolean doesBoatHaveFutureAssignments(Boat boatCopy) {
         Boat boat = findBoatByID(boatCopy.getSerialNumber());
 
         return getBoatFutureAssignments(boat).size() != 0;
     }
 
-    @Override
     public void removeBoatFromFutureAssignments(Boat boat) {
         List<Assignment> assignments = getBoatFutureAssignments(findBoatByID(boat.getSerialNumber()));
 
@@ -273,7 +254,6 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public boolean isBoatPrivate(String boatSerialNumber) {
         for (Boat boat : boatList) {
             if (boat.getSerialNumber().equals(boatSerialNumber)) {
@@ -284,7 +264,6 @@ public class Engine implements BMSEngine {
         return false;
     }
 
-    @Override
     public boolean doesBoatBelongToMember(String boatSerialNumber) {
         for (Member member : memberList) {
             if (member.getPrivateBoatSerialNumber() != null) {
@@ -297,7 +276,6 @@ public class Engine implements BMSEngine {
         return false;
     }
 
-    @Override
     public boolean doesBoatSerialNumberExist(String serialNumber) {
         for (Boat boat : boatList) {
             if (boat.getSerialNumber().equalsIgnoreCase(serialNumber)) {
@@ -308,7 +286,6 @@ public class Engine implements BMSEngine {
         return false;
     }
 
-    @Override
     public boolean doesMemberSerialNumberExist(String serialNumber) {
         for (Member member : memberList) {
             if (member.getSerialNumber().equalsIgnoreCase(serialNumber)) {
@@ -319,21 +296,18 @@ public class Engine implements BMSEngine {
         return false;
     }
 
-    @Override
     public void addWeeklyActivityToList(WeeklyActivity newWeeklyActivity) {
         if (!this.weeklyActivities.contains(newWeeklyActivity)) {
             weeklyActivities.add(newWeeklyActivity);
         }
     }
 
-    @Override
     public void removeActivityByListIndex(int activityListIndex) {
         weeklyActivities.remove(activityListIndex);
     }
 
     public void removeActivity(WeeklyActivity activityToRemove) { weeklyActivities.remove(activityToRemove);}
 
-    @Override
     public void publishNewReservation(Reservation reservation, boolean isReservationInList) {
         if (!isReservationInList) {
             // Add reservation to boathouse's reservation list
@@ -354,7 +328,6 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public void removeReservation(Reservation reservation, boolean override) {
         if (reservation.isConfirmed()) {
             Assignment assignment = findAssignment(reservation);
@@ -407,7 +380,6 @@ public class Engine implements BMSEngine {
         reservation.removeCrewMember(member);
     }
 
-    @Override
     public Reservation removeCoxswainFromReservation(Reservation reservation) {
         Member coxswain = findMemberByID(reservation.removeCoxswain());
 
@@ -418,7 +390,6 @@ public class Engine implements BMSEngine {
         return reservation;
     }
 
-    @Override
     public Reservation addCrewMemberToReservation(Reservation reservation, String memberId) {
         Member member = findMemberByID(memberId);
 
@@ -428,7 +399,6 @@ public class Engine implements BMSEngine {
         return reservation;
     }
 
-    @Override
     public Reservation addCoxswainToReservation(Reservation reservation, String coxswainId) {
         Member coxswain = findMemberByID(coxswainId);
 
@@ -438,28 +408,22 @@ public class Engine implements BMSEngine {
         return reservation;
     }
 
-    @Override
     public void updateMemberAge(int age, String id) { findMemberByID(id).setAge(age); }
 
-    @Override
     public void updateMemberDetails(String details, String id) { findMemberByID(id).setDetails(details); }
 
-    @Override
     public void updateMemberLevel(MemberLevel level, String id) { findMemberByID(id).setLevel(level); }
 
-    @Override
     public void updateMemberExpirationDate(LocalDateTime expirationDate, String id) {
         findMemberByID(id).setMembershipExpirationDate(expirationDate);
     }
 
-    @Override
     public void updateBoatName(String newBoatName, Boat boatToEdit) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
 
         boat.setName(newBoatName);
     }
 
-    @Override
     public void updateBoatDisabledStatus(boolean isDisabled, Boat boatToEdit) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
 
@@ -470,21 +434,18 @@ public class Engine implements BMSEngine {
         boat.setDisabled(isDisabled);
     }
 
-    @Override
     public void updateBoatPrivateStatus(boolean isPrivate, Boat boatToEdit) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
 
         boat.setPrivate(isPrivate);
     }
 
-    @Override
     public void updateBoatCoastalStatus(boolean isCoastal, Boat boatToEdit) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
 
         boat.setCoastal(isCoastal);
     }
 
-    @Override
     public void updateBoatType(BoatType boatType, Boat boatToEdit) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
 
@@ -495,31 +456,25 @@ public class Engine implements BMSEngine {
         boat.setBoatType(boatType);
     }
 
-    @Override
     public void updateMemberManagerialStatus(boolean isManger, String id) { findMemberByID(id).setManager(isManger); }
 
-    @Override
     public void removePrivateBoat(Member member) {
         findMemberByID(member.getSerialNumber()).removePrivateBoat();
     }
 
-    @Override
     public void addPrivateBoat(Member member, String boatId) {
         findMemberByID(member.getSerialNumber()).addPrivateBoat(boatId);
     }
 
-    @Override
     public void editReservationActivityDate(Reservation reservation, LocalDate date) {
         reservation.setActivityDate(date);
     }
 
-    @Override
     public void editReservationActivity(Reservation reservation, WeeklyActivity activityCopy) {
         WeeklyActivity activity = getOriginalActivityReference(activityCopy);
         reservation.setWeeklyActivity(activity);
     }
 
-    @Override
     public void removeMemberFromFutureReservations(Member memberCopy) {
         Member member = findMemberByID(memberCopy.getSerialNumber());
         List<Reservation> futureReservations = member.getFutureReservationList();
@@ -558,12 +513,10 @@ public class Engine implements BMSEngine {
         else return member.getSerialNumber().equals(boatCrew.getCoxswain());
     }
 
-    @Override
     public boolean doesMemberHaveFutureReservation(Member member) {
         return findMemberByID(member.getSerialNumber()).getFutureReservationList().size() != 0;
     }
 
-    @Override
     public void updateReservationCoxswain(Reservation reservation, String coxswain) {
         removeCoxswainFromReservation(reservation);
         if (coxswain != null) {
@@ -571,12 +524,10 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public void updateReservationReservator(Reservation reservation, String reservator) {
         reservation.setReservator(reservator);
     }
 
-    @Override
     public Reservation updateReservationCrewMembers(Reservation reservation, List<String> newCrewMembers) {
         List<String> currentCrewMembers = reservation.getBoatCrew().getCrewMembers();
         List<String> membersToRemove = new ArrayList<>();
@@ -609,7 +560,6 @@ public class Engine implements BMSEngine {
         return reservation;
     }
 
-    @Override
     public List<Reservation> getNextWeekReservations(ReservationViewFilter viewFilter) {
         List<Reservation> reservations = null;
         LocalDate today = LocalDate.now(), todayPlusEightDays = today.plusDays(8);
@@ -640,7 +590,6 @@ public class Engine implements BMSEngine {
         return reservations;
     }
 
-    @Override
     public List<Reservation> getSpecificDateReservations(LocalDate date, ReservationViewFilter viewFilter) {
         List<Reservation> reservations = null;
 
@@ -667,7 +616,6 @@ public class Engine implements BMSEngine {
         return reservations;
     }
 
-    @Override
     public List<Reservation> getFutureUnconfirmedReservations() {
         return this.reservationList.stream()
                 .filter(reservation -> !reservation.isConfirmed())
@@ -675,19 +623,16 @@ public class Engine implements BMSEngine {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public List<Assignment> getTodayAssignments() {
         return getSpecificDateAssignments(LocalDate.now());
     }
 
-    @Override
     public List<Assignment> getSpecificDateAssignments(LocalDate date) {
         return this.assignmentList.stream()
                 .filter(assignment -> assignment.getAssignedReservation().getActivityDate().equals(date))
                 .collect(Collectors.toList());
     }
 
-    @Override
     public List<Assignment> getNextWeekAssignments() {
         LocalDate today = LocalDate.now(), todayPlusEightDays = today.plusDays(8);
 
@@ -697,7 +642,6 @@ public class Engine implements BMSEngine {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public List<Assignment> getFutureAssignments() {
         LocalDate today = LocalDate.now();
 
@@ -706,7 +650,6 @@ public class Engine implements BMSEngine {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public List<Assignment> getPastAssignments() {
         LocalDate today = LocalDate.now();
 
@@ -715,7 +658,6 @@ public class Engine implements BMSEngine {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public void removeAssignment(Assignment assignmentCopy, boolean override) {
         Assignment assignment = getOriginalAssignmentReference(assignmentCopy);
 
@@ -726,7 +668,6 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public void addAssignment(Assignment assignment) {
         Boat originalBoatReference = findBoatByID(assignment.getAssignedBoat().getSerialNumber());
         Reservation assignedReservation = assignment.getAssignedReservation();
@@ -737,7 +678,6 @@ public class Engine implements BMSEngine {
         assignmentList.add(assignment);
     }
 
-    @Override
     public List<Boat> getBoatsForReservation(Reservation reservation) {
         return boatList.stream()
                 .filter(boat -> !boat.isDisabled())
@@ -751,7 +691,6 @@ public class Engine implements BMSEngine {
                 isBoatAvailableForActivity(boat, reservation.getWeeklyActivity(), reservation.getActivityDate());
     }
 
-    @Override
     public boolean isBoatAvailableForActivity(Boat boat, WeeklyActivity activity, LocalDate activityDate) {
         List<Assignment> assignments = getSpecificDateAssignments(activityDate);
 
@@ -774,7 +713,6 @@ public class Engine implements BMSEngine {
         return startTime.isBefore(otherEndTime) && endTime.isAfter(otherStartTime);
     }
 
-    @Override
     public Reservation combineReservations(Reservation destinationReservation, Reservation sourceReservation,
                                     boolean assignCoxswain) {
         int crewMembersToAdd = sourceReservation.getBoatCrew().getCrewMembers().size();
@@ -807,7 +745,6 @@ public class Engine implements BMSEngine {
         return destinationReservation;
     }
 
-    @Override
     public List<Reservation> getCombinableReservations(Reservation originalReservation, int maxCrewSize) {
         WeeklyActivity activity = originalReservation.getWeeklyActivity();
         LocalDate activityDate = originalReservation.getActivityDate();
@@ -824,7 +761,6 @@ public class Engine implements BMSEngine {
         return reservations;
     }
 
-    @Override
     public List<Boat> getBoatsForActivity(WeeklyActivity activity, LocalDate activityDate) {
         return boatList.stream()
                 .filter(boat -> !boat.isDisabled())
@@ -833,33 +769,46 @@ public class Engine implements BMSEngine {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void splitReservation(Reservation originalReservation, Reservation newReservation, BoatCrew newBoatCrew) {
+    public Reservation splitReservation(Reservation originalReservation, BoatCrew newBoatCrew) {
         List<Member> newCrewMembers = findMemberListByIDList(newBoatCrew.getCrewMembers());
 
         for (Member crewMember : newCrewMembers) {
+            originalReservation.removeMember(crewMember);
             crewMember.removeReservation(originalReservation);
-            crewMember.addReservation(newReservation);
         }
 
         Member newCoxswain = findMemberByID(newBoatCrew.getCoxswain());
 
         if (newCoxswain != null) {
+            originalReservation.removeMember(newCoxswain);
             newCoxswain.removeReservation(originalReservation);
-            newCoxswain.addReservation(newReservation);
         }
 
-        originalReservation.setBoatCrew(newReservation.getBoatCrew());
-        newReservation.setBoatCrew(newBoatCrew);
-        newReservation.setReservator(newBoatCrew.getCrewMembers().get(0));
         if (!originalReservation.getBoatCrew().getCrewMembers().contains(originalReservation.getReservator())) {
             originalReservation.setReservator(originalReservation.getBoatCrew().getCrewMembers().get(0));
         }
 
+        Reservation newReservation = new Reservation(
+                originalReservation.getReservationCreator(),
+                newBoatCrew.getCrewMembers().get(0),
+                originalReservation.getWeeklyActivity(),
+                originalReservation.getBoatTypes(),
+                originalReservation.getActivityDate(),
+                newBoatCrew);
+
         reservationList.add(newReservation);
+
+        for (Member crewMember : newCrewMembers) {
+            crewMember.addReservation(newReservation);
+        }
+
+        if (newCoxswain != null) {
+            newCoxswain.addReservation(newReservation);
+        }
+
+        return originalReservation;
     }
 
-    @Override
     public void updateReservationBoatTypes(Reservation reservation, Set<BoatType> boatTypes) {
         reservation.setBoatTypes(boatTypes);
     }
@@ -869,7 +818,6 @@ public class Engine implements BMSEngine {
                 membershipExpiration.toGregorianCalendar().toZonedDateTime().toLocalDate());
     }
 
-    @Override
     public boolean isValidActivityForReservationBoatCrew(Reservation reservation, WeeklyActivity activity,
                                                          LocalDate activityDate) {
         List<Member> crewMembers = findMemberListByIDList(reservation.getBoatCrew().getCrewMembers());
@@ -964,7 +912,6 @@ public class Engine implements BMSEngine {
         weeklyActivities.removeAll(weeklyActivities);
     }
 
-    @Override
     public Member findMemberByID(String id) {
         if (id != null) {
             for (Member member : memberList) {
@@ -977,7 +924,6 @@ public class Engine implements BMSEngine {
         return null;
     }
 
-    @Override
     public Reservation findReservationByID(String id) {
         if (id != null) {
             for (Reservation reservation : reservationList) {
@@ -990,7 +936,6 @@ public class Engine implements BMSEngine {
         return null;
     }
 
-    @Override
     public Boat findBoatByID(String id) {
         if (id != null) {
             for (Boat boat : boatList) {
@@ -1003,7 +948,6 @@ public class Engine implements BMSEngine {
         return null;
     }
 
-    @Override
     public List<Member> findMemberListByIDList(List<String> idList) {
         List<Member> memberList = new ArrayList<>();
 
@@ -1099,7 +1043,6 @@ public class Engine implements BMSEngine {
         return originalAssignment;
     }
 
-    @Override
     public String exportMembers() throws XmlException {
         try {
             String membersXmlString = xmlHandler.createMembersXmlString(memberList);
@@ -1110,7 +1053,6 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public String exportBoats() throws XmlException {
         try {
             return xmlHandler.createBoatsXmlString(boatList);
@@ -1119,7 +1061,6 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public String exportActivities() throws XmlException {
         try {
             return xmlHandler.createActivitiesXmlString(weeklyActivities);
@@ -1128,7 +1069,6 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public void importMembers(String membersXmlString, boolean isOverride) throws XmlException {
         StringBuilder importErrorsString = new StringBuilder();
         List<Member> members = xmlHandler.generateMemberListFromXmlString(membersXmlString, isOverride, importErrorsString);
@@ -1145,7 +1085,6 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public void importBoats(String boatsXmlString, boolean isOverride) throws XmlException {
         StringBuilder importErrorsString = new StringBuilder();
         List<Boat> boats = xmlHandler.generateBoatListFromXmlString(boatsXmlString, isOverride, importErrorsString);
@@ -1162,7 +1101,6 @@ public class Engine implements BMSEngine {
         }
     }
 
-    @Override
     public void importActivities(String activitiesXmlString, boolean isOverride) throws XmlException {
         StringBuilder importErrorsString = new StringBuilder();
         List<WeeklyActivity> activities = xmlHandler.generateActivitiesListFromXmlString(

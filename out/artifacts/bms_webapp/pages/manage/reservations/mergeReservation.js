@@ -66,21 +66,19 @@ async function handleMergeReservations(event) {
 }
 
 function checkIfCoxswainIsAssignable(reservationToMerge) {
-    let spaceInCrew =getSpaceInCrew(reservationToEdit.boatTypes,getBoatCrewSize(reservationToEdit));
+    let spaceInCrew = getSpaceInCrew(reservationToEdit.boatTypes, getBoatCrewSize(reservationToEdit));
     let assignCoxswain;
-    if(doBoatTypesNeedCoxswain(reservationToEdit.boatTypes) && reservationToEdit.coxswain === undefined)
-    {
-        if(getBoatCrewSize(reservationToMerge) !== spaceInCrew){
+    if (doBoatTypesNeedCoxswain(reservationToEdit.boatTypes) && reservationToEdit.coxswain === undefined) {
+        if (getBoatCrewSize(reservationToMerge) !== spaceInCrew) {
             assignCoxswain = window.confirm("Do you want a coxswain in the new reservation? " +
                 "(The coxswain will be assigned automatically)");
-        }
-        else{
+        } else {
             assignCoxswain = true;
         }
-    }
-    else{
+    } else {
         assignCoxswain = false;
     }
+
     return assignCoxswain;
 }
 

@@ -59,7 +59,7 @@ public class AllReservationsServlet extends HttpServlet {
             if (reservationList.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
-                ReservationData.parseReservationDetails(reservationList, reservationDataList, engine);
+                ReservationData.parseReservations(reservationList, reservationDataList, engine);
                 String jsonResponse = gson.toJson(reservationDataList);
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);

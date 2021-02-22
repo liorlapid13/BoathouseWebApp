@@ -22,5 +22,10 @@ body {
     overflow: auto;
     height: calc(100% - 1.5em);
     margin: auto;
-
+}
+.bg-darkblue{
+    background-color: #112d4e
+}
+.font-bold{
+    font-weight: bold;
 }

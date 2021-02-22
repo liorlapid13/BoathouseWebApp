@@ -2,11 +2,9 @@ package webapp.servlets;
 
 import com.google.gson.Gson;
 import engine.Engine;
-import engine.activity.WeeklyActivity;
-import engine.boat.Boat;
-import engine.member.Member;
+import engine.boat.BoatCrew;
 import engine.reservation.Reservation;
-import webapp.common.BoatData;
+import webapp.common.MemberData;
 import webapp.common.ReservationData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
@@ -22,8 +20,9 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "MergeReservationsServlet", urlPatterns = {"/mergeReservations"})
-public class MergeReservationsServlet extends HttpServlet {
+
+@WebServlet(name = "SplitReservationServlet", urlPatterns = {"/splitReservation"})
+public class SplitReservationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -31,10 +30,10 @@ public class MergeReservationsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        mergeReservations(req, resp);
+        splitReservation(req, resp);
     }
 
-    protected void mergeReservations(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void splitReservation(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
@@ -42,14 +41,15 @@ public class MergeReservationsServlet extends HttpServlet {
             BufferedReader reader = req.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
             RequestData requestData = gson.fromJson(jsonString, RequestData.class);
-            Reservation originalReservation = engine.findReservationByID(requestData.reservation.getId());
-            Reservation reservationToMerge = engine.findReservationByID(requestData.reservationToMerge.getId());
-            Reservation updatedReservation = engine.combineReservations(originalReservation, reservationToMerge,
-                    requestData.assignCoxswain);
+            Reservation reservation = engine.findReservationByID(requestData.reservation.getId());
+            List<String> crewMembers = ServerUtils.parseCrewMembers(requestData.crew);
+            String coxswain = requestData.coxswain != null ? requestData.coxswain.getId() : null;
+            BoatCrew boatCrew = new BoatCrew(crewMembers, coxswain);
+            Reservation updatedReservation = engine.splitReservation(reservation, boatCrew);
             if (updatedReservation != null) {
-                String jsonResponse = gson.toJson(ReservationData.parseReservation(updatedReservation, engine));
+                ReservationData reservationData = ReservationData.parseReservation(updatedReservation, engine);
+                String jsonResponse = gson.toJson(reservationData);
                 resp.setStatus(HttpServletResponse.SC_OK);
-                ServerUtils.saveSystemState(getServletContext());
                 out.print(jsonResponse);
                 out.flush();
             } else {
@@ -60,7 +60,7 @@ public class MergeReservationsServlet extends HttpServlet {
 
     private static class RequestData {
         ReservationData reservation;
-        ReservationData reservationToMerge;
-        boolean assignCoxswain;
+        MemberData[] crew;
+        MemberData coxswain;
     }
 }

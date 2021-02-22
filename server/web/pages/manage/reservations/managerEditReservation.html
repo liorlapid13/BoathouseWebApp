@@ -133,13 +133,28 @@
 <div class="container mx-auto mt-5 buttonsContainer" >
     <div class="row">
         <div class="col">
-            <button id="buttonSplit" onclick="location.href='splitReservation.html'"  type="button" class="btn btn-dark">Split Reservation</button>
+            <button id="buttonSplit"  type="button" class="btn btn-dark">Split Reservation</button>
         </div>
         <div class="col" >
             <button id="buttonMerge" onclick="location.href='mergeReservation.html'"   type="button" class="btn btn-dark">Merge Reservation</button>
         </div>
         <div class="col" >
             <button id="buttonEditBoatTypes" onclick="location.href='editBoatTypes.html'"   type="button" class="btn btn-dark">Change Boat Types</button>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div style="color:red"; class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Pay Attention!</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="closeButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>

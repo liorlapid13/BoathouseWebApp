@@ -43,7 +43,7 @@ public class MergeableReservationsServlet  extends HttpServlet {
             List<Reservation> reservations = engine.getCombinableReservations(originalReservation,originalReservation.getSpaceInCrew());
             List<ReservationData> reservationDataList = new ArrayList<>();
             if (!reservations.isEmpty()) {
-                ReservationData.parseReservationDetails(reservations, reservationDataList, engine);
+                ReservationData.parseReservations(reservations, reservationDataList, engine);
                 String jsonResponse = gson.toJson(reservationDataList);
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);

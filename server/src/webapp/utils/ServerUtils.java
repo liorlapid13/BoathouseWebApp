@@ -3,6 +3,7 @@ package webapp.utils;
 import engine.Engine;
 import engine.boat.BoatCrew;
 import engine.boat.BoatType;
+import engine.reservation.Reservation;
 import webapp.common.MemberData;
 
 import javax.servlet.ServletContext;
@@ -65,6 +66,15 @@ public class ServerUtils {
         }
 
         return new BoatCrew(crewMembers, coxswainId);
+    }
+
+    public static List<String> parseCrewMembers(MemberData[] crewMembers) {
+        List<String> members = new ArrayList<>();
+        for (int i = 0; i < crewMembers.length; i++) {
+            members.add(crewMembers[i].getId());
+        }
+
+        return members;
     }
 
     public static Set<BoatType> parseBoatTypes(String[] boatTypes) {

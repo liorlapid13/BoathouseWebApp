@@ -115,15 +115,6 @@ public class ReservationData {
         return members;
     }
 
-    private List<String> parseCrewMembers(MemberData[] crewMembers) {
-        List<String> members = new ArrayList<>();
-        for (int i = 0; i < crewMembers.length; i++) {
-            members.add(crewMembers[i].getId());
-        }
-
-        return members;
-    }
-
     private MemberData parseMember(Member member) {
         return new MemberData(member);
     }
@@ -131,7 +122,7 @@ public class ReservationData {
     public Reservation createReservation(String reservationCreator, WeeklyActivity weeklyActivity) {
         Set<BoatType> boatTypesSet = parseBoatTypes(boatTypes);
         LocalDate activityDate = ServerUtils.parseDate(date);
-        List<String> crewMembers = parseCrewMembers(boatCrew);
+        List<String> crewMembers = ServerUtils.parseCrewMembers(boatCrew);
         String coxswainId = coxswainSelected ? coxswain.getId() : null;
         BoatCrew parsedBoatCrew = new BoatCrew(crewMembers, coxswainId);
 
@@ -139,16 +130,20 @@ public class ReservationData {
                 activityDate, parsedBoatCrew);
     }
 
-    public static void parseReservationDetails(List<Reservation> reservationList,
+    public static void parseReservations(List<Reservation> reservationList,
                                          List<ReservationData> reservationDataList, Engine engine) {
         for (Reservation reservation : reservationList) {
-            Member reservationCreator = engine.findMemberByID(reservation.getReservationCreator());
-            Member reservator = engine.findMemberByID(reservation.getReservator());
-            List<Member> crewMembers = engine.findMemberListByIDList(reservation.getBoatCrew().getCrewMembers());
-            Member coxswain = engine.findMemberByID(reservation.getBoatCrew().getCoxswain());
-            boolean coxswainSelected = coxswain != null;
-            reservationDataList.add(new ReservationData(reservation, reservationCreator, reservator, crewMembers,
-                    coxswainSelected, coxswain));
+            reservationDataList.add(parseReservation(reservation, engine));
         }
+    }
+
+    public static ReservationData parseReservation(Reservation reservation, Engine engine) {
+        Member reservationCreator = engine.findMemberByID(reservation.getReservationCreator());
+        Member reservator = engine.findMemberByID(reservation.getReservator());
+        List<Member> crewMembers = engine.findMemberListByIDList(reservation.getBoatCrew().getCrewMembers());
+        Member coxswain = engine.findMemberByID(reservation.getBoatCrew().getCoxswain());
+        boolean coxswainSelected = coxswain != null;
+
+        return new ReservationData(reservation, reservationCreator, reservator, crewMembers, coxswainSelected, coxswain);
     }
 }

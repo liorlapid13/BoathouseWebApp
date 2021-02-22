@@ -1,0 +1,27 @@
+.container{
+    max-width: 950px !important;
+}
+.splitCrew {
+    table-layout: fixed;
+    width: 100%;
+    white-space: nowrap;
+    background-color: white !important;
+}
+.splitCrew td {
+    background-color: white;
+    white-space: pre-wrap;
+    overflow: hidden;
+}
+
+.row-number {
+    width: 15%;
+}
+.row-name {
+    width: 25%;
+}
+.row-button-crew {
+    width: 25%;
+}
+.row-button-coxswain {
+    width: 35%;
+}

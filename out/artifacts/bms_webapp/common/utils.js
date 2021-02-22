@@ -53,9 +53,11 @@ function findCheckedCheckBox(allCheckBoxes) {
     }
     return -1;
 }
+
 function getMaxBoatTypeCapacity(boatType){
     return parseInt(boatType.charAt(0));
 }
+
 function calculateMaxBoatTypesCapacity(selectedBoatTypes) {
     let maxMembersInCrew = 0;
     for (let i = 0; i < selectedBoatTypes.length; i++) {
@@ -81,7 +83,8 @@ function doBoatTypesNeedCoxswain(boatTypes) {
 function doesBoatTypeNeedCoxswain(boatType) {
     return boatType.includes("+");
 }
-function getBoatCrewSize(reservation){
+
+function getBoatCrewSize(reservation) {
     let crewSize = reservation.boatCrew.length;
 
     if(reservation.coxswain !== undefined){
@@ -89,10 +92,11 @@ function getBoatCrewSize(reservation){
     }
     return crewSize;
 }
+
 function getSpaceInCrew(boatTypes,crewSize) {
     let maxBoatTypeCapacity = calculateMaxBoatTypesCapacity(boatTypes)
 
-    for(let i = 0; i < boatTypes.length;i++){
+    for (let i = 0; i < boatTypes.length; i++){
         if (getMaxBoatTypeCapacity(boatTypes[i]) === maxBoatTypeCapacity &&
             doesBoatTypeNeedCoxswain(boatTypes[i])) {
             maxBoatTypeCapacity++;
@@ -102,6 +106,7 @@ function getSpaceInCrew(boatTypes,crewSize) {
 
     return maxBoatTypeCapacity - crewSize;
 }
+
 function initializeDaysDropDownMenu(dropDownOptions) {
     const options = {weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
     let date = new Date();
