@@ -2,8 +2,10 @@ package webapp.servlets;
 
 import com.google.gson.Gson;
 import engine.Engine;
+import engine.assignment.Assignment;
 import engine.member.Member;
 import engine.reservation.Reservation;
+import webapp.common.AssignmentData;
 import webapp.common.ReservationData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
@@ -22,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "RemoveReservationServlet", urlPatterns = {"/removeReservation"})
-public class RemoveReservationServlet extends HttpServlet {
+@WebServlet(name = "RemoveAssignmentServlet", urlPatterns = {"/removeAssignment"})
+public class RemoveAssignmentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req, resp);
@@ -39,10 +41,15 @@ public class RemoveReservationServlet extends HttpServlet {
         Gson gson = new Gson();
         BufferedReader reader = request.getReader();
         String jsonString = reader.lines().collect(Collectors.joining());
-        ReservationData reservationToRemove = gson.fromJson(jsonString, ReservationData.class);
-        engine.removeReservation(engine.findReservationByID(reservationToRemove.getId()), false);
-        response.setStatus(HttpServletResponse.SC_OK);
-        ServerUtils.saveSystemState(getServletContext());
+        AssignmentData assignmentToRemove = gson.fromJson(jsonString, AssignmentData.class);
+        Reservation reservation = engine.findReservationByID(assignmentToRemove.getReservation().getId());
+        Assignment assignment = engine.findAssignment(reservation);
+        if (assignment != null) {
+            engine.removeAssignment(assignment, false);
+            response.setStatus(HttpServletResponse.SC_OK);
+            ServerUtils.saveSystemState(getServletContext());
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
-
 }

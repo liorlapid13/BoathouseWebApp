@@ -1,5 +1,6 @@
 const STATUS_OK = 200;
 const RESERVATION_LIST = "reservationList";
+const ALL_ASSIGNMENTS_LIST = "assignmentList";
 const RESERVATION_TO_EDIT = "reservationToEdit";
 const ACTIVITY_TO_EDIT = "activityToEdit";
 const BOAT_TO_EDIT = "boatToEdit";

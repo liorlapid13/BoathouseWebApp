@@ -1,3 +1,7 @@
 .filterContainer {
     width:800px !important;
 }
+.white-left-border{
+    border-left-width: 2px;
+    border-left-color:white;
+}

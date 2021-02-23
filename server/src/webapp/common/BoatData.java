@@ -1,5 +1,6 @@
 package webapp.common;
 
+import engine.Engine;
 import engine.boat.Boat;
 import engine.boat.BoatType;
 

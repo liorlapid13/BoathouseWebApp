@@ -354,7 +354,7 @@ public class Engine {
         }
     }
 
-    private Assignment findAssignment(Reservation reservation) {
+    public Assignment findAssignment(Reservation reservation) {
         for (Assignment assignment : this.assignmentList) {
             if (assignment.getAssignedReservation().equals(reservation)) {
                 return assignment;
@@ -658,9 +658,7 @@ public class Engine {
                 .collect(Collectors.toList());
     }
 
-    public void removeAssignment(Assignment assignmentCopy, boolean override) {
-        Assignment assignment = getOriginalAssignmentReference(assignmentCopy);
-
+    public void removeAssignment(Assignment assignment, boolean override) {
         assignment.getAssignedReservation().setConfirmed(false);
 
         if (!override) {
