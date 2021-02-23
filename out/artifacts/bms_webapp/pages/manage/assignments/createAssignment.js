@@ -106,6 +106,10 @@ async function handleSelectReservation(event) {
             }),
             body: JSON.stringify(selectedReservation)
         });
+        const boatsTableBody = document.getElementById('boatsTableBody');
+        while (boatsTableBody.firstChild) {
+            boatsTableBody.removeChild(boatsTableBody.firstChild);
+        }
 
         if (response.status === STATUS_OK) {
             boatList = await response.json();
@@ -135,7 +139,7 @@ async function handleCreateAssignment(event) {
             boat: selectedBoat
         }
 
-        const response = await fetch('../../createAssignment', {
+        const response = await fetch('../../../createAssignment', {
             method: 'post',
             headers: new Headers({
                 'Content-Type': 'application/json;charset=utf-8'
@@ -180,6 +184,30 @@ function noBoatsAlert() {
     const alertPopup = document.getElementById("boatsAlertText");
     alertPopup.style.background = "white";
     alertPopup.textContent = "No boats to display";
+}
+
+function buildBoatTableEntry(boat) {
+    const tableEntryEl = document.createElement("tr");
+    const tableHeaderEl = document.createElement("th");
+    const checkBoxEl = document.createElement("input");
+    const idEl = document.createElement("td");
+    const nameEl = document.createElement("td");
+    const boatTypeEl = document.createElement("td");
+
+    checkBoxEl.setAttribute('type', 'radio');
+    checkBoxEl.setAttribute('name', 'boatRadio')
+    tableHeaderEl.setAttribute("scope", "row");
+    idEl.textContent = boat.id;
+    nameEl.textContent = boat.name;
+    boatTypeEl.textContent = boat.boatType;
+
+    tableHeaderEl.appendChild(checkBoxEl);
+    tableEntryEl.appendChild(tableHeaderEl);
+    tableEntryEl.appendChild(idEl);
+    tableEntryEl.appendChild(nameEl);
+    tableEntryEl.appendChild(boatTypeEl);
+
+    return tableEntryEl;
 }
 
 function initializeModals() {

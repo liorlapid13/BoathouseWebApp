@@ -235,23 +235,6 @@ function buildShortReservationTableEntry(reservation) {
     return tableEntryEl;
 }
 
-function buildBoatTableEntry(boat) {
-    const tableEntryEl = document.createElement("tr");
-    const idEl = document.createElement("td");
-    const nameEl = document.createElement("td");
-    const boatTypeEl = document.createElement("td");
-
-    idEl.textContent = boat.id;
-    nameEl.textContent = boat.name;
-    boatTypeEl.textContent = boat.boatType;
-
-    tableEntryEl.appendChild(idEl);
-    tableEntryEl.appendChild(nameEl);
-    tableEntryEl.appendChild(boatTypeEl);
-
-    return tableEntryEl;
-}
-
 function appendReservationTableData(tableEntryEl, reservation) {
     const reservatorDataEl = document.createElement("td");
     const dateDataEl = document.createElement("td");
