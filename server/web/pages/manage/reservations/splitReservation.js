@@ -145,11 +145,9 @@ function disableTableRow(index) {
     tableRows[index].style.pointerEvents = "none";
     tableRows[index].style.background = "gainsboro";
     let moveToCrewButton = tableRows[index].getElementsByClassName("moveToCrewButton")[0];
-    moveToCrewButton.classList.remove("btn-darkblue");
-    moveToCrewButton.classList.add("btn-gray");
+    moveToCrewButton.disabled = true;
     let moveToCoxswainButton = tableRows[index].getElementsByClassName("moveToCoxswainButton")[0];
-    moveToCoxswainButton.classList.remove("btn-darkblue");
-    moveToCoxswainButton.classList.add("btn-gray");
+    moveToCoxswainButton.disabled = true;
 }
 
 function disableCrewMemberRows() {
@@ -203,14 +201,14 @@ function buildCrewMemberTableEntry(member, isCoxswain, index) {
 
     moveCrewButtonEl.setAttribute("id", "buttonMoveCrew" + index);
     moveCrewButtonEl.setAttribute("type", "button");
-    moveCrewButtonEl.classList.add("btn-darkblue", "moveToCrewButton");
+    moveCrewButtonEl.classList.add("btn-darkblue", "btn", "moveToCrewButton");
     moveCrewButtonEl.textContent = "Move to Crew";
     moveCrewButtonEl.addEventListener('click',handleMoveToCrew)
     moveCrewEl.appendChild(moveCrewButtonEl);
 
     moveCoxswainButtonEl.setAttribute("id", "buttonMoveCoxswain" + index);
     moveCoxswainButtonEl.setAttribute("type", "button");
-    moveCoxswainButtonEl.classList.add("btn-darkblue", "moveToCoxswainButton");
+    moveCoxswainButtonEl.classList.add("btn-darkblue", "btn", "moveToCoxswainButton");
     moveCoxswainButtonEl.textContent = "Move to Coxswain";
     moveCoxswainButtonEl.addEventListener('click',handleMoveToCoxswain);
     moveCoxswainEl.appendChild(moveCoxswainButtonEl);

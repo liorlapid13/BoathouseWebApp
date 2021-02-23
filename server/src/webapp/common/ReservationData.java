@@ -83,6 +83,14 @@ public class ReservationData {
         return creationDate;
     }
 
+    public MemberData getReservationCreator() {
+        return reservationCreator;
+    }
+
+    public boolean isCoxswainSelected() {
+        return coxswainSelected;
+    }
+
     private String[] parseBoatTypes(Set<BoatType> boatTypes) {
         int setSize = boatTypes.size();
         int index = 0;

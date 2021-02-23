@@ -2,10 +2,6 @@
     width:1300px!important;
     margin-top: 20px !important;
 }
-
-.filterContainer {
-    width:1030px !important;
-}
 .shortReservationsTable{
     width:800px!important;
     margin-top: 20px !important;
@@ -16,4 +12,10 @@
 }
 caption{
     text-align: center !important;
+}
+.filterContainer {
+    width:1030px !important;
+}
+.containerNarrow{
+    width:300px !important;
 }

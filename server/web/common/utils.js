@@ -1,11 +1,11 @@
 const STATUS_OK = 200;
+const RESERVATION_LIST = "reservationList";
 const RESERVATION_TO_EDIT = "reservationToEdit";
 const ACTIVITY_TO_EDIT = "activityToEdit";
 const BOAT_TO_EDIT = "boatToEdit";
 const MEMBER_TO_EDIT = "memberToEdit";
 const RESERVATION_TO_MANAGER_EDIT = "reservationToManagerEdit";
 const ALL_RESERVATIONS_LIST = "allReservationsList";
-const RESERVATION_TO_MERGE = "reservationToMerge";
 
 function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";
@@ -231,6 +231,23 @@ function buildShortReservationTableEntry(reservation) {
     tableEntryEl.appendChild(activityEl);
     tableEntryEl.appendChild(boatTypesEl);
     tableEntryEl.appendChild(boatCrewEl);
+
+    return tableEntryEl;
+}
+
+function buildBoatTableEntry(boat) {
+    const tableEntryEl = document.createElement("tr");
+    const idEl = document.createElement("td");
+    const nameEl = document.createElement("td");
+    const boatTypeEl = document.createElement("td");
+
+    idEl.textContent = boat.id;
+    nameEl.textContent = boat.name;
+    boatTypeEl.textContent = boat.boatType;
+
+    tableEntryEl.appendChild(idEl);
+    tableEntryEl.appendChild(nameEl);
+    tableEntryEl.appendChild(boatTypeEl);
 
     return tableEntryEl;
 }

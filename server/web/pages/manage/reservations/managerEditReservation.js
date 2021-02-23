@@ -37,7 +37,7 @@ function initializeReservationData() {
 }
 
 async function initializeAvailableBoats() {
-    const response = await fetch('../../../reservationAvailableBoats', {
+    const response = await fetch('../../../availableBoatsForActivity', {
         method: 'post',
         headers: new Headers({
             'Content-Type': 'application/json;charset=utf-8'
@@ -46,8 +46,8 @@ async function initializeAvailableBoats() {
     });
 
     if (response.status === STATUS_OK) {
-        const boatsTableBodyEl = document.getElementById('availableBoatsTableBody');
         let boatList = await response.json();
+        const boatsTableBodyEl = document.getElementById('availableBoatsTableBody');
         for (let i = 0; i < boatList.length; i++) {
             boatsTableBodyEl.appendChild(buildBoatTableEntry(boatList[i]));
         }
@@ -56,23 +56,6 @@ async function initializeAvailableBoats() {
         alertPopup.style.background = "white";
         alertPopup.textContent = "No boats to display";
     }
-}
-
-function buildBoatTableEntry(boat) {
-    const tableEntryEl = document.createElement("tr");
-    const idEl = document.createElement("td");
-    const nameEl = document.createElement("td");
-    const boatTypeEl = document.createElement("td");
-
-    idEl.textContent = boat.id;
-    nameEl.textContent = boat.name;
-    boatTypeEl.textContent = boat.boatType;
-
-    tableEntryEl.appendChild(idEl);
-    tableEntryEl.appendChild(nameEl);
-    tableEntryEl.appendChild(boatTypeEl);
-
-    return tableEntryEl;
 }
 
 function initializeModal() {

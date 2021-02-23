@@ -669,12 +669,7 @@ public class Engine {
     }
 
     public void addAssignment(Assignment assignment) {
-        Boat originalBoatReference = findBoatByID(assignment.getAssignedBoat().getSerialNumber());
-        Reservation assignedReservation = assignment.getAssignedReservation();
-
-        assignment.setAssignedBoat(originalBoatReference);
-        assignment.setAssignedReservation(assignedReservation);
-        assignedReservation.setConfirmed(true);
+        assignment.getAssignedReservation().setConfirmed(true);
         assignmentList.add(assignment);
     }
 
@@ -809,8 +804,12 @@ public class Engine {
         return originalReservation;
     }
 
-    public void updateReservationBoatTypes(Reservation reservation, Set<BoatType> boatTypes) {
-        reservation.setBoatTypes(boatTypes);
+    public Reservation updateReservationBoatTypes(Reservation reservation, Set<BoatType> boatTypes) {
+        if (!reservation.getBoatTypes().equals(boatTypes)) {
+            reservation.setBoatTypes(boatTypes);
+        }
+
+        return reservation;
     }
 
     public boolean isValidJoinAndExpirationDates(XMLGregorianCalendar joined, XMLGregorianCalendar membershipExpiration) {

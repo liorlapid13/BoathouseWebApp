@@ -43,3 +43,18 @@ td {
 .optionsContainer {
     width:1030px !important;
 }
+.longReservationsTable {
+    width:1300px!important;
+    margin-top: 20px !important;
+}
+.shortReservationsTable{
+    width:800px!important;
+    margin-top: 20px !important;
+}
+.availableBoatsTable{
+    width:500px !important;
+    max-height: 250px !important;
+}
+caption{
+    text-align: center !important;
+}

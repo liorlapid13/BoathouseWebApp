@@ -49,6 +49,7 @@ public class SplitReservationServlet extends HttpServlet {
             if (updatedReservation != null) {
                 ReservationData reservationData = ReservationData.parseReservation(updatedReservation, engine);
                 String jsonResponse = gson.toJson(reservationData);
+                ServerUtils.saveSystemState(getServletContext());
                 resp.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
                 out.flush();
