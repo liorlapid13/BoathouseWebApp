@@ -37,6 +37,7 @@ function handleNextWeekAssignments(event) {
 }
 
 function handleSpecificDayAssignments(event) {
+     const currentSelectedDay = document.getElementById('daysDropDownMenu').value;
     const data = {
         requestType: "day",
         daysFromToday : currentSelectedDay
@@ -58,8 +59,8 @@ async function getSelectedAssignments(data) {
     });
 
     const tableBody = document.getElementById('tableBody');
-    while (tableBody.firstChild) {
-        tableBody.removeChild(tableBody.firstChild);
+    while (tableBody.children.length>1) {
+        tableBody.removeChild(tableBody.lastChild);
     }
 
     if (response.status === STATUS_OK) {
@@ -97,7 +98,7 @@ async function handleRemoveAssignment(event) {
 
         if (response.status === STATUS_OK) {
             assignmentList.splice(checkedCheckBox, 1);
-            tableRows[checkedCheckBox].remove();
+            tableRows[checkedCheckBox + 1].remove();
             modalTitle.textContent = "";
             modalBody.style.color = "green";
             modalBody.textContent = "Assignment removed successfully"

@@ -681,6 +681,8 @@ public class Engine {
 
     private boolean doesBoatMatchReservation(Boat boat, Reservation reservation) {
         return reservation.getBoatTypes().contains(boat.getBoatType()) &&
+                (reservation.getBoatCrew().getCoxswain() != null && boat.isHasCoxswain() ||
+                 reservation.getBoatCrew().getCoxswain() == null && !boat.isHasCoxswain()) &&
                 isBoatAvailableForActivity(boat, reservation.getWeeklyActivity(), reservation.getActivityDate());
     }
 

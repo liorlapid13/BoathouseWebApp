@@ -33,9 +33,9 @@ function setupEventHandlers() {
 
 }
 function initializeModal() {
-    modal = document.getElementById("Modal");
-    modalBody = document.querySelector(".modal-body");
-    modalTitle = document.getElementById("ModalLabel");
+    modal = document.getElementById("modal");
+    modalBody = document.getElementById("modalBody");
+    modalTitle = document.getElementById("modalLabel");
 }
 
 async function handlePastReservations(event) {
