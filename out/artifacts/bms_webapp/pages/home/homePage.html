@@ -21,6 +21,22 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul id="notificationsNavItem" class="navbar-nav mr-auto">
+                <li class="nav-item dropdown" style="margin-right: 10px">
+                    <i class="fa fa-bell  mt-2 text-white notification-icon" style="position: relative" aria-hidden="true" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span id="notificationsNumber"  style=";position: absolute;display: none" class="badge rounded-pill bg-danger">4</span>
+                    </i>
+                    <ul class="dropdown-menu scrollable-menu notification-list" id="notifications" aria-labelledby="navbarDropdown"  role="menu" >
+                        <li class="notification-box">
+                            <div class="row">
+                                <div class="col-lg-9 col-sm-9 col-9">
+                                    <strong class="text-info">No Notifications</strong>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
             <ul id="mainNav" class="navbar-nav mx-auto me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="../personalDetails/editPersonalDetails.html">Edit Personal Details</a>

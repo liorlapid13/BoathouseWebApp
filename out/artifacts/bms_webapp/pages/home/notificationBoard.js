@@ -82,7 +82,7 @@ async function initializeNotificationBoard() {
 function initializeAddButton() {
     if (!isManager) {
         const notificationBoardEl = document.getElementById('notificationBoard');
-        notificationBoardEl.removeChild(notificationBoardEl.lastChild);
+        notificationBoardEl.removeChild(notificationBoardEl.children[notificationBoardEl.children.length - 1]);
     } else {
         const addNotificationButtonEl = document.getElementById('buttonAddNotification');
         addNotificationButtonEl.addEventListener('click', handleAddNotification);
