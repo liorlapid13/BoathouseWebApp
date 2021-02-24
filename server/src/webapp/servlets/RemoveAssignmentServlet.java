@@ -38,6 +38,7 @@ public class RemoveAssignmentServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Engine engine = ServletUtils.getEngine(getServletContext());
+        String userId = SessionUtils.getUserId(request);
         Gson gson = new Gson();
         BufferedReader reader = request.getReader();
         String jsonString = reader.lines().collect(Collectors.joining());
@@ -46,6 +47,7 @@ public class RemoveAssignmentServlet extends HttpServlet {
         Assignment assignment = engine.findAssignment(reservation);
         if (assignment != null) {
             engine.removeAssignment(assignment, false);
+            engine.removeAssignmentNotification(assignment, userId);
             response.setStatus(HttpServletResponse.SC_OK);
             ServerUtils.saveSystemState(getServletContext());
         } else {

@@ -8,6 +8,7 @@ import webapp.common.MemberData;
 import webapp.common.ReservationData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
+import webapp.utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,6 +38,7 @@ public class SplitReservationServlet extends HttpServlet {
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
+            String userId = SessionUtils.getUserId(req);
             Gson gson = new Gson();
             BufferedReader reader = req.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
@@ -45,6 +47,7 @@ public class SplitReservationServlet extends HttpServlet {
             List<String> crewMembers = ServerUtils.parseCrewMembers(requestData.crew);
             String coxswain = requestData.coxswain != null ? requestData.coxswain.getId() : null;
             BoatCrew boatCrew = new BoatCrew(crewMembers, coxswain);
+            engine.editReservationNotification(reservation, userId);
             Reservation updatedReservation = engine.splitReservation(reservation, boatCrew);
             if (updatedReservation != null) {
                 ReservationData reservationData = ReservationData.parseReservation(updatedReservation, engine);

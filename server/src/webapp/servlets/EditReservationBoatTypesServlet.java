@@ -45,6 +45,7 @@ public class EditReservationBoatTypesServlet extends HttpServlet {
             Set<BoatType> boatTypes = ServerUtils.parseBoatTypes(requestData.boatTypes);
             Reservation updatedReservation = engine.updateReservationBoatTypes(reservation, boatTypes);
             if (updatedReservation != null) {
+                engine.editReservationNotification(updatedReservation, userId);
                 ReservationData reservationData = ReservationData.parseReservation(updatedReservation, engine);
                 String jsonResponse = gson.toJson(reservationData);
                 ServerUtils.saveSystemState(getServletContext());

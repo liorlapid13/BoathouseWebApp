@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import engine.Engine;
 import engine.activity.WeeklyActivity;
+import engine.assignment.Assignment;
 import engine.boat.BoatCrew;
 import engine.boat.BoatType;
 import engine.reservation.Reservation;
@@ -44,11 +45,14 @@ public class CreateAssignmentServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Engine engine = ServletUtils.getEngine(getServletContext());
+        String userId = SessionUtils.getUserId(req);
         Gson gson = new Gson();
         BufferedReader reader = req.getReader();
         String jsonString = reader.lines().collect(Collectors.joining());
         AssignmentData assignmentData = gson.fromJson(jsonString, AssignmentData.class);
-        engine.addAssignment(assignmentData.createAssignment(engine));
+        Assignment assignment = assignmentData.createAssignment(engine);
+        engine.addAssignment(assignment);
+        engine.newAssignmentNotification(assignment, userId);
         ServerUtils.saveSystemState(getServletContext());
         resp.setStatus(HttpServletResponse.SC_OK);
     }

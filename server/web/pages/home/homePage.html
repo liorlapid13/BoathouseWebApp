@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <title>Home Page</title>
     <link href="../../style.css" rel="stylesheet">
+    <link href="../../common/notifications.css" rel="stylesheet">
     <link href="modal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="../../common/modal.js"></script>
+    <script src="../../common/utils.js"></script>
     <script src="../../addManagerNavBar.js"></script>
+    <script src="notificationBoard.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar navbar-dark " style="background-color: #2e6da4">
@@ -39,7 +43,32 @@
         </div>
     </div>
 </nav>
-
-
+<h2 class="title-white-blue">Welcome To The BoatHouse </h2>
+<div class="contentBoard mt-4 bg-white rounded">
+    <h1 class="notification-title bottom-border">Notification Board</h1>
+    <div id="notificationBoard">
+        <ul class="scrollable-menu non-style-list" id="notificationsBody" aria-labelledby="navbarDropdown"  role="menu" >
+        </ul>
+        <div>
+            <button type="button" id="buttonAddNotification" class="btn btn-darkblue">Add Notification</button>
+            <input type="text" id="inputText" class="new-notification-text">
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div style="color:red"; class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Pay Attention!</h5>
+            </div>
+            <div id="modalBody"  class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="closeButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

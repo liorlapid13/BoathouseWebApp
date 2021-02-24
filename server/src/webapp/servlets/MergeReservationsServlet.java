@@ -10,6 +10,7 @@ import webapp.common.BoatData;
 import webapp.common.ReservationData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
+import webapp.utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,14 +39,17 @@ public class MergeReservationsServlet extends HttpServlet {
         resp.setContentType("application/json");
         try (PrintWriter out = resp.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
+            String userId = SessionUtils.getUserId(req);
             Gson gson = new Gson();
             BufferedReader reader = req.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
             RequestData requestData = gson.fromJson(jsonString, RequestData.class);
             Reservation originalReservation = engine.findReservationByID(requestData.reservation.getId());
             Reservation reservationToMerge = engine.findReservationByID(requestData.reservationToMerge.getId());
+            engine.editReservationNotification(originalReservation, userId);
+            engine.editReservationNotification(reservationToMerge, userId);
             Reservation updatedReservation = engine.combineReservations(originalReservation, reservationToMerge,
-                    requestData.assignCoxswain);
+                    requestData.assignCoxswain, userId);
             if (updatedReservation != null) {
                 String jsonResponse = gson.toJson(ReservationData.parseReservation(updatedReservation, engine));
                 resp.setStatus(HttpServletResponse.SC_OK);

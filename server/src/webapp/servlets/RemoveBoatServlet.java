@@ -5,6 +5,7 @@ import engine.Engine;
 import webapp.common.BoatData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
+import webapp.utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,6 +33,7 @@ public class RemoveBoatServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (PrintWriter out = response.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
+            String userId = SessionUtils.getUserId(request);
             Gson gson = new Gson();
             BufferedReader reader = request.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
@@ -39,11 +41,11 @@ public class RemoveBoatServlet extends HttpServlet {
             String boatToRemoveId = requestData.boatToRemove.getId();
 
             if(requestData.boatHasFutureAssignment){
-                engine.removeBoatFromFutureAssignments(engine.findBoatByID(boatToRemoveId));
+                engine.removeBoatFromFutureAssignments(engine.findBoatByID(boatToRemoveId), userId);
             }
             engine.removeBoat(engine.findBoatByID(boatToRemoveId));
-            response.setStatus(HttpServletResponse.SC_OK);
             ServerUtils.saveSystemState(getServletContext());
+            response.setStatus(HttpServletResponse.SC_OK);
         }
     }
     private static class removeBoatRequestData {

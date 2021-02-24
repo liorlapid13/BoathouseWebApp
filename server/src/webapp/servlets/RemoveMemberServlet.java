@@ -5,6 +5,7 @@ import engine.Engine;
 import webapp.common.MemberData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
+import webapp.utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,6 +33,7 @@ public class RemoveMemberServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (PrintWriter out = response.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
+            String userId = SessionUtils.getUserId(request);
             Gson gson = new Gson();
             BufferedReader reader = request.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
@@ -39,17 +41,17 @@ public class RemoveMemberServlet extends HttpServlet {
             String memberToRemoveId = removalRequestData.memberToRemove.getId();
             boolean isLoggedInMember = engine.isMemberLoggedIn(memberToRemoveId);
 
-            if(!isLoggedInMember){
-                if(removalRequestData.memberHasFutureReservation){
-                    engine.removeMemberFromFutureReservations(engine.findMemberByID(memberToRemoveId));
+            if (!isLoggedInMember){
+                if (removalRequestData.memberHasFutureReservation) {
+                    engine.removeMemberFromFutureReservations(engine.findMemberByID(memberToRemoveId), userId);
                 }
                 engine.removeMember(engine.findMemberByID(memberToRemoveId));
-                response.setStatus(HttpServletResponse.SC_OK);
                 ServerUtils.saveSystemState(getServletContext());
+                response.setStatus(HttpServletResponse.SC_OK);
             }
             else{
                 response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-                out.println("This member is logged in,you cannot remove him");
+                out.println("This member is logged in, you cannot remove him");
             }
         }
 

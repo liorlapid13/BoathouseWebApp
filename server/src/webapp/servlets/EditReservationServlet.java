@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 @WebServlet(name = "EditReservationServlet", urlPatterns = {"/editReservation"})
 public class EditReservationServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processRequest(req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req, resp);
     }
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -53,6 +53,7 @@ public class EditReservationServlet extends HttpServlet {
         Set<BoatType> boatTypes = ServerUtils.parseBoatTypes(requestData.boatTypes);
         boolean coxswainSelected = requestData.coxswain != null;
         BoatCrew boatCrew = ServerUtils.createBoatCrew(requestData.boatCrew, requestData.coxswain, coxswainSelected);
+        engine.editReservationNotification(engine.findReservationByID(requestData.reservation.getId()), userId);
         engine.editReservation(requestData.reservation.getId(), date, activity, boatTypes, boatCrew, requestData.reservator.getId());
         ServerUtils.saveSystemState(getServletContext());
         resp.setStatus(HttpServletResponse.SC_OK);

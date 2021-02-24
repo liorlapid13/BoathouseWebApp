@@ -6,6 +6,7 @@ import engine.boat.BoatType;
 import webapp.common.BoatData;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
+import webapp.utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,12 +31,13 @@ public class EditBoatServlet extends HttpServlet {
 
     protected void editBoat(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Engine engine = ServletUtils.getEngine(getServletContext());
+        String userId = SessionUtils.getUserId(req);
         Gson gson = new Gson();
         BufferedReader reader = req.getReader();
         String jsonString = reader.lines().collect(Collectors.joining());
         BoatData boatData = gson.fromJson(jsonString, BoatData.class);
         engine.editBoat(boatData.getId(), boatData.getName(), BoatType.boatCodeToBoatType(boatData.getBoatType()),
-                boatData.isCoastal(), boatData.isPrivate(), boatData.isDisabled());
+                boatData.isCoastal(), boatData.isPrivate(), boatData.isDisabled(), userId);
         ServerUtils.saveSystemState(getServletContext());
         resp.setStatus(HttpServletResponse.SC_OK);
     }

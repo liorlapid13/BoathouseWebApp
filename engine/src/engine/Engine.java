@@ -7,6 +7,7 @@ import engine.boat.BoatCrew;
 import engine.boat.BoatType;
 import engine.member.Member;
 import engine.member.MemberLevel;
+import engine.notification.Notification;
 import engine.reservation.Reservation;
 import engine.reservation.ReservationViewFilter;
 import engine.exception.EmailAlreadyExistsException;
@@ -23,6 +24,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +38,7 @@ public class Engine {
     private List<Assignment> assignmentList;
     private List<WeeklyActivity> weeklyActivities;
     private XMLHandler xmlHandler;
+    private List<Notification> notificationBoard;
 
     public Engine() {
         loggedInMembers = new ArrayList<>();
@@ -44,6 +47,7 @@ public class Engine {
         reservationList = new ArrayList<>();
         weeklyActivities = new ArrayList<>();
         assignmentList = new ArrayList<>();
+        notificationBoard = new ArrayList<>();
     }
 
     @XmlElementWrapper
@@ -90,6 +94,10 @@ public class Engine {
 
     public List<Reservation> getReservationList() {
         return reservationList;
+    }
+
+    public List<Notification> getNotificationBoard() {
+        return notificationBoard;
     }
 
     public void createXmlHandler() {
@@ -245,12 +253,13 @@ public class Engine {
         return getBoatFutureAssignments(boat).size() != 0;
     }
 
-    public void removeBoatFromFutureAssignments(Boat boat) {
-        List<Assignment> assignments = getBoatFutureAssignments(findBoatByID(boat.getSerialNumber()));
+    public void removeBoatFromFutureAssignments(Boat boat, String creatorId) {
+        List<Assignment> assignments = getBoatFutureAssignments(boat);
 
         for (Assignment assignment : assignments) {
             assignment.getAssignedReservation().setConfirmed(false);
             assignmentList.remove(assignment);
+            removeAssignmentNotification(assignment, creatorId);
         }
     }
 
@@ -328,12 +337,13 @@ public class Engine {
         }
     }
 
-    public void removeReservation(Reservation reservation, boolean override) {
+    public void removeReservation(Reservation reservation, boolean override, String creatorId) {
         if (reservation.isConfirmed()) {
             Assignment assignment = findAssignment(reservation);
 
             if (assignment != null) {
                 removeAssignment(assignment, override);
+                removeAssignmentNotification(assignment, creatorId);
             }
         }
 
@@ -424,11 +434,11 @@ public class Engine {
         boat.setName(newBoatName);
     }
 
-    public void updateBoatDisabledStatus(boolean isDisabled, Boat boatToEdit) {
+    public void updateBoatDisabledStatus(boolean isDisabled, Boat boatToEdit, String creatorId) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
 
         if (!boat.isDisabled() && isDisabled) {
-            removeBoatFromFutureAssignments(boat);
+            removeBoatFromFutureAssignments(boat, creatorId);
         }
 
         boat.setDisabled(isDisabled);
@@ -446,11 +456,11 @@ public class Engine {
         boat.setCoastal(isCoastal);
     }
 
-    public void updateBoatType(BoatType boatType, Boat boatToEdit) {
+    public void updateBoatType(BoatType boatType, Boat boatToEdit, String creatorId) {
         Boat boat = findBoatByID(boatToEdit.getSerialNumber());
 
         if (BoatType.doesBoatNeedCoxswain(boat.getBoatType()) != BoatType.doesBoatNeedCoxswain(boatType)) {
-            removeBoatFromFutureAssignments(boat);
+            removeBoatFromFutureAssignments(boat, creatorId);
         }
 
         boat.setBoatType(boatType);
@@ -475,7 +485,7 @@ public class Engine {
         reservation.setWeeklyActivity(activity);
     }
 
-    public void removeMemberFromFutureReservations(Member memberCopy) {
+    public void removeMemberFromFutureReservations(Member memberCopy, String creatorId) {
         Member member = findMemberByID(memberCopy.getSerialNumber());
         List<Reservation> futureReservations = member.getFutureReservationList();
         List<Assignment> assignmentsToRemove = new ArrayList<>();
@@ -488,14 +498,17 @@ public class Engine {
 
         for (Assignment assignment : assignmentsToRemove) {
             removeAssignment(assignment, false);
+            removeAssignmentNotification(assignment, creatorId);
         }
 
         for (Reservation reservation : futureReservations) {
             if (findMemberByID(reservation.getReservator()).equals(member)) {
-                removeReservation(reservation, false);
+                removeReservation(reservation, false, creatorId);
+                removeReservationNotification(reservation, creatorId);
             }
             else {
                 removeMemberFromReservationBoatCrew(reservation, member);
+                removeMemberFromReservationNotification(member, creatorId);
             }
         }
     }
@@ -709,7 +722,7 @@ public class Engine {
     }
 
     public Reservation combineReservations(Reservation destinationReservation, Reservation sourceReservation,
-                                    boolean assignCoxswain) {
+                                    boolean assignCoxswain, String creatorId) {
         int crewMembersToAdd = sourceReservation.getBoatCrew().getCrewMembers().size();
 
         if (assignCoxswain) {
@@ -735,7 +748,7 @@ public class Engine {
             addCrewMemberToReservation(destinationReservation, sourceReservation.getBoatCrew().getCrewMembers().get(i));
         }
 
-        removeReservation(sourceReservation, false);
+        removeReservation(sourceReservation, false, creatorId);
 
         return destinationReservation;
     }
@@ -843,9 +856,9 @@ public class Engine {
         this.memberList.addAll(memberList);
     }
 
-    private void overrideMemberList(List<Member> memberList) {
+    private void overrideMemberList(List<Member> memberList, String creatorId) {
         removeAllAssignments();
-        removeAllReservation();
+        removeAllReservation(creatorId);
         removeAllMembers();
         this.memberList.addAll(memberList);
     }
@@ -863,18 +876,18 @@ public class Engine {
         assignmentList.removeAll(assignmentList);
     }
 
-    private void removeAllReservation() {
+    private void removeAllReservation(String creatorId) {
         for (Reservation reservation : reservationList) {
-            removeReservation(reservation, true);
+            removeReservation(reservation, true, creatorId);
         }
 
         reservationList.removeAll(reservationList);
     }
 
-    private void overrideBoatList(List<Boat> boatList) {
+    private void overrideBoatList(List<Boat> boatList, String creatorId) {
         removeAllPrivateBoatReferences();
         removeAllAssignments();
-        removeAllReservation();
+        removeAllReservation(creatorId);
         removeAllBoats();
         this.boatList.addAll(boatList);
     }
@@ -896,9 +909,9 @@ public class Engine {
         boatList.removeAll(boatList);
     }
 
-    private void overrideActivityList(List<WeeklyActivity> activityList) {
+    private void overrideActivityList(List<WeeklyActivity> activityList, String creatorId) {
         removeAllAssignments();
-        removeAllReservation();
+        removeAllReservation(creatorId);
         removeAllActivities();
         weeklyActivities.addAll(activityList);
     }
@@ -1068,12 +1081,12 @@ public class Engine {
         }
     }
 
-    public void importMembers(String membersXmlString, boolean isOverride) throws XmlException {
+    public void importMembers(String membersXmlString, boolean isOverride, String creatorId) throws XmlException {
         StringBuilder importErrorsString = new StringBuilder();
         List<Member> members = xmlHandler.generateMemberListFromXmlString(membersXmlString, isOverride, importErrorsString);
 
         if (isOverride) {
-            overrideMemberList(members);
+            overrideMemberList(members, creatorId);
         }
         else {
             appendToMemberList(members);
@@ -1084,12 +1097,12 @@ public class Engine {
         }
     }
 
-    public void importBoats(String boatsXmlString, boolean isOverride) throws XmlException {
+    public void importBoats(String boatsXmlString, boolean isOverride, String creatorId) throws XmlException {
         StringBuilder importErrorsString = new StringBuilder();
         List<Boat> boats = xmlHandler.generateBoatListFromXmlString(boatsXmlString, isOverride, importErrorsString);
 
         if (isOverride) {
-            overrideBoatList(boats);
+            overrideBoatList(boats, creatorId);
         }
         else {
             appendToBoatList(boats);
@@ -1100,13 +1113,13 @@ public class Engine {
         }
     }
 
-    public void importActivities(String activitiesXmlString, boolean isOverride) throws XmlException {
+    public void importActivities(String activitiesXmlString, boolean isOverride, String creatorId) throws XmlException {
         StringBuilder importErrorsString = new StringBuilder();
         List<WeeklyActivity> activities = xmlHandler.generateActivitiesListFromXmlString(
                 activitiesXmlString, isOverride, importErrorsString);
 
         if (isOverride) {
-            overrideActivityList(activities);
+            overrideActivityList(activities, creatorId);
         }
         else {
             appendToActivityList(activities);
@@ -1205,14 +1218,14 @@ public class Engine {
         }
     }
 
-    public void editBoat(String boatId, String name, BoatType boatType, boolean isCoastal, boolean isPrivate, boolean isDisabled) {
+    public void editBoat(String boatId, String name, BoatType boatType, boolean isCoastal, boolean isPrivate, boolean isDisabled, String creatorId) {
         Boat boat = findBoatByID(boatId);
 
         updateBoatName(name, boat);
-        updateBoatType(boatType, boat);
+        updateBoatType(boatType, boat, creatorId);
         updateBoatCoastalStatus(isCoastal, boat);
         updateBoatPrivateStatus(isPrivate, boat);
-        updateBoatDisabledStatus(isDisabled, boat);
+        updateBoatDisabledStatus(isDisabled, boat, creatorId);
     }
 
     public void editMember(String memberId, String name, String email, String password, int age, String details,
@@ -1232,5 +1245,114 @@ public class Engine {
         updateMemberManagerialStatus(isManager, memberId);
         updateMemberPrivateBoat(hasPrivateBoat, privateBoatId, memberId);
         updateMemberExpirationDate(expirationDate, memberId);
+    }
+
+    public void addNotification(String message, String memberId) {
+        Member member = findMemberByID(memberId);
+        LocalDateTime now = LocalDateTime.now();
+        Notification notification = new Notification(now, message, member);
+
+        notificationBoard.add(notification);
+        Collections.sort(notificationBoard);
+        Collections.reverse(notificationBoard);
+    }
+
+    public void removeNotification(int index) {
+        notificationBoard.remove(index);
+    }
+
+    public void newAssignmentNotification(Assignment assignment, String creatorId) {
+        Member creator = findMemberByID(creatorId);
+        BoatCrew crew = assignment.getAssignedReservation().getBoatCrew();
+        List<Member> crewMembers = findMemberListByIDList(crew.getCrewMembers());
+        Member coxswain = findMemberByID(crew.getCoxswain());
+        String message = "You have a new assignment!";
+
+        for (Member member : crewMembers) {
+            member.addNotification(message, creator);
+        }
+
+        if (coxswain != null) {
+            coxswain.addNotification(message, creator);
+        }
+    }
+
+    public void removeAssignmentNotification(Assignment assignment, String creatorId) {
+        Member creator = findMemberByID(creatorId);
+        BoatCrew crew = assignment.getAssignedReservation().getBoatCrew();
+        List<Member> crewMembers = findMemberListByIDList(crew.getCrewMembers());
+        Member coxswain = findMemberByID(crew.getCoxswain());
+        String message = "One of your assignments have been removed!";
+
+        for (Member member : crewMembers) {
+            member.addNotification(message, creator);
+        }
+
+        if (coxswain != null) {
+            coxswain.addNotification(message, creator);
+        }
+    }
+
+    public void newReservationNotification(Reservation reservation, String creatorId) {
+        Member creator = findMemberByID(creatorId);
+        BoatCrew crew = reservation.getBoatCrew();
+        List<Member> crewMembers = findMemberListByIDList(crew.getCrewMembers());
+        Member coxswain = findMemberByID(crew.getCoxswain());
+        String message = "You have a new reservation!";
+
+        for (Member member : crewMembers) {
+            member.addNotification(message, creator);
+        }
+
+        if (coxswain != null) {
+            coxswain.addNotification(message, creator);
+        }
+    }
+
+    public void removeReservationNotification(Reservation reservation, String creatorId) {
+        Member creator = findMemberByID(creatorId);
+        BoatCrew crew = reservation.getBoatCrew();
+        List<Member> crewMembers = findMemberListByIDList(crew.getCrewMembers());
+        Member coxswain = findMemberByID(crew.getCoxswain());
+        String message = "One of your reservations have been removed!";
+
+        for (Member member : crewMembers) {
+            member.addNotification(message, creator);
+        }
+
+        if (coxswain != null) {
+            coxswain.addNotification(message, creator);
+        }
+    }
+
+    public void removeMemberFromReservationNotification(Member member, String creatorId) {
+        Member creator = findMemberByID(creatorId);
+        String message = "One of your reservations have been removed!";
+        member.addNotification(message, creator);
+    }
+
+    public void editReservationNotification(Reservation reservation, String creatorId) {
+        Member creator = findMemberByID(creatorId);
+        BoatCrew crew = reservation.getBoatCrew();
+        List<Member> crewMembers = findMemberListByIDList(crew.getCrewMembers());
+        Member coxswain = findMemberByID(crew.getCoxswain());
+        String message = "One of your reservations have been edited!";
+
+        for (Member member : crewMembers) {
+            member.addNotification(message, creator);
+        }
+
+        if (coxswain != null) {
+            coxswain.addNotification(message, creator);
+        }
+    }
+
+    public void notificationBoardUpdated(String creatorId) {
+        Member creator = findMemberByID(creatorId);
+        String message = "New notification has been added to the Notification Board!";
+
+        for (Member member : memberList) {
+            member.addNotification(message, creator);
+        }
     }
 }

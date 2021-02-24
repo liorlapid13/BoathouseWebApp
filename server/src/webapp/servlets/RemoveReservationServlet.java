@@ -36,11 +36,14 @@ public class RemoveReservationServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Engine engine = ServletUtils.getEngine(getServletContext());
+        String userId = SessionUtils.getUserId(request);
         Gson gson = new Gson();
         BufferedReader reader = request.getReader();
         String jsonString = reader.lines().collect(Collectors.joining());
-        ReservationData reservationToRemove = gson.fromJson(jsonString, ReservationData.class);
-        engine.removeReservation(engine.findReservationByID(reservationToRemove.getId()), false);
+        ReservationData reservationData = gson.fromJson(jsonString, ReservationData.class);
+        Reservation reservationToRemove = engine.findReservationByID(reservationData.getId());
+        engine.removeReservation(reservationToRemove, false, userId);
+        engine.removeReservationNotification(reservationToRemove, userId);
         response.setStatus(HttpServletResponse.SC_OK);
         ServerUtils.saveSystemState(getServletContext());
     }

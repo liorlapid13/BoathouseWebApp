@@ -1,0 +1,44 @@
+.notification-box{
+    padding: 10px;
+    border-bottom-width:10px ;
+    border-bottom-color:grey ;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 300px;
+    overflow-x: hidden;
+}
+.bottom-border{
+    border-bottom:3px solid gainsboro;
+}
+.notification-list{
+    padding: 10px;
+    width:400px;
+}
+.bg-gray {
+    background-color: lightgray;
+}
+
+.btn-trash:hover {
+    background-color: #dbe2ef;
+}
+.notification-title{
+    font-size: 30px !important;
+}
+.non-style-list{
+    list-style-type: none;
+}
+.fa-bell:hover{
+    color:#112d4e !important;
+}
+.new-notification-text{
+    margin-left: 5px;
+    width:700px;
+}
+.badge {
+    font-size: 11px;
+    padding: 4px 7px;
+    top: -8px;
+    right:-4mm;
+}

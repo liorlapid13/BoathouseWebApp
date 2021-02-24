@@ -5,6 +5,7 @@ import engine.Engine;
 import engine.exception.XmlException;
 import webapp.utils.ServerUtils;
 import webapp.utils.ServletUtils;
+import webapp.utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,6 +32,7 @@ public class ImportDataServlet extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             Engine engine = ServletUtils.getEngine(getServletContext());
+            String userId = SessionUtils.getUserId(request);
             Gson gson = new Gson();
             BufferedReader reader = request.getReader();
             String jsonString = reader.lines().collect(Collectors.joining());
@@ -39,13 +41,13 @@ public class ImportDataServlet extends HttpServlet {
             try{
                 switch (requestData.typeOfData) {
                     case "activities":
-                        engine.importActivities(requestData.xmlString,requestData.override);
+                        engine.importActivities(requestData.xmlString,requestData.override, userId);
                         break;
                     case "boats":
-                        engine.importBoats(requestData.xmlString,requestData.override);
+                        engine.importBoats(requestData.xmlString,requestData.override, userId);
                         break;
                     case "members":
-                        engine.importMembers(requestData.xmlString,requestData.override);
+                        engine.importMembers(requestData.xmlString,requestData.override, userId);
                         break;
                 }
                 ServerUtils.saveSystemState(getServletContext());

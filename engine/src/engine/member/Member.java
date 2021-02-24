@@ -1,6 +1,7 @@
 package engine.member;
 
 import engine.activity.WeeklyActivity;
+import engine.notification.Notification;
 import engine.reservation.Reservation;
 import engine.adapter.LocalDateTimeAdapter;
 
@@ -12,9 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @XmlRootElement
@@ -36,6 +35,7 @@ public class Member implements Serializable {
     private String password;
     private boolean isManager;
     private List<Reservation> reservationList;
+    private List<Notification> notifications;
 
     public Member() {
         reservationList = new ArrayList<>();
@@ -58,6 +58,7 @@ public class Member implements Serializable {
         this.password = password;
         this.isManager = isManager;
         this.reservationList = new ArrayList<>();
+        this.notifications = new ArrayList<>();
     }
 
     @XmlAttribute
@@ -111,6 +112,10 @@ public class Member implements Serializable {
     @XmlAttribute
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
     }
 
     public boolean isManager() {
@@ -319,5 +324,18 @@ public class Member implements Serializable {
                 .filter(reservation -> reservation.getActivityDate().isBefore(LocalDate.now()))
                 .filter(reservation -> reservation.isConfirmed())
                 .collect(Collectors.toList());
+    }
+
+    public void addNotification(String message, Member creator) {
+        LocalDateTime now = LocalDateTime.now();
+        Notification notification = new Notification(now, message, creator);
+
+        notifications.add(notification);
+        Collections.sort(notifications);
+        Collections.reverse(notifications);
+    }
+
+    public void clearNotifications() {
+        this.notifications.clear();
     }
 }

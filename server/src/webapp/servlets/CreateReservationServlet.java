@@ -58,6 +58,7 @@ public class CreateReservationServlet extends HttpServlet {
 
         Reservation reservation = reservationData.createReservation(userId, activity);
         engine.publishNewReservation(reservation, false);
+        engine.newReservationNotification(reservation, userId);
         ServerUtils.saveSystemState(getServletContext());
         resp.setStatus(HttpServletResponse.SC_OK);
     }
