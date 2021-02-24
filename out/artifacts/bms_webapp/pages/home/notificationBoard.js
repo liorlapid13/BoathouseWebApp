@@ -7,8 +7,7 @@ let modalTitle;
 window.addEventListener('load', () => {
     initializeModal();
     setupEventHandlers();
-    initializeNotificationBoard();
-    initializeAddButton();
+    initializeNotificationBoard().then(r => initializeAddButton());
 });
 
 function setupEventHandlers() {
@@ -34,8 +33,15 @@ async function handleAddNotification(event) {
             body: JSON.stringify(input)
         });
 
-        clearNotificationTable();
-        initializeNotificationBoard();
+        if (response.status === STATUS_OK) {
+            clearNotificationTable();
+            initializeNotificationBoard();
+            textInputEl.value = "";
+        } else {
+            modalTitle.textContent = "Pay Attention!" ;
+            modalBody.textContent = "Error: Failed to add notification!";
+            showModal(modal);
+        }
     }
 }
 
@@ -47,10 +53,10 @@ async function handleRemoveNotification(event) {
             'Content-Type': 'application/json;charset=utf-8'
         }),
         body: JSON.stringify(selectedIndex)
+    }).then(r => {
+        clearNotificationTable();
+        initializeNotificationBoard();
     });
-
-    clearNotificationTable();
-    initializeNotificationBoard();
 }
 
 async function initializeNotificationBoard() {
@@ -63,11 +69,7 @@ async function initializeNotificationBoard() {
         method: 'get'
     })
     const memberType = await response2.text();
-    if (memberType === "Manager") {
-        isManager = true;
-    } else {
-        isManager = false;
-    }
+    isManager = memberType === "Manager";
 
     sessionStorage.setItem('notificationBoard', JSON.stringify(notifications));
     if (notifications.length === 0) {

@@ -39,6 +39,7 @@ public class Member implements Serializable {
 
     public Member() {
         reservationList = new ArrayList<>();
+        notifications = new ArrayList<>();
     }
 
     public Member(String serialNumber, String name, int age, String details, MemberLevel level, boolean hasBoat,
