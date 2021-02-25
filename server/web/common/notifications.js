@@ -10,7 +10,7 @@ async function initializeNotificationsList() {
     const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST));
     if (notificationsList != null) {
         if (notificationsList.length !== 0) {
-            clearNotificationTable();
+            clearNotificationsList();
             buildNotificationsList(notificationsList);
         }
         const unseenNotifications = JSON.parse(sessionStorage.getItem(UNSEEN_NOTIFICATIONS));
@@ -23,18 +23,40 @@ async function initializeNotificationsList() {
 }
 
 function setupEventHandlers() {
-    // TODO - Notification button press
+    const notificationsButtonEl = document.getElementById('buttonNotifications');
+    notificationsButtonEl.addEventListener('mousedown', markAllNotificationsAsRead);
 }
 
 function handleRemoveNotification(event) {
-    // TODO
+    const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST));
+    let selectedNotification = this.id;
+    notificationsList.splice(selectedNotification, 1);
+    clearNotificationsList();
+    buildNotificationsList(notificationsList);
+    sessionStorage.setItem(NOTIFICATIONS_LIST, JSON.stringify(notificationsList));
 }
 
 async function updateNotifications() {
-    // TODO
+    const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST));
+    const response = await fetch('../../notifications', {
+        method: 'get'
+    });
+    const newNotifications = await response.json();
+    if (newNotifications.length !== 0) {
+        let unseenNotifications = JSON.parse(sessionStorage.getItem(UNSEEN_NOTIFICATIONS));
+        unseenNotifications += newNotifications.length;
+        setNumberOfUnseenNotifications(unseenNotifications);
+        sessionStorage.setItem(UNSEEN_NOTIFICATIONS, JSON.stringify(unseenNotifications));
+        for (let i = 0; i < newNotifications.length; i++) {
+            notificationsList.unshift(newNotifications[newNotifications.length - i - 1]);
+        }
+        clearNotificationsList();
+        buildNotificationsList(notificationsList);
+        sessionStorage.setItem(NOTIFICATIONS_LIST, JSON.stringify(notificationsList));
+    }
 }
 
-function clearNotificationTable() {
+function clearNotificationsList() {
     const notificationsListBodyEl = document.getElementById('notifications');
     while (notificationsListBodyEl.firstChild) {
         notificationsListBodyEl.removeChild(notificationsListBodyEl.firstChild);
@@ -99,7 +121,7 @@ function setNumberOfUnseenNotifications(numberOfUnseenNotifications) {
     }
 }
 
-function markAllNotificationsAsRead() {
+function markAllNotificationsAsRead(event) {
     const numberOfUnseenNotificationsEl = document.getElementById('notificationsNumber');
     numberOfUnseenNotificationsEl.style.display = 'none';
     sessionStorage.setItem(UNSEEN_NOTIFICATIONS, JSON.stringify(0));
