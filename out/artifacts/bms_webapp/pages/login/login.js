@@ -25,9 +25,10 @@ async function handleFormSubmit (event) {
             }),
             body: JSON.stringify(data)
         });
-
+        let memberId = await response.text();
+        sessionStorage.setItem('id', JSON.stringify(memberId));
         if (response.status === STATUS_OK) {
-            window.location.href = await response.text();
+            window.location.href = "pages/home/homePage.html";
         } else {
             const alertPopup = document.getElementById('alertText');
             alertPopup.textContent = await response.text();

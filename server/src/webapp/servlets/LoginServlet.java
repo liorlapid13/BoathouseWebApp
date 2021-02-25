@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
                 if (loggedInMember != null) {
                     request.getSession(true).setAttribute(Constants.USERID, loggedInMember.getSerialNumber());
                     response.setStatus(HttpServletResponse.SC_OK);
-                    out.print(Constants.HOME_PAGE_URL);
+                    out.print(loggedInMember.getSerialNumber());
                     out.flush();
 
                 } else {

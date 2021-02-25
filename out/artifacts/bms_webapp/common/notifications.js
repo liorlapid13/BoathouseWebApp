@@ -1,6 +1,8 @@
 const UNSEEN_NOTIFICATIONS = "unseenNotifications";
 const NOTIFICATIONS_LIST = "notificationsList";
-const refreshRate = 30 * 1000;
+const refreshRate = 20 * 1000;
+
+let memberId;
 
 window.addEventListener('load', () => {
     initializeNotificationsList();
@@ -9,18 +11,20 @@ window.addEventListener('load', () => {
 });
 
 async function initializeNotificationsList() {
-    const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST));
+    memberId = JSON.parse(sessionStorage.getItem('id'));
+    const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST + memberId));
     if (notificationsList != null) {
         if (notificationsList.length !== 0) {
             clearNotificationsList();
             buildNotificationsList(notificationsList);
         }
-        const unseenNotifications = JSON.parse(sessionStorage.getItem(UNSEEN_NOTIFICATIONS));
+        const unseenNotifications = JSON.parse(sessionStorage.getItem(UNSEEN_NOTIFICATIONS + memberId));
         setNumberOfUnseenNotifications(unseenNotifications);
     } else {
         const emptyList = [];
-        sessionStorage.setItem(NOTIFICATIONS_LIST, JSON.stringify(emptyList));
-        sessionStorage.setItem(UNSEEN_NOTIFICATIONS, JSON.stringify(0));
+
+        sessionStorage.setItem(NOTIFICATIONS_LIST + memberId, JSON.stringify(emptyList));
+        sessionStorage.setItem(UNSEEN_NOTIFICATIONS + memberId, JSON.stringify(0));
     }
 }
 
@@ -30,31 +34,36 @@ function setupNotificationsEventHandlers() {
 }
 
 function handleRemoveNotification(event) {
-    const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST));
+    const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST + memberId));
     let selectedNotification = this.id;
     notificationsList.splice(selectedNotification, 1);
     clearNotificationsList();
-    buildNotificationsList(notificationsList);
-    sessionStorage.setItem(NOTIFICATIONS_LIST, JSON.stringify(notificationsList));
+    if(notificationsList.length === 0){
+        noNotificationsMessageEntry()
+    }
+    else{
+        buildNotificationsList(notificationsList);
+    }
+    sessionStorage.setItem(NOTIFICATIONS_LIST + memberId, JSON.stringify(notificationsList));
 }
 
 async function updateNotifications() {
-    const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST));
+    const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST + memberId));
     const response = await fetch('../../notifications', {
         method: 'get'
     });
     const newNotifications = await response.json();
     if (newNotifications.length !== 0) {
-        let unseenNotifications = JSON.parse(sessionStorage.getItem(UNSEEN_NOTIFICATIONS));
+        let unseenNotifications = JSON.parse(sessionStorage.getItem(UNSEEN_NOTIFICATIONS + memberId));
         unseenNotifications += newNotifications.length;
         setNumberOfUnseenNotifications(unseenNotifications);
-        sessionStorage.setItem(UNSEEN_NOTIFICATIONS, JSON.stringify(unseenNotifications));
+        sessionStorage.setItem(UNSEEN_NOTIFICATIONS + memberId, JSON.stringify(unseenNotifications));
         for (let i = 0; i < newNotifications.length; i++) {
             notificationsList.unshift(newNotifications[newNotifications.length - i - 1]);
         }
         clearNotificationsList();
         buildNotificationsList(notificationsList);
-        sessionStorage.setItem(NOTIFICATIONS_LIST, JSON.stringify(notificationsList));
+        sessionStorage.setItem(NOTIFICATIONS_LIST + memberId, JSON.stringify(notificationsList));
     }
 }
 
@@ -123,8 +132,26 @@ function setNumberOfUnseenNotifications(numberOfUnseenNotifications) {
     }
 }
 
-function markAllNotificationsAsRead(event) {
+function markAllNotificationsAsRead() {
     const numberOfUnseenNotificationsEl = document.getElementById('notificationsNumber');
     numberOfUnseenNotificationsEl.style.display = 'none';
-    sessionStorage.setItem(UNSEEN_NOTIFICATIONS, JSON.stringify(0));
+    sessionStorage.setItem(UNSEEN_NOTIFICATIONS + memberId, JSON.stringify(0));
+}
+function noNotificationsMessageEntry() {
+    const notificationsBody = document.getElementById('notifications');
+    const liEl = document.createElement('li');
+    const rowEl = document.createElement('div');
+    const colEl = document.createElement('div');
+    const messageEl = document.createElement('strong');
+
+    liEl.classList.add('notification-box');
+    rowEl.classList.add('row');
+    colEl.classList.add('col-lg-9', 'col-sm-9', 'col-9')
+    messageEl.classList.add('text-info');
+    messageEl.textContent = "No Notifications";
+
+    colEl.appendChild(messageEl);
+    rowEl.appendChild(colEl);
+    liEl.appendChild(rowEl);
+    notificationsBody.appendChild(liEl);
 }

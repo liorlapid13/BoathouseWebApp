@@ -42,3 +42,7 @@
     top: -8px;
     right:-4mm;
 }
+.notifications-number{
+    position: absolute;
+    font-size:10px !important;
+}
