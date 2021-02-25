@@ -45,7 +45,7 @@ async function handleAddNotification(event) {
     }
 }
 
-async function handleRemoveNotification(event) {
+async function handleRemoveBoardNotification(event) {
     let selectedIndex = this.id;
     const response = await fetch('../../removeNotification', {
         method: 'post',
@@ -135,7 +135,7 @@ function buildNotificationEntry(notification, index) {
         trashIconColEl.setAttribute('align', 'center');
         trashButtonEl.classList.add('btn', 'btn-trash');
         trashButtonEl.setAttribute('id', index);
-        trashButtonEl.addEventListener('click', handleRemoveNotification);
+        trashButtonEl.addEventListener('click', handleRemoveBoardNotification);
         trashIconEl.classList.add('fa', 'fa-trash');
 
         trashButtonEl.appendChild(trashIconEl);

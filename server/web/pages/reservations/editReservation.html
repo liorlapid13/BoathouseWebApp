@@ -14,6 +14,7 @@
     <script src="../../common/utils.js"></script>
     <script src="../../addManagerNavBar.js"></script>
     <script src="editReservation.js"></script>
+    <script src="../../common/notifications.js"></script>
 
 </head>
 <body>
@@ -26,7 +27,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul id="notificationsNavItem" class="navbar-nav mr-auto">
                 <li class="nav-item dropdown" style="margin-right: 10px">
-                    <i class="fa fa-bell  mt-2 text-white notification-icon" style="position: relative" aria-hidden="true" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-bell  mt-2 text-white notification-icon" id="buttonNotifications" style="position: relative" aria-hidden="true" data-bs-toggle="dropdown" aria-expanded="false">
                         <span id="notificationsNumber"  style=";position: absolute;display: none" class="badge rounded-pill bg-danger">4</span>
                     </i>
                     <ul class="dropdown-menu scrollable-menu notification-list" id="notifications" aria-labelledby="navbarDropdown"  role="menu" >
@@ -50,7 +51,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="createNewReservation.html">Create New Reservation</a></li>
-                        <li><a class="dropdown-item" href="myReservations.html">View My Reservations</a></li>
+                        <li><a class="dropdown-item" href="myReservations.html">My Reservations</a></li>
                     </ul>
                 </li>
             </ul>

@@ -1,8 +1,10 @@
+const UNSEEN_NOTIFICATIONS = "unseenNotifications";
+const NOTIFICATIONS_LIST = "notificationsList";
 const refreshRate = 30 * 1000;
 
 window.addEventListener('load', () => {
     initializeNotificationsList();
-    setupEventHandlers();
+    setupNotificationsEventHandlers();
     setInterval(updateNotifications, refreshRate)
 });
 
@@ -22,7 +24,7 @@ async function initializeNotificationsList() {
     }
 }
 
-function setupEventHandlers() {
+function setupNotificationsEventHandlers() {
     const notificationsButtonEl = document.getElementById('buttonNotifications');
     notificationsButtonEl.addEventListener('mousedown', markAllNotificationsAsRead);
 }

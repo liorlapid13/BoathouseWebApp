@@ -274,7 +274,7 @@ async function handleReservationCreation(event) {
     } else if (response.status === 202) {
         finalModalTitle.textContent = "";
         finalModalBody.style.color ="green";
-        finalModalBody.textContent = "Your private boat has been automatically assigned to your new reservation!";
+        finalModalBody.textContent = "Reservator's private boat has been automatically assigned to your new reservation!";
     } else {
         finalModalTitle.textContent = "Pay Attention!";
         finalModalBody.style.color ="red";

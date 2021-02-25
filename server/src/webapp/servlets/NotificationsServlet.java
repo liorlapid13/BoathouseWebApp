@@ -36,11 +36,11 @@ public class NotificationsServlet extends HttpServlet {
             String userId = SessionUtils.getUserId(req);
             Member member = engine.findMemberByID(userId);
             List<Notification> notifications = member.getNotifications();
-            member.clearNotifications();
             List<NotificationData> notificationDataList = new ArrayList<>();
             for (Notification notification : notifications) {
                 notificationDataList.add(new NotificationData(notification));
             }
+            member.clearNotifications();
             Gson gson = new Gson();
             String jsonResponse = gson.toJson(notificationDataList);
             resp.setStatus(HttpServletResponse.SC_OK);
