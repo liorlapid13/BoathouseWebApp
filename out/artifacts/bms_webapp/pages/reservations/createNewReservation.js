@@ -267,10 +267,19 @@ async function handleReservationCreation(event) {
         body: JSON.stringify(data)
     });
 
-    finalModalTitle.textContent = "";
-    finalModalBody.style.color ="green";
-    finalModalBody.textContent = response.status === STATUS_OK ?
-        "Reservation successfully created!" : "Failed to create reservation!";
+    if (response.status === STATUS_OK) {
+        finalModalTitle.textContent = "";
+        finalModalBody.style.color ="green";
+        finalModalBody.textContent = "Reservation successfully created!";
+    } else if (response.status === 202) {
+        finalModalTitle.textContent = "";
+        finalModalBody.style.color ="green";
+        finalModalBody.textContent = "Your private boat has been automatically assigned to your new reservation!";
+    } else {
+        finalModalTitle.textContent = "Pay Attention!";
+        finalModalBody.style.color ="red";
+        finalModalBody.textContent = "Error: Failed to create reservation!";
+    }
     showModal(finalModal);
 }
 

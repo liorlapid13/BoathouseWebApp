@@ -55,12 +55,15 @@ public class CreateReservationServlet extends HttpServlet {
             activity = engine.findActivity(reservationData.getActivity().getName(),
                     reservationData.getActivity().getTime());
         }
-
         Reservation reservation = reservationData.createReservation(userId, activity);
         engine.publishNewReservation(reservation, false);
+        if (engine.attemptToAutoAssignPrivateBoatToReservation(reservation)) {
+            resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
         engine.newReservationNotification(reservation, userId);
         ServerUtils.saveSystemState(getServletContext());
-        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
 }

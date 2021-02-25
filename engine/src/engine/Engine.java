@@ -1355,4 +1355,23 @@ public class Engine {
             member.addNotification(message, creator);
         }
     }
+
+    public boolean attemptToAutoAssignPrivateBoatToReservation(Reservation reservation) {
+        Member reservator = findMemberByID(reservation.getReservator());
+
+        if (reservator.isHasBoat()) {
+            Boat boat = findBoatByID(reservator.getPrivateBoatSerialNumber());
+            BoatType boatType = boat.getBoatType();
+            int numberOfCrewMembers = reservation.getBoatCrew().getCrewMembers().size();
+            int boatCapacity = BoatType.getMaxCapacity(boatType);
+
+            if (boatCapacity == numberOfCrewMembers && doesBoatMatchReservation(boat, reservation)) {
+                Assignment assignment = new Assignment(reservation, boat);
+                addAssignment(assignment);
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
