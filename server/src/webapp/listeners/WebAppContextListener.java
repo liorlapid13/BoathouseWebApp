@@ -1,6 +1,7 @@
 package webapp.listeners;
 
 import engine.Engine;
+import engine.chat.ChatManager;
 import engine.member.Member;
 import engine.member.MemberLevel;
 import webapp.constants.Constants;
@@ -44,6 +45,7 @@ public class WebAppContextListener implements ServletContextListener {
             }
 
             servletContext.setAttribute(Constants.ENGINE_ATTRIBUTE_NAME, engine);
+            servletContext.setAttribute(Constants.CHAT_MANAGER_ATTRIBUTE_NAME, new ChatManager());
             if (isFirstRun) {
                 ServerUtils.saveSystemState(servletContext);
             }

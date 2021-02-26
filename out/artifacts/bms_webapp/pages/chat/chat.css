@@ -1,0 +1,7 @@
+#chatarea {
+    overflow-y: scroll;
+    max-height: 200px;
+}
+.contentBoard{
+    width: 600px;
+}

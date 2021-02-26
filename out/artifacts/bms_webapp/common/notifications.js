@@ -49,7 +49,9 @@ function handleRemoveNotification(event) {
 
 async function updateNotifications() {
     const notificationsList = JSON.parse(sessionStorage.getItem(NOTIFICATIONS_LIST + memberId));
-    const response = await fetch('../../notifications', {
+    const notificationsUrl = window.location.pathname.includes('manage') ?
+        '../../../notifications' : '../../notifications';
+    const response = await fetch(notificationsUrl, {
         method: 'get'
     });
     const newNotifications = await response.json();

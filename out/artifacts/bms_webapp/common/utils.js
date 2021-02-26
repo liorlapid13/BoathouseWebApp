@@ -8,7 +8,6 @@ const MEMBER_TO_EDIT = "memberToEdit";
 const RESERVATION_TO_MANAGER_EDIT = "reservationToManagerEdit";
 const ALL_RESERVATIONS_LIST = "allReservationsList";
 
-
 function parseBoatCrew(boatCrew, coxswain, coxswainSelected) {
     let boatCrewString = "";
     for (let i = 0; i < boatCrew.length; i++) {

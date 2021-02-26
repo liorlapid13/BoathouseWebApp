@@ -2,6 +2,7 @@ package webapp.constants;
 
 public class Constants {
     public static final String ENGINE_ATTRIBUTE_NAME = "engine";
+    public static final String CHAT_MANAGER_ATTRIBUTE_NAME = "chatManager";
 
     public static final String USERID = "userid";
 
