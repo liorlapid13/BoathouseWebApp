@@ -25,9 +25,9 @@ async function handleFormSubmit (event) {
             }),
             body: JSON.stringify(data)
         });
-        let memberId = await response.text();
-        sessionStorage.setItem('id', JSON.stringify(memberId));
         if (response.status === STATUS_OK) {
+            let memberId = await response.text();
+            sessionStorage.setItem('id', JSON.stringify(memberId));
             window.location.href = "pages/home/homePage.html";
         } else {
             const alertPopup = document.getElementById('alertText');

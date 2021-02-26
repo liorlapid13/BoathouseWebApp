@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
 });
 
 
-window.addEventListener('unload', () => {
+window.addEventListener('beforeunload', () => {
     leaveChat();
 })
 

@@ -39,7 +39,7 @@ public class ChatServlet extends HttpServlet {
             int chatManagerVersion = chatManager.getVersion();
             if (chatVersion != chatManagerVersion) {
                 List<MessageEntry> chatEntries = chatManager.getMessages(chatVersion);
-                MessagesAndVersion messagesAndVersion = new MessagesAndVersion(chatEntries, chatVersion);
+                MessagesAndVersion messagesAndVersion = new MessagesAndVersion(chatEntries, chatManagerVersion);
                 String jsonResponse = gson.toJson(messagesAndVersion);
                 resp.setStatus(HttpServletResponse.SC_OK);
                 out.print(jsonResponse);
