@@ -1,4 +1,4 @@
-package webapp.servlets;
+package webapp.servlets.xml;
 
 import com.google.gson.Gson;
 import engine.Engine;

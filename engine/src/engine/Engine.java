@@ -689,6 +689,7 @@ public class Engine {
                 .filter(boat -> !boat.isDisabled())
                 .filter(boat -> !boat.isPrivate())
                 .filter(boat -> doesBoatMatchReservation(boat, reservation))
+                .filter(boat -> BoatType.getMaxCapacity(boat.getBoatType()) == reservation.getBoatCrew().getCrewMembers().size())
                 .collect(Collectors.toList());
     }
 

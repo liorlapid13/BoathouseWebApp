@@ -26,8 +26,8 @@ function createManageAssignmentsOption() {
     const manageReservationsLiEl = document.createElement("li");
     manageReservationsLiEl.classList.add("nav-item", "dropdown");
     manageReservationsLiEl.appendChild(createLilink("Manage Assignments","navbarDropdown6"));
-    const namesOfItems = ["All Assignments","Create New Assignment"];
-    const pageLinks = ["../manage/assignments/assignments.html","../manage/assignments/createAssignment.html"];
+    const namesOfItems = ["Create New Assignment","All Assignments"];
+    const pageLinks = ["../manage/assignments/createAssignment.html","../manage/assignments/assignments.html"];
     manageReservationsLiEl.appendChild(createDropDownMenu(namesOfItems,pageLinks));
 
     return manageReservationsLiEl;
