@@ -53,7 +53,7 @@ public class EditReservationBoatTypesServlet extends HttpServlet {
                 out.print(jsonResponse);
                 out.flush();
             } else {
-                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
             }
         }
     }

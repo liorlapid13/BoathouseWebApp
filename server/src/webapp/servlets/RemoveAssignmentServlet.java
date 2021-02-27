@@ -51,7 +51,7 @@ public class RemoveAssignmentServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK);
             ServerUtils.saveSystemState(getServletContext());
         } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.setStatus(HttpServletResponse.SC_SEE_OTHER);
         }
     }
 }

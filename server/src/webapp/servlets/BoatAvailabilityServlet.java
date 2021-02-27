@@ -33,13 +33,13 @@ public class BoatAvailabilityServlet extends HttpServlet {
         RequestData requestData = gson.fromJson(jsonString, RequestData.class);
         if (requestData.id == null) {
             if (engine.doesBoatNameExist(requestData.name)) {
-                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
             } else {
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
         } else {
             if (engine.doesBoatSerialNumberExist(requestData.id)) {
-                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
             } else {
                 resp.setStatus(HttpServletResponse.SC_OK);
             }

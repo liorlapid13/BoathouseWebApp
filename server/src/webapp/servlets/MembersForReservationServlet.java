@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "membersForReservationServlet", urlPatterns = {"/membersForReservation"})
+@WebServlet(name = "MembersForReservationServlet", urlPatterns = {"/membersForReservation"})
 public class MembersForReservationServlet extends HttpServlet {
 
     @Override
@@ -61,7 +61,7 @@ public class MembersForReservationServlet extends HttpServlet {
             List<Member> availableMembers =
                     engine.findAvailableMembersForReservation(activity, date);
             if (availableMembers.isEmpty()) {
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 List<MemberData> memberDataList = parseAvailableMembers(availableMembers);
                 String jsonResponse = gson.toJson(memberDataList);

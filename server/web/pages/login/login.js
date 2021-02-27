@@ -65,7 +65,7 @@ async function checkIfLoggedIn() {
         method: 'get'
     });
 
-    if (response.ok) {
+    if (response.status === STATUS_OK) {
         window.location.href = await response.text();
     }
 }

@@ -46,7 +46,7 @@ public class ExportDataServlet extends HttpServlet {
             String xmlString;
 
 
-            try{
+            try {
                 switch (requestData.typeOfData) {
                     case "activities":
                         xmlString = engine.exportActivities();
@@ -65,7 +65,7 @@ public class ExportDataServlet extends HttpServlet {
                 out.flush();
             }
             catch (XmlException e){
-                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.setStatus(HttpServletResponse.SC_SEE_OTHER);
                 out.print(e.getMessage());
                 out.flush();
             }

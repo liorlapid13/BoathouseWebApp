@@ -35,7 +35,7 @@ public class PrivateBoatAvailabilityServlet extends HttpServlet {
         if (engine.isBoatPrivate(boatId) && !engine.doesBoatBelongToMember(boatId)) {
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {
-            resp.setStatus(HttpServletResponse.SC_CONFLICT);
+            resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
         }
     }
 

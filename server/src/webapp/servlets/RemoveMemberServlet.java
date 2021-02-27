@@ -50,7 +50,7 @@ public class RemoveMemberServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
             }
             else{
-                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.setStatus(HttpServletResponse.SC_SEE_OTHER);
                 out.println("This member is logged in, you cannot remove him");
             }
         }

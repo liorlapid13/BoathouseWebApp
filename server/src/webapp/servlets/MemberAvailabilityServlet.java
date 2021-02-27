@@ -37,11 +37,11 @@ public class MemberAvailabilityServlet extends HttpServlet {
                 engine.isEmailAvailable(requestData.email);
                 resp.setStatus(HttpServletResponse.SC_OK);
             } catch (EmailAlreadyExistsException e) {
-                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
             }
         } else {
             if (engine.doesMemberSerialNumberExist(requestData.id)) {
-                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
             } else {
                 resp.setStatus(HttpServletResponse.SC_OK);
             }

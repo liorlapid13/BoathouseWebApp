@@ -45,7 +45,7 @@ public class AvailableBoatsForReservationServlet extends HttpServlet {
             Reservation reservation = engine.findReservationByID(reservationData.getId());
             List<Boat> availableBoats = engine.getBoatsForReservation(reservation);
             if (availableBoats.isEmpty()) {
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
             } else {
                 List<BoatData> boatDataList = parseAvailableBoats(availableBoats);
                 String jsonResponse = gson.toJson(boatDataList);

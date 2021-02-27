@@ -44,7 +44,7 @@ public class AvailableBoatsForActivityServlet extends HttpServlet {
             WeeklyActivity activity = engine.findActivity(reservationData.getActivity().getName(), reservationData.getActivity().getTime());
             List<Boat> availableBoats = engine.getBoatsForActivity(activity, ServerUtils.parseDate(reservationData.getDate()));
             if (availableBoats.isEmpty()) {
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
             } else {
                 List<BoatData> boatDataList = parseAvailableBoats(availableBoats);
                 String jsonResponse = gson.toJson(boatDataList);

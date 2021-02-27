@@ -54,7 +54,7 @@ public class ImportDataServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
             }
             catch (XmlException e){
-                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.setStatus(HttpServletResponse.SC_SEE_OTHER);
                 out.print(e.getMessage());
                 out.flush();
             }

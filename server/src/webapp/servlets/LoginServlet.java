@@ -49,11 +49,11 @@ public class LoginServlet extends HttpServlet {
                     out.flush();
 
                 } else {
-                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                     out.print("Incorrect email and/or password");
                 }
             } catch (MemberAlreadyLoggedInException e) {
-                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.setStatus(HttpServletResponse.SC_SEE_OTHER);
                 out.print(e.getMessage());
                 out.flush();
             }
@@ -82,7 +82,7 @@ public class LoginServlet extends HttpServlet {
                 out.print(Constants.HOME_PAGE_URL);
                 out.flush();
             } else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
         }
     }

@@ -128,8 +128,14 @@ function handleEditReservationRequest() {
     let checkedCheckBox = findCheckedCheckBox(getAllCheckBoxes());
     if (checkedCheckBox !== -1) {
         const reservationToEdit = reservationList[checkedCheckBox];
-        sessionStorage.setItem(RESERVATION_TO_MANAGER_EDIT, JSON.stringify(reservationToEdit));
-        window.location.href = "managerEditReservation.html";
+        if (reservationToEdit.status === "Confirmed") {
+            modalTitle.textContent = "Pay Attention!";
+            modalBody.textContent = "You can only edit unconfirmed reservations!";
+            showModal(modal);
+        } else {
+            sessionStorage.setItem(RESERVATION_TO_MANAGER_EDIT, JSON.stringify(reservationToEdit));
+            window.location.href = "managerEditReservation.html";
+        }
     } else {
         modalTitle.textContent = "Pay Attention!";
         modalBody.textContent = "You must select a reservation to edit!"

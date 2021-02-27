@@ -49,7 +49,7 @@ public class CreateActivityServlet extends HttpServlet {
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
             else{
-                resp.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
                 out.print("Identical activity already exists, activity has not been added");
                 out.flush();
             }
