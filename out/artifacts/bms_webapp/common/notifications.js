@@ -1,6 +1,6 @@
 const UNSEEN_NOTIFICATIONS = "unseenNotifications";
 const NOTIFICATIONS_LIST = "notificationsList";
-const refreshRate = 20 * 1000;
+const refreshRate = 15 * 1000;
 
 let memberId;
 

@@ -24,6 +24,8 @@
 #stickyTable{
     width: 100%;
     display: block;
+    table-layout: fixed;
+    text-align: center;
 }
 #memberTableBody{
     display: block;
@@ -47,7 +49,7 @@
 }
 .memberTable{
     margin-left:60px;
-    float:left;
+    float: left;
 }
 .boatTypeTable{
     width:19%;
@@ -117,7 +119,7 @@ option {
     width: 25%;
 }
 .spaceBodyTable td input{
-    margin-left: 50px;
+    margin-left: 70px;
 }
 .middleItem{
     width:40%;
