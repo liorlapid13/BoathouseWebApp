@@ -27,7 +27,7 @@ let finalModal;
 let finalModalBody;
 let finalModalTitle;
 
-
+const STATUS_AUTO_ASSIGNMENT = 202;
 window.addEventListener('load', () => {
     initializeModals();
     const daysDropDownMenu = document.getElementById('daysDropDownMenu');
@@ -271,7 +271,7 @@ async function handleReservationCreation(event) {
         finalModalTitle.textContent = "";
         finalModalBody.style.color ="green";
         finalModalBody.textContent = "Reservation successfully created!";
-    } else if (response.status === 202) {
+    } else if (response.status === STATUS_AUTO_ASSIGNMENT) {
         finalModalTitle.textContent = "";
         finalModalBody.style.color ="green";
         finalModalBody.textContent = "Reservator's private boat has been automatically assigned to your new reservation!";
